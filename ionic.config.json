@@ -1,5 +1,7 @@
 {
   "name": "SASTRAMess",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

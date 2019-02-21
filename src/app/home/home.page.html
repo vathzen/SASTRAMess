@@ -4,26 +4,34 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Login
+      SASTRA Mess
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="wrapper">
-    <ion-list>
-        <ion-item>
-            <ion-label position="floating" color="primary">Registration Number</ion-label>
-            <ion-input class = "inputfield"name="regno" required></ion-input>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Log In
+      </ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <ion-list>
+        <ion-item class="firstitem">
+            <ion-label position="floating">Registration Number</ion-label>
+            <ion-input class="inputfield" required></ion-input>
         </ion-item>
-
-        <ion-item>
-            <ion-label position="floating" color="primary">Name</ion-label>
-            <ion-input class = "inputfield" name="name" required></ion-input>
+        <ion-item class="seconditem">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input class="inputfield" type="Password" required></ion-input>
         </ion-item>
-    </ion-list>
-
-    <ion-button class="login" onclick="login()" fill="solid">
-        <ion-ripple-effect></ion-ripple-effect>
+     </ion-list>
+    <ion-button color="warning" fill="solid" (click)="popAlert()">
+      <ion-ripple-effect></ion-ripple-effect>
         Log In
     </ion-button>
+  </ion-card-content>
+  </ion-card>
 </ion-content>
