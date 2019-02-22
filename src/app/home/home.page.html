@@ -21,14 +21,14 @@
       <ion-list>
         <ion-item class="firstitem">
             <ion-label position="floating">Registration Number</ion-label>
-            <ion-input class="inputfield" required></ion-input>
+            <ion-input [(ngModel)]="regnum"></ion-input>
         </ion-item>
         <ion-item class="seconditem">
             <ion-label position="floating">Password</ion-label>
-            <ion-input class="inputfield" type="Password" required></ion-input>
+            <ion-input type="Password" [(ngModel)]="pswrd"></ion-input>
         </ion-item>
      </ion-list>
-    <ion-button color="warning" fill="solid" (click)="popAlert()">
+    <ion-button color="warning" fill="solid" (click)="login()">
       <ion-ripple-effect></ion-ripple-effect>
         Log In
     </ion-button>

@@ -20,6 +20,8 @@ ion-list{
 ion-item {
     --border-color:burlywood;
     --highlight-color-focused:orange;
+    --highlight-color-valid:orange;
+    --highlight-color-invalid:orange;
 }
 .firstitem{
     margin-top: -7%;
