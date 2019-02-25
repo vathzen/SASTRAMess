@@ -63,20 +63,19 @@ export class HomePage {
    });
   }
 
-  login()
-  { if(this.regnum=="")
-    {
-      this.regnum=null;
-    }
-    if(this.pswrd=="")
-    {
-      this.pswrd=null;
-    }
+  login(){
+      if(this.regnum==""){
+          this.regnum=null;
+      }
+      if(this.pswrd==""){
+          this.pswrd=null;
+      }
+
     if((this.regnum==null)||(this.pswrd==null)){
       this.popFillAllAlert();
     }
     else{
-      const authStatus= this.authService.dummyAuth(this.regnum,this.pswrd);
+      const authStatus = this.authService.dummyAuth(this.regnum,this.pswrd);
       if(authStatus==false){
         this.popAuthAlert();
       }
