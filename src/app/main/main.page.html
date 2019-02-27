@@ -18,16 +18,17 @@
 </div>
 
 <ion-content>
-  
+
   <ion-list lines="inset">
     <ion-card>
-      <ion-card-content>
-    <ion-item class="carditem" lines="none">
-        <ion-label><p class="listhead">What's cooking today?<br></p>
-          <p class="date">Tuesday      12 Feb 2019</p>
-        </ion-label>
-    </ion-item>
-    </ion-card-content>
+        <ion-card-content>
+            <ion-item class="carditem" lines="none">
+                <ion-label>
+                  <p class="listhead">What's cooking today?<br></p>
+                  <p class="date">Tuesday      12 Feb 2019</p>
+                </ion-label>
+            </ion-item>
+        </ion-card-content>
     </ion-card>
 
     <ion-item lines="none" *ngFor="let entry of menu" class="itemparent">

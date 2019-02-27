@@ -1,0 +1,11 @@
+ion-toolbar{
+    --background:orange;
+    color:white;
+}
+ion-menu-button{
+    color: white;
+}
+ion-content{
+    text-align: center;
+    --background: #fff url('../../assets/images/expanded.png') no-repeat center center / cover;
+}

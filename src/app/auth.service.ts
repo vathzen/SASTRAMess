@@ -5,11 +5,11 @@ import { Http } from '@angular/http';
   providedIn: 'root'
 })
 export class AuthService {
-  Users = ["120014052","120004213"];
-  Passwords = ["03111998","12021999"];
-  var link;
+  Users = [120014052,120004213];
+  Passwords = [3111998,12021999];
+  link = '';
   constructor() {
-      link = 'localhost:8080/users';
+      this.link = 'localhost:8080/users';
   }
 
   dummyAuth(regnum,pswrd){
@@ -32,7 +32,6 @@ export class AuthService {
   sendForAuth(regnum,pswrd){
     //send for auth to server
     //counting on u memes
-
   }
 
 }
