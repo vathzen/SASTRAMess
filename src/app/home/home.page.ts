@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AuthService } from'../auth.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
   regnum:"";
   pswrd:"";
 
-  constructor(public alertController: AlertController, private storage: Storage, private authService: AuthService){
+  constructor(
+    public alertController: AlertController,
+    private storage: Storage,
+    private authService: AuthService,
+    private navCtrl: NavController) {}
+
+  ngOnInit(){
     this.checkFirstTime();
   }
 
@@ -64,15 +70,8 @@ export class HomePage {
   }
 
   login()
-  { if(this.regnum=="")
-    {
-      this.regnum=null;
-    }
-    if(this.pswrd=="")
-    {
-      this.pswrd=null;
-    }
-    if((this.regnum==null)||(this.pswrd==null)){
+  { 
+    if((this.regnum==null)||(this.pswrd==null)||(this.regnum=="")||(this.pswrd=="")){
       this.popFillAllAlert();
     }
     else{
@@ -82,8 +81,10 @@ export class HomePage {
       }
       else{
         //launch next page
-        console.log('Launched!');
-      }
+        this.storage.set('reg_num', this.regnum);
+        this.storage.set('pswrd', this.pswrd);
+        this.navCtrl.navigateRoot(['main']);
+      } 
     }
   }
 
