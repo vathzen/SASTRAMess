@@ -75,7 +75,7 @@ export class HomePage implements OnInit {
       this.popFillAllAlert();
     }
     else{
-      const authStatus= this.authService.dummyAuth(this.regnum,this.pswrd);
+      const authStatus = this.authService.dummyAuth(this.regnum,this.pswrd);
       if(authStatus==false){
         this.popAuthAlert();
       }
