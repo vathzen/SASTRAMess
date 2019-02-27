@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor() { }
-
-  //dummyRegNum="120004213";
-  //dummyPass="12021999";
   Users = ["120014052","120004213"];
   Passwords = ["03111998","12021999"];
+  var link;
+  constructor() {
+      link = 'localhost:8080/users';
+  }
 
   dummyAuth(regnum,pswrd){
       var a = this.Users.indexOf(regnum);
@@ -29,9 +29,10 @@ export class AuthService {
   }
 
 
-  sendForAuth(){
+  sendForAuth(regnum,pswrd){
     //send for auth to server
     //counting on u memes
+
   }
 
 }
