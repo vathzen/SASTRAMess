@@ -12,45 +12,22 @@ export class MainPage implements OnInit {
   regnum="";
   pswrd="";
   public menu=[
-    {
-        tag:'itemtag1', icon:'partly-sunny', val:'Masala Dosa', note:'Added!', isChecked:true, color:'success'
-    },
-    {
-        tag:'itemtag2', icon:'sunny', val:'Noodles', note:'Add:', isChecked:false, color:'primary'
-    },
-    {
-        tag:'itemtag3', icon:'moon', val:'Paneer Fried Rice', note:'Added!', isChecked:true, color:'danger'
-    }
+    {tag:'itemtag', icon:'partly-sunny', val:'Masala Dosa', note:'Added!', isChecked:true, color:'success'},
+    {tag:'itemtag2', icon:'sunny', val:'Noodles', note:'Add:', isChecked:false, color:'primary'},
+    {tag:'itemtag3', icon:'moon', val:'Paneer Fried Rice', note:'Added!', isChecked:true, color:'danger'}
   ];
 
   constructor(private storage: Storage, public alertController: AlertController) { }
 
   updateNote(){
-    var d = new Date();
-    if( d.getHours() > 7 && d.getHours() < 23 ){
-        this.menu.forEach(item => {
-          if(item.isChecked){
-            item.note='Added!';
-          }
-          else{
-            item.note='Add:';
-          }
-        });
-    }else{
-        this.timeOut();
-    }
-  }
-
-  async timeOut(){
-      //booking timings error
-      const alert = await this.alertController.create({
-          header: 'Sorry!',
-          subHeader: 'Orders are now closed.',
-          message: 'Orders can only be booked between 7am to 11pm!',
-          buttons: ['OK']
-      });
-
-      await alert.present();   
+    this.menu.forEach(item => {
+      if(item.isChecked){
+        item.note='Added!';
+      }
+      else{
+        item.note='Add:';
+      }
+    });
   }
 
   async showCode(){
@@ -58,7 +35,7 @@ export class MainPage implements OnInit {
     const alert = await this.alertController.create({
       header:'Verification Code',
       subHeader:'Show this code to get your meal!',
-      message: this.getCode(),
+      message:'VX2H8L',
       buttons: ['OK']
     });
 
@@ -69,8 +46,5 @@ export class MainPage implements OnInit {
     this.storage.get('reg_num').then(val =>{this.regnum=val});
     this.storage.get('pswrd').then(val =>{this.pswrd=val});
   }
-
-  getCode(){
-      return Math.random().toString(36).replace('0.','').substr(0,7);
-  }
 }
+
