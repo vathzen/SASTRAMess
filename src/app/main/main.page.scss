@@ -12,10 +12,13 @@ ion-content{
 .head{
     background: rgb(172, 94, 0);
     height: 60px;
+    font-size: 15px;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
-    box-shadow: 0px 2px 2px gray, 
-        -2px 2px 5px gray, 2px 2px 5px gray;
+    box-shadow: 0px 2px 2px gray, -2px 2px 5px gray, 2px 2px 5px gray;
+}
+.headbr{
+    line-height: 21px;
 }
 .profileicon{
     margin-top: 10px;
@@ -27,14 +30,18 @@ ion-content{
     margin-left: 10px;
     float: left;
 }
-.messicon{
+.messname{
     text-align: right;
     margin-top: 10px;
     margin-right: 10px;
     float: right;
 }
-
-br{
+.messicon{
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+}
+.cardbr{
     line-height:25px;
 }
 ion-list{
@@ -63,6 +70,9 @@ ion-card-content{
 .date{
     font-size: 14px;
     color: green;
+}
+.closetime{
+    font-size: 14px;
 }
 .itemparent{
     --background:#f2f2f2;
@@ -133,30 +143,37 @@ ion-card-content{
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
+.itemname{
+    width: 50%;
+    --background: none;
+}
 .itemtagnote{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#507e32;
+    text-align: center;
 }
 .itemtag2note{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#41719c;
+    text-align: center;
 }
 .itemtag3note{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#ae5a21;
+    text-align: center;
 }
 ion-checkbox{
     position: absolute;
-    top: 0%;
+    top: -10%;
     right:0px;
 }
 .codebutton{

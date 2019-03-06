@@ -23,37 +23,13 @@ export class HomePage implements OnInit {
     this.checkFirstTime();
   }
 
-  async popFirstAlert()
+  async popAlert(_header,_subHeader,_message,_buttons)
   {
     const alert = await this.alertController.create({
-      header:'Hey!',
-      subHeader:'Looks like its your first time here',
-      message:'Login with you PWI credentials',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-  async popAuthAlert()
-  {
-    const alert = await this.alertController.create({
-      header:'Typo?',
-      subHeader:'Incorrect register number or password',
-      message:'Please try again',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-  async popFillAllAlert()
-  {
-    const alert = await this.alertController.create({
-      header:'Missed Something?',
-      subHeader:'',
-      message:'Fill all fields to continue',
-      buttons: ['OK']
+      header: _header,
+      subHeader: _subHeader,
+      message: _message,
+      buttons: _buttons
     });
 
     await alert.present();
@@ -64,7 +40,7 @@ export class HomePage implements OnInit {
     this.storage.get('first_time').then((val) => {
       if (val == null) {
          this.storage.set('first_time', 'false');
-         this.popFirstAlert();
+         this.popAlert('Hey!','Looks like its your first time here','Login with you PWI credentials',['OK']);
       }
    });
   }
@@ -72,12 +48,12 @@ export class HomePage implements OnInit {
   login()
   { 
     if((this.regnum==null)||(this.pswrd==null)||(this.regnum=="")||(this.pswrd=="")){
-      this.popFillAllAlert();
+      this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
       const authStatus = this.authService.dummyAuth(this.regnum,this.pswrd);
       if(authStatus==false){
-        this.popAuthAlert();
+        this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
       }
       else{
         //launch next page
