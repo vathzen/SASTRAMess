@@ -12,8 +12,13 @@ ion-content{
 .head{
     background: rgb(172, 94, 0);
     height: 60px;
+    font-size: 15px;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
+    box-shadow: 0px 2px 2px gray, -2px 2px 5px gray, 2px 2px 5px gray;
+}
+.headbr{
+    line-height: 21px;
 }
 .profileicon{
     margin-top: 10px;
@@ -25,16 +30,18 @@ ion-content{
     margin-left: 10px;
     float: left;
 }
-.messicon{
+.messname{
     text-align: right;
     margin-top: 10px;
     margin-right: 10px;
     float: right;
 }
-.clear {
-    clear: both;
+.messicon{
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
 }
-br{
+.cardbr{
     line-height:25px;
 }
 ion-list{
@@ -64,12 +71,15 @@ ion-card-content{
     font-size: 14px;
     color: green;
 }
+.closetime{
+    font-size: 14px;
+}
 .itemparent{
     --background:#f2f2f2;
     --padding-start:0%;
     --inner-padding-end:3%;
 }
-.itemtag1{
+.itemtag{
     --color: white;
     --background: #70ad47;
     --border-style: solid;
@@ -112,7 +122,7 @@ ion-card-content{
     --background:#f2f2f2;
     --padding-start:0%;
 }
-.itemtag1ico{
+.itemtagico{
     width: 40px;
     height: 40px;
     background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
@@ -133,30 +143,37 @@ ion-card-content{
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
-.itemtag1note{
+.itemname{
+    width: 50%;
+    --background: none;
+}
+.itemtagnote{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#507e32;
+    text-align: center;
 }
 .itemtag2note{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#41719c;
+    text-align: center;
 }
 .itemtag3note{
     position: absolute;
-    top: 40%;
-    right:40px;
-    font-size: 11px;
+    top: 20%;
+    right:35px;
+    font-size: 12px;
     --color:#ae5a21;
+    text-align: center;
 }
 ion-checkbox{
     position: absolute;
-    top: 0%;
+    top: -10%;
     right:0px;
 }
 .codebutton{
@@ -164,6 +181,9 @@ ion-checkbox{
     top: 12%;
     right: 7px;
     font-size: 11px;
+}
+ion-footer{
+    text-align: center;
 }
 .transparent{
     background: rgba(0, 0, 0, 0.3);
@@ -174,6 +194,5 @@ ion-checkbox{
     border-top-right-radius: 100px;
 }
 .updatebutton{
-    margin-block-start: 20px;
-    margin-block-end: 20px;
+    margin-top: 15px;
 }
