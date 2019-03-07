@@ -20,14 +20,30 @@ export class MainPage implements OnInit {
   constructor(private storage: Storage, public alertController: AlertController) { }
 
   updateNote(){
-    this.menu.forEach(item => {
-      if(item.isChecked){
-        item.note='Added!';
+      var d = new Date();
+      if(d.getHours() > 7 && d.getHours() < 23 ){
+          this.menu.forEach(item => {
+            if(item.isChecked){
+              item.note='Added!';
+            }
+            else{
+              item.note='Add:';
+            }
+          });
+      }else{
+          this.timeOut();
       }
-      else{
-        item.note='Add:';
-      }
-    });
+  }
+
+  async timeOut(){
+      const alert = await this.alertController.create({
+        header:'Sorry',
+        subHeader:'Orders are now Closed',
+        message:'Orders can only be booked between 7am to 11pm!',
+        buttons: ['OK']
+      });
+
+      await alert.present();
   }
 
   async showCode(){
@@ -35,11 +51,15 @@ export class MainPage implements OnInit {
     const alert = await this.alertController.create({
       header:'Verification Code',
       subHeader:'Show this code to get your meal!',
-      message:'VX2H8L',
+      message: this.getCode(),
       buttons: ['OK']
     });
 
     await alert.present();
+  }
+
+  getCode(){
+      return Math.random().toString(36).replace('0.','').substr(0,7);
   }
 
   ngOnInit() {
@@ -47,4 +67,3 @@ export class MainPage implements OnInit {
     this.storage.get('pswrd').then(val =>{this.pswrd=val});
   }
 }
-

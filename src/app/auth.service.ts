@@ -6,8 +6,8 @@ import { Http } from '@angular/http';
 })
 export class AuthService {
   Users = [120014052,120004213];
-  Passwords = ["03111998","12021999"];
-  link="";
+  Passwords = [3111998,12021999];
+  link='';
   constructor() {
     this.link = 'localhost:8080/users';
   }

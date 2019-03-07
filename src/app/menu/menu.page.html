@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      SASTRA Mess
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list lines="inset">
+        <ion-card>
+            <ion-card-content>
+                <ion-item class="carditem" lines="none">
+                    <ion-label>
+                      <p class="listhead">Today's General Menu<br></p>
+                      <p class="date">Tuesday      1st Week</p>
+                    </ion-label>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-item lines="none" *ngFor="let item of menu" class="menuparent">
+        <ion-item class="{{item.tag}}" lines="none">
+            <ion-icon class="tagicon" name="{{item.icon}}"></ion-icon>
+        </ion-item>
+          <ion-item class="itemmenu">
+            <div class="{{item.tag}}ico"></div>
+            <ion-label>{{item.val}}</ion-label>
+          </ion-item>
+        </ion-item>
+
+    </ion-list>
+</ion-content>
