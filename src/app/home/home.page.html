@@ -16,16 +16,16 @@
         Log In
       </ion-card-title>
     </ion-card-header>
-    
+
     <ion-card-content>
       <ion-list>
         <ion-item class="firstitem">
             <ion-label position="floating">Registration Number</ion-label>
-            <ion-input [(ngModel)]="regnum" type="number"></ion-input>
+            <ion-input [(ngModel)]="regnum" type="text"></ion-input>
         </ion-item>
         <ion-item class="seconditem">
             <ion-label position="floating">Password</ion-label>
-            <ion-input type="Password" [(ngModel)]="pswrd"></ion-input>
+            <ion-input type="password" [(ngModel)]="pswrd"></ion-input>
         </ion-item>
      </ion-list>
     <ion-button color="warning" fill="solid" (click)="login()">

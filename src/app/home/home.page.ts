@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AuthService } from'../auth.service';
+import { AuthService } from'../services/auth.service';
 import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
@@ -46,21 +46,21 @@ export class HomePage implements OnInit {
   }
 
   login()
-  { 
+  {
     if((this.regnum==null)||(this.pswrd==null)||(this.regnum=="")||(this.pswrd=="")){
       this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
-      const authStatus = this.authService.dummyAuth(this.regnum,this.pswrd);
-      if(authStatus==false){
-        this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
-      }
-      else{
+      const authStatus = this.authService.sendForAuth(this.regnum,this.pswrd);
+      //if(authStatus == false){
+    //    this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
+      //}
+      //else{
         //launch next page
-        this.storage.set('reg_num', this.regnum);
-        this.storage.set('pswrd', this.pswrd);
-        this.navCtrl.navigateRoot(['main']);
-      } 
+        //this.storage.set('reg_num', this.regnum);
+        //this.storage.set('pswrd', this.pswrd);
+        //this.navCtrl.navigateRoot(['main']);
+      //}
     }
   }
 

@@ -8,9 +8,11 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService }from './auth.service';
+import { AuthService } from './services/auth.service';
+import { RestService } from './services/rest.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,11 +22,14 @@ import { AuthService }from './auth.service';
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [AuthService,
+  providers: [
+    AuthService,
     StatusBar,
     SplashScreen,
+    RestService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
