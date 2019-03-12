@@ -17,11 +17,12 @@ const routes: Routes = [
   },
   {
       path: 'main',
-      loadChildren: './main/main.module#MainPageModule' },
+      loadChildren: './main/main.module#MainPageModule'
+  },
   {
       path: 'menu',
-      loadChildren: './menu/menu.module#MenuPageModule' },
-  }
+      loadChildren: './menu/menu.module#MenuPageModule'
+  },
 ];
 
 @NgModule({
