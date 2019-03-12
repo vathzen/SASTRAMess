@@ -20,7 +20,8 @@ const routes: Routes = [
       loadChildren: './main/main.module#MainPageModule' },
   {
       path: 'menu',
-      loadChildren: './menu/menu.module#MenuPageModule' }
+      loadChildren: './menu/menu.module#MenuPageModule' },
+  }
 ];
 
 @NgModule({
