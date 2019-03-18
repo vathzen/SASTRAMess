@@ -39,7 +39,7 @@ export class MainPage implements OnInit {
       const alert = await this.alertController.create({
         header:'Sorry',
         subHeader:'Orders are now Closed',
-        message:'Orders can only be booked between 7am to 11pm!',
+        message:'Orders can only be made between 7am to 11pm!',
         buttons: ['OK']
       });
 
