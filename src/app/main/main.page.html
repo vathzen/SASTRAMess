@@ -31,7 +31,7 @@
     </ion-card-content>
     </ion-card>
 
-    <ion-item class="itemparent" lines="none" *ngFor="let entry of menu">
+    <ion-item class="itemparent" lines="none" *ngFor="let entry of oldmenu">
     <ion-item class="{{entry.tag}}" lines="none">
         <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
     </ion-item>
@@ -40,7 +40,7 @@
         <div class="itemname">
           <ion-label text-wrap>{{entry.val}}</ion-label>
         </div> 
-        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.isChecked}}" (click)="showCode()">Code</ion-button>
+        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
         <!--Button is disabled only after update in actual app-->
       </ion-item>
     </ion-item>
@@ -67,7 +67,7 @@
             <ion-label text-wrap>{{entry.val}}</ion-label>
           </div>         
           <ion-note class="{{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
-          <ion-checkbox color="{{entry.color}}" [(ngModel)]="entry.isChecked"></ion-checkbox>
+          <ion-checkbox color="{{entry.color}}" [(ngModel)]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
         </ion-item>
       </ion-item>
     </ion-list>
@@ -76,7 +76,7 @@
 
 <ion-footer no-border>
   <div class="transparent">
-    <ion-button class="updatebutton" color="warning" fill="solid" (click)="updateNote()">
+    <ion-button class="updatebutton" color="warning" fill="solid" (click)="updateOrder()">
         <ion-ripple-effect></ion-ripple-effect>
           Update Order
     </ion-button>
