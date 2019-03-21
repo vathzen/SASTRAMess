@@ -52,6 +52,8 @@ export class HomePage implements OnInit {
     }
     else{
       //const authStatus = this.authService.sendForAuth(this.regnum,this.pswrd);
+      this.storage.set('reg_num', this.regnum);
+      this.storage.set('pswrd', this.pswrd);
       this.navCtrl.navigateRoot(['main']);
       //if(authStatus == false){
     //    this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);

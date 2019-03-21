@@ -10,9 +10,9 @@
 
   <div class="head">
       <ion-icon class="profileicon" size="large" name="person"></ion-icon>
-      <p class="profile">Shrihari<br class="headbr">120004213</p>
+      <p class="profile">{{user.username}}<br class="headbr">{{user.regnum}}</p>
       <ion-icon class="messicon" size="large" name="pizza"></ion-icon>
-      <p class="messname">Leaf & Agro<br class="headbr">Mega Hostel Mess</p>
+      <p class="messname">{{user.contractor}}<br class="headbr">{{user.messname}}</p>
   </div>
     
 </ion-header>
@@ -25,7 +25,6 @@
     <ion-item class="carditem" lines="none">
         <ion-label text-wrap><p class="listhead">What's cooking today?<br class="cardbr"></p>
           <p class="date">Tuesday      12 Feb 2019</p>
-          <!--Disable checkbox on crossing time-->
         </ion-label>
     </ion-item>
     </ion-card-content>
@@ -41,7 +40,6 @@
           <ion-label text-wrap>{{entry.val}}</ion-label>
         </div> 
         <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
-        <!--Button is disabled only after update in actual app-->
       </ion-item>
     </ion-item>
   </ion-list>

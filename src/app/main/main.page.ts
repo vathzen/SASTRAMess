@@ -8,8 +8,9 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage implements OnInit{
-  regnum="";
-  pswrd="";
+
+  private user={regnum:'', pswrd:'', username:'', contractor:'', messname:''};
+  //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu=[
     {tag:'itemtag', icon:'partly-sunny', val:'Masala Dosa', note:'Added!', isChecked:true, color:'success', price:40},
     {tag:'itemtag2', icon:'sunny', val:'Noodles', note:'Add:', isChecked:false, color:'primary', price:40},
@@ -24,8 +25,17 @@ export class MainPage implements OnInit{
 
   constructor(private storage: Storage, public alertController: AlertController) { }
 
+  updateHeader(){
+    this.storage.get('reg_num').then(val =>{this.user.regnum=val});
+    this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
+    this.user.username='Shrihari' //GET NAME FROM PWI
+    this.user.contractor='Leaf & Agro' //GET CONTRACTOR FROM DB
+    this.user.messname='Mega Hostel Mess' //Get messname for given regnum
+  }
+
+  //**********SERVER MAINTAINS TODAY'S DATE AND TIME OBJ***********
   updateCode(){
-    var num=null,date=null,d=new Date();
+    var num=null,date=null;
     num=1;//find and store size of meal count
     date=19;//get and store today's date
     this.oldmenu.splice(0,this.oldmenu.length);
@@ -52,9 +62,9 @@ export class MainPage implements OnInit{
   }
 
   updateMenu()
-  { var num=null,date=null,d=new Date();
+  { var num=null,date=null;
     num=2;//find and store size of meal count
-    date=20//get and store tomorrow's date
+    date=20//get and store tomorrow's date (tmrw date = today date + 1 [careful month and year change])
     this.menu.splice(0,this.menu.length);
     //detect no. of brkfast and store it in num
     for (let i = 0; i < num; i++)
@@ -84,7 +94,7 @@ export class MainPage implements OnInit{
       this.checkTimeUp();
       if(!this.disablekey){
           this.menu.forEach(item => {
-            if(item.isChecked){ //ORDER MUST BE UPDATED
+            if(item.isChecked){ //ORDER MUST BE UPDATED, CODE MUST BE GENERATED AND STORED IN DB
               item.note='Added!';  //IF SUCCESSFUL, NOTE SHOULD BE CHANGED
             }
             else{
@@ -96,7 +106,7 @@ export class MainPage implements OnInit{
       }
   }
 
-  checkTimeUp(){
+  checkTimeUp(){//use time obj from server
     var d = new Date();
       if(d.getHours() > 7 && d.getHours() < 23 ){
         this.disablekey=false;
@@ -117,7 +127,7 @@ export class MainPage implements OnInit{
       await alert.present();
   }
 
-  async showCode(val){
+  async showCode(val: string){
     var code = '';
     this.oldmenu.forEach(item => {
       if(item.val==val){
@@ -135,16 +145,15 @@ export class MainPage implements OnInit{
     await alert.present();
   }
 
-  getCode(){
+  /*getCode(){
       return Math.random().toString(36).replace('0.','').substr(0,7);
-  }
+  }*/
 
   ngOnInit() {
-    this.storage.get('reg_num').then(val =>{this.regnum=val});
-    this.storage.get('pswrd').then(val =>{this.pswrd=val});
-    this.checkTimeUp();
+    this.updateHeader();
     //call func - read from db, modify list size, update list values
     this.updateCode();
     this.updateMenu();
+    this.checkTimeUp();
   }
 }
