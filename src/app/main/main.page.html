@@ -59,13 +59,13 @@
       <ion-item class="{{entry.tag}}" lines="none">
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
-        <ion-item class="itemmenu">
+        <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
           <div class="{{entry.tag}}ico"></div>
           <div class="itemname">
             <ion-label text-wrap>{{entry.val}}</ion-label>
           </div>         
           <ion-note class="{{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
-          <ion-checkbox color="{{entry.color}}" [(ngModel)]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
+          <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
         </ion-item>
       </ion-item>
     </ion-list>

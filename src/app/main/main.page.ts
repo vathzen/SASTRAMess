@@ -90,6 +90,14 @@ export class MainPage implements OnInit{
     });
   }
 
+  toggleChecked(val: string){
+    this.menu.forEach(item => {
+      if(item.val==val){
+        item.isChecked=!item.isChecked;
+      }
+    });
+  }
+
   updateOrder(){
       this.checkTimeUp();
       if(!this.disablekey){
