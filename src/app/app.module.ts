@@ -11,8 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './services/auth.service';
-import { RestService } from './services/rest.service';
+import { RestService } from  './services/rest.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,10 +22,9 @@ import { RestService } from './services/rest.service';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
-    AuthService,
     StatusBar,
     SplashScreen,
     RestService,

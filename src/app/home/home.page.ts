@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AuthService } from'../services/auth.service';
 import { AlertController, NavController } from '@ionic/angular';
+
+import { RestService } from '../services/rest.service';
+import { Response } from '../services/classes';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +14,18 @@ export class HomePage implements OnInit {
 
   regnum:"";
   pswrd:"";
-
+  authStatus = new Response();
   constructor(
     public alertController: AlertController,
     private storage: Storage,
-    private authService: AuthService,
+    private restService: RestService,
     private navCtrl: NavController) {}
 
   ngOnInit(){
     this.checkFirstTime();
   }
 
-  async popAlert(_header,_subHeader,_message,_buttons)
-  {
+  async popAlert(_header,_subHeader,_message,_buttons){
     const alert = await this.alertController.create({
       header: _header,
       subHeader: _subHeader,
@@ -35,8 +36,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  checkFirstTime()
-  {
+  checkFirstTime(){
     this.storage.get('first_time').then((val) => {
       if (val == null) {
          this.storage.set('first_time', 'false');
@@ -45,16 +45,15 @@ export class HomePage implements OnInit {
    });
   }
 
-  login()
-  {
+  login(){
     if((this.regnum==null)||(this.pswrd==null)||(this.regnum=="")||(this.pswrd=="")){
       this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
-      //const authStatus = this.authService.sendForAuth(this.regnum,this.pswrd);
-      this.storage.set('reg_num', this.regnum);
-      this.storage.set('pswrd', this.pswrd);
-      this.navCtrl.navigateRoot(['main']);
+      //this.storage.set('reg_num', this.regnum);
+      //this.storage.set('pswrd', this.pswrd);
+      //this.navCtrl.navigateRoot(['main']);
+      //const authStatus = this.authService.userAuth(this.regnum,this.pswrd);
       //if(authStatus == false){
     //    this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
       //}
@@ -64,6 +63,16 @@ export class HomePage implements OnInit {
         //this.storage.set('pswrd', this.pswrd);
         //this.navCtrl.navigateRoot(['main']);
       //}
+
+      this.restService.userAuth(this.regnum,this.pswrd).subscribe(
+          (response) => {
+              console.log(response);
+              this.authStatus = response;
+          },err => {
+              console.log(err);
+          }
+      );
+      console.log(this.authStatus.Status);
     }
   }
 

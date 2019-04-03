@@ -2,33 +2,45 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { Observable,throwError } from 'rxjs';
 import { catchError,map } from 'rxjs/operators';
-import { UserDet } from './UserDet';
+
+import { User,Response } from './classes';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class RestService {
-  baseUrl:string = "localhost:8080";
+
+  constructor(public httpClient : HttpClient) { }
+
+  baseUrl:string = "https://sastramess.herokuapp.com/";
+  user = new User();
   httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
 
-  constructor(private httpClient: HttpClient) { }
-
-  private extractData(res: Response){
-      let body = res;
-      return body || {};
-  }
+  //private extractData(res: Response){
+//      let body = res;
+//      return body || {};
+//  }
 
   private handleError(err: HttpErrorResponse){
       console.error(err);
       return throwError('Something bad happened; please try again later.');
   }
 
-  public userAuth(user: UserDet): Observable<any>{
-      return this.httpClient.post('http://localhost:1337/localhost:8080/users',user,this.httpOptions).pipe(
-          map(this.extractData),
-          catchError(this.handleError));
-      }
+  public userAuth(regnum,pwd): Observable<Response>{
+
+      this.user.username = regnum;
+      this.user.password = pwd;
+      this.user.exist = 'false';
+
+      console.log(this.user);
+
+      return this.httpClient
+      .post(this.baseUrl + 'users',this.user,this.httpOptions).pipe(
+      map(response => {
+          return new Response(response);
+      }),
+      catchError(this.handleError));
+  }
 }
