@@ -24,6 +24,11 @@ export class AppComponent {
         title: 'Menu',
         url: '/menu',
         icon: 'menu'
+    },
+    {
+      title: 'History',
+      url: '/history',
+      icon: 'time'
     }
   ];
 

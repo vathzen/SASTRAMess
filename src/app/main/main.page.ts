@@ -8,19 +8,10 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage implements OnInit{
-
-  private user={regnum:'', pswrd:'', username:'', contractor:'', messname:''};
+  private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
-  public menu=[
-    {tag:'itemtag', icon:'partly-sunny', val:'Masala Dosa', note:'Added!', isChecked:true, color:'success', price:40},
-    {tag:'itemtag2', icon:'sunny', val:'Noodles', note:'Add:', isChecked:false, color:'primary', price:40},
-    {tag:'itemtag3', icon:'moon', val:'Paneer Fried Rice', note:'Added!', isChecked:true, color:'danger', price:50}
-  ];
-  public oldmenu=[
-    {tag:'itemtag', icon:'partly-sunny', val:'Old Masala Dosa', hasOrdered:true, code:'ksjdgh', color:'success'},
-    {tag:'itemtag2', icon:'sunny', val:'Old Noodles', hasOrdered:false, code:'sjffdd', color:'primary'},
-    {tag:'itemtag3', icon:'moon', val:'Old Masala Dosa', hasOrdered:true, code:'sdjfsd', color:'danger'}
-  ];
+  public menu: Array<{tag: string, tagico: string, icon: string, val: string, note: string, isChecked: boolean, color: string, price: number}> = [];
+  public oldmenu: Array<{tag: string, tagico: string, icon: string, val: string, hasOrdered: boolean, code: string, color: string}> = [];
   disablekey=false;
 
   constructor(private storage: Storage, public alertController: AlertController) { }
@@ -28,9 +19,10 @@ export class MainPage implements OnInit{
   updateHeader(){
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
     this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
-    this.user.username='Shrihari' //GET NAME FROM PWI
-    this.user.contractor='Leaf & Agro' //GET CONTRACTOR FROM DB
-    this.user.messname='Mega Hostel Mess' //Get messname for given regnum
+    this.user.username='Shrihari'; //GET NAME FROM PWI
+    this.user.contractor='Leaf & Agro'; //GET CONTRACTOR FROM DB
+    this.user.messname='Mega Hostel Mess';
+     //Get messname for given regnum
   }
 
   //**********SERVER MAINTAINS TODAY'S DATE AND TIME OBJ***********
@@ -41,21 +33,22 @@ export class MainPage implements OnInit{
     this.oldmenu.splice(0,this.oldmenu.length);
     for (let i = 0; i < num; i++)
     {
-    this.oldmenu.push({tag:'itemtag', icon:'partly-sunny', val:'', hasOrdered:false, code:'', color:'success'});
+    this.oldmenu.push({tag:'itemtag', tagico: '', icon:'partly-sunny', val:'', hasOrdered:false, code:'', color:'success'});
     }
     //detect no. of lunch and store it in num
     for (let i = 0; i < num; i++)
     {
-    this.oldmenu.push({tag:'itemtag2', icon:'sunny', val:'', hasOrdered:false, code:'', color:'primary'});
+    this.oldmenu.push({tag:'itemtag2', tagico: '', icon:'sunny', val:'', hasOrdered:false, code:'', color:'primary'});
     }
     //detect no. of dinner and store it in num
     for (let i = 0; i < num; i++)
     {
-    this.oldmenu.push({tag:'itemtag3', icon:'moon', val:'', hasOrdered:false, code:'', color:'danger'});
+    this.oldmenu.push({tag:'itemtag3', tagico: '', icon:'moon', val:'', hasOrdered:false, code:'', color:'danger'});
     }
     //updation starts
     this.oldmenu.forEach(item => {
-      item.val='New Val!';//get new val from db
+      item.val='Kadai Paneer';//get new val from db
+      item.tagico=this.iconDetect(item.val);//run icon detection
       item.code='abcdef';//check if code exists in db and store here
       item.hasOrdered=(item.code!='');
     });
@@ -69,21 +62,22 @@ export class MainPage implements OnInit{
     //detect no. of brkfast and store it in num
     for (let i = 0; i < num; i++)
     {
-    this.menu.push({tag:'itemtag', icon:'partly-sunny', val:'', note:'', isChecked:false, color:'success', price:null});
+    this.menu.push({tag:'itemtag', tagico: '', icon:'partly-sunny', val:'', note:'', isChecked:false, color:'success', price:null});
     }
     //detect no. of lunch and store it in num
     for (let i = 0; i < num; i++)
     {
-    this.menu.push({tag:'itemtag2', icon:'sunny', val:'', note:'', isChecked:false, color:'primary', price:null});
+    this.menu.push({tag:'itemtag2', tagico: '', icon:'sunny', val:'', note:'', isChecked:false, color:'primary', price:null});
     }
     //detect no. of dinner and store it in num
     for (let i = 0; i < num; i++)
     {
-    this.menu.push({tag:'itemtag3', icon:'moon', val:'', note:'', isChecked:false, color:'danger', price:null});
+    this.menu.push({tag:'itemtag3', tagico: '', icon:'moon', val:'', note:'', isChecked:false, color:'danger', price:null});
     }
     //updation starts
     this.menu.forEach(item => {
-      item.val='New Val!';//get new val from db
+      item.val='Cornflakes with milk!';//get new val from db
+      item.tagico=this.iconDetect(item.val);//run icon detection
       item.note='Add:';
       item.isChecked=false;
       item.price=50;//get new price from db
@@ -98,12 +92,37 @@ export class MainPage implements OnInit{
     });
   }
 
+  iconDetect(item: string){
+    var low_item = item.toLowerCase();
+    if(low_item.includes("dosa")||low_item.includes("uthappam")){
+      return 'dosa';
+    }
+    else if(low_item.includes("noodle")){
+      return 'noodle';
+    }
+    else if(low_item.includes("rice")){
+      return 'rice';
+    }
+    else if(low_item.includes("flake")){
+      return 'flake';
+    }
+    else if(low_item.includes("sandwich")){
+      return 'sandwich';
+    }
+    else if(low_item.includes("french")){
+      return 'fries';
+    }
+    else if(low_item.includes("chilly")||low_item.includes("manchurian")||low_item.includes("kadai")){
+      return 'chilly';
+    }
+  }
+
   updateOrder(){
       this.checkTimeUp();
       if(!this.disablekey){
           this.menu.forEach(item => {
             if(item.isChecked){ //ORDER MUST BE UPDATED, CODE MUST BE GENERATED AND STORED IN DB
-              item.note='Added!';  //IF SUCCESSFUL, NOTE SHOULD BE CHANGED
+              item.note='Added!';  //IF SUCCESSFUL, NOTE SHOULD BE CHANGED, SHOW ALERT
             }
             else{
               item.note='Add:';//DISPLAY ERROR ALERT IF NOT SUCCESSFUL
@@ -123,6 +142,17 @@ export class MainPage implements OnInit{
           this.disablekey=true;
       }
   }
+
+  async showUpdated(){
+    const alert = await this.alertController.create({
+      header:'Success!',
+      subHeader:'Your order has been updated',
+      message:'Feel free to modify your order anytime before 11:00pm',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+}
 
   async showTimeout(){
       const alert = await this.alertController.create({

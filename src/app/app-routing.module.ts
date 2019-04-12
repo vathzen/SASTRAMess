@@ -23,6 +23,8 @@ const routes: Routes = [
       path: 'menu',
       loadChildren: './menu/menu.module#MenuPageModule'
   },
+  { path: 'history', loadChildren: './history/history.module#HistoryPageModule' }
+
 ];
 
 @NgModule({

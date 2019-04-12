@@ -19,7 +19,7 @@
 
 <ion-content fullscreen="true">
   
-  <ion-list lines="inset">
+  <ion-list lines="none">
     <ion-card>
       <ion-card-content>
     <ion-item class="carditem" lines="none">
@@ -31,20 +31,21 @@
     </ion-card>
 
     <ion-item class="itemparent" lines="none" *ngFor="let entry of oldmenu">
+    <div class="itemborder"></div>
     <ion-item class="{{entry.tag}}" lines="none">
         <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
     </ion-item>
-      <ion-item class="itemmenu">
-        <div class="{{entry.tag}}ico"></div>
+      <ion-item class="itemmenu" lines="none">
+        <div class="{{entry.tagico}}ico"></div>
         <div class="itemname">
           <ion-label text-wrap>{{entry.val}}</ion-label>
-        </div> 
+        </div>
         <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
       </ion-item>
     </ion-item>
   </ion-list>
 
-  <ion-list lines="inset">
+  <ion-list lines="none">
     <ion-card>
       <ion-card-content>
       <ion-item class="carditem" lines="none">
@@ -56,11 +57,12 @@
       </ion-card-content>
     </ion-card>
       <ion-item class="itemparent" lines="none" *ngFor="let entry of menu">
+      <div class="itemborder"></div>
       <ion-item class="{{entry.tag}}" lines="none">
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
         <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
-          <div class="{{entry.tag}}ico"></div>
+          <div class="{{entry.tagico}}ico"></div>
           <div class="itemname">
             <ion-label text-wrap>{{entry.val}}</ion-label>
           </div>         

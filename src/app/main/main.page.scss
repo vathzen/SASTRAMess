@@ -7,7 +7,7 @@ ion-menu-button{
 }
 ion-content{
     text-align: center;
-    --background: #fff url('../../assets/images/expanded.png') no-repeat center center / cover;
+    --background: none;
 }
 .head{
     background: rgb(172, 94, 0);
@@ -78,7 +78,15 @@ ion-card-content{
     --background:#f2f2f2;
     --padding-start:0%;
     --inner-padding-start:0%;
-    --inner-padding-end:3%;
+    --inner-padding-end:0%;
+}
+.itemborder{
+    width: 94%;
+    height: 1px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    background: #bf9000;
 }
 .itemtag{
     --background: #70ad47;
@@ -114,30 +122,57 @@ ion-card-content{
 }
 .itemmenu{
     color:#b25414;
-    --border-color:#bf9000;
     font-size: 15px;
     width: 100%;
     --background:#f2f2f2;
     --padding-start:0%;
 }
-.itemtagico{
+.dosaico{
     width: 40px;
     height: 40px;
     background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
-.itemtag2ico{
+.noodleico{
     width: 40px;
     height: 40px;
     background: #f2f2f2 url('../../assets/images/noodle.png') no-repeat center center / cover;
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
-.itemtag3ico{
+.riceico{
     width: 40px;
     height: 40px;
     background: #f2f2f2 url('../../assets/images/rice.png') no-repeat center center / cover;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+.flakeico{
+    width: 40px;
+    height: 40px;
+    background: #f2f2f2 url('../../assets/images/cornsmall.png') no-repeat center center / cover;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+.sandwichico{
+    width: 40px;
+    height: 40px;
+    background: #f2f2f2 url('../../assets/images/sandwich.png') no-repeat center center / cover;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+.friesico{
+    width: 40px;
+    height: 40px;
+    background: #f2f2f2 url('../../assets/images/ffries.png') no-repeat center center / cover;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+.chillyico{
+    width: 40px;
+    height: 40px;
+    background: #f2f2f2 url('../../assets/images/cpaneer.png') no-repeat center center / cover;
     margin-inline-start: 10px;
     margin-inline-end: 10px;
 }
@@ -148,7 +183,7 @@ ion-card-content{
 .itemtagnote{
     position: absolute;
     top: 20%;
-    right:35px;
+    right:42px;
     font-size: 12px;
     --color:#507e32;
     text-align: center;
@@ -156,7 +191,7 @@ ion-card-content{
 .itemtag2note{
     position: absolute;
     top: 20%;
-    right:35px;
+    right:42px;
     font-size: 12px;
     --color:#41719c;
     text-align: center;
@@ -164,7 +199,7 @@ ion-card-content{
 .itemtag3note{
     position: absolute;
     top: 20%;
-    right:35px;
+    right:42px;
     font-size: 12px;
     --color:#ae5a21;
     text-align: center;
@@ -172,7 +207,7 @@ ion-card-content{
 ion-checkbox{
     position: absolute;
     top: -10%;
-    right:0px;
+    right:8px;
 }
 .codebutton{
     position: absolute;
