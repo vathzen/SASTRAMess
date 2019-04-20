@@ -12,13 +12,8 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Home',
-      url: '/home',
+      url: '/main',
       icon: 'home'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
     },
     {
         title: 'Menu',
@@ -29,6 +24,16 @@ export class AppComponent {
       title: 'History',
       url: '/history',
       icon: 'time'
+    },
+    {
+      title: 'Settings',
+      url: '/settings',
+      icon: 'settings'
+    },
+    {
+      title: 'Log Out',
+      url: '/home',
+      icon: 'power'
     }
   ];
 

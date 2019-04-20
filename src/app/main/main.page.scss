@@ -52,7 +52,7 @@ ion-card{
     margin-left: 0.5%;
     width: 99%;
     --background:rgb(255,255,255,0.7);
-    border-top: 2px solid orange;
+    border-top: 2px solid rgb(255, 165, 0);
 }
 ion-card-content{
     padding-left:0%;
@@ -65,7 +65,7 @@ ion-card-content{
 .listhead{
     background: none;
     font-size: 17px;
-    color:darkorange;
+    color:rgb(255, 140, 0);
 }
 .date{
     font-size: 14px;
@@ -89,28 +89,22 @@ ion-card-content{
     background: #bf9000;
 }
 .itemtag{
-    --background: #70ad47;
     --border-style: solid;
-    --border-color:#507e32;
     --border-width:2.5px;
     --border-radius: 5px;
     width: 22px;
 }
-.itemtag2{
+.tag{
+--background: #70ad47;
+--border-color:#507e32;
+}
+.tag2{
     --background: #5b9bd5;
-    --border-style: solid;
     --border-color:#41719c;
-    --border-width:2.5px;
-    --border-radius: 5px;
-    width: 22px;
 }
-.itemtag3{
+.tag3{
     --background: #ed7d31;
-    --border-style: solid;
     --border-color:#ae5a21;
-    --border-width:2.5px;
-    --border-radius: 5px;
-    width: 22px;
 }
 .tagicon{
     position: absolute;
@@ -127,82 +121,52 @@ ion-card-content{
     --background:#f2f2f2;
     --padding-start:0%;
 }
-.dosaico{
+.icosize{
     width: 40px;
     height: 40px;
-    background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
     margin-inline-start: 10px;
     margin-inline-end: 10px;
+}
+.dosaico{
+    background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
 }
 .noodleico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/noodle.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .riceico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/rice.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .flakeico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/cornsmall.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .sandwichico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/sandwich.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .friesico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/ffries.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .chillyico{
-    width: 40px;
-    height: 40px;
     background: #f2f2f2 url('../../assets/images/cpaneer.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
 .itemname{
     width: 50%;
     --background: none;
 }
-.itemtagnote{
+.itemnote{
     position: absolute;
     top: 20%;
     right:42px;
     font-size: 12px;
+    text-align: center;
+}
+.tagnote{
     --color:#507e32;
-    text-align: center;
 }
-.itemtag2note{
-    position: absolute;
-    top: 20%;
-    right:42px;
-    font-size: 12px;
+.tag2note{
     --color:#41719c;
-    text-align: center;
 }
-.itemtag3note{
-    position: absolute;
-    top: 20%;
-    right:42px;
-    font-size: 12px;
+.tag3note{
     --color:#ae5a21;
-    text-align: center;
 }
 ion-checkbox{
     position: absolute;

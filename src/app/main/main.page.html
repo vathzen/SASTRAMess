@@ -17,14 +17,14 @@
     
 </ion-header>
 
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" force-overscroll="false">
   
   <ion-list lines="none">
     <ion-card>
       <ion-card-content>
     <ion-item class="carditem" lines="none">
         <ion-label text-wrap><p class="listhead">What's cooking today?<br class="cardbr"></p>
-          <p class="date">Tuesday      12 Feb 2019</p>
+          <p class="date">{{todayDate}}</p>
         </ion-label>
     </ion-item>
     </ion-card-content>
@@ -32,11 +32,11 @@
 
     <ion-item class="itemparent" lines="none" *ngFor="let entry of oldmenu">
     <div class="itemborder"></div>
-    <ion-item class="{{entry.tag}}" lines="none">
+    <ion-item class="itemtag {{entry.tag}}" lines="none">
         <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
     </ion-item>
       <ion-item class="itemmenu" lines="none">
-        <div class="{{entry.tagico}}ico"></div>
+        <div class="icosize {{entry.tagico}}ico"></div>
         <div class="itemname">
           <ion-label text-wrap>{{entry.val}}</ion-label>
         </div>
@@ -50,7 +50,7 @@
       <ion-card-content>
       <ion-item class="carditem" lines="none">
           <ion-label text-wrap><p class="listhead">What's on the menu tomorrow?<br class="cardbr"></p>
-            <p class="date">Wednesday       13 Feb 2019</p>
+            <p class="date">{{tmrwDate}}</p>
             <p class="closetime">Orders close at 11:00pm</p>
           </ion-label>
       </ion-item>
@@ -58,15 +58,15 @@
     </ion-card>
       <ion-item class="itemparent" lines="none" *ngFor="let entry of menu">
       <div class="itemborder"></div>
-      <ion-item class="{{entry.tag}}" lines="none">
+      <ion-item class="itemtag {{entry.tag}}" lines="none">
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
         <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
-          <div class="{{entry.tagico}}ico"></div>
+          <div class="icosize {{entry.tagico}}ico"></div>
           <div class="itemname">
             <ion-label text-wrap>{{entry.val}}</ion-label>
           </div>         
-          <ion-note class="{{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
+          <ion-note class="itemnote {{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
           <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
         </ion-item>
       </ion-item>
