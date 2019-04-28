@@ -13,27 +13,32 @@ export class AppComponent {
     {
       title: 'Home',
       url: '/main',
-      icon: 'home'
+      icon: 'home',
+      direction: 'root'
     },
     {
-        title: 'Menu',
-        url: '/menu',
-        icon: 'menu'
+      title: 'Menu',
+      url: '/menu',
+      icon: 'menu',
+      direction: 'forward'
     },
     {
       title: 'History',
       url: '/history',
-      icon: 'time'
+      icon: 'time',
+      direction: 'forward'
     },
     {
       title: 'Settings',
       url: '/settings',
-      icon: 'settings'
+      icon: 'settings',
+      direction: 'forward'
     },
     {
       title: 'Log Out',
       url: '/home',
-      icon: 'power'
+      icon: 'power',
+      direction: 'root'
     }
   ];
 

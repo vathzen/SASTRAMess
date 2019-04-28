@@ -20,9 +20,7 @@ const routes: Routes = [
       loadChildren: './menu/menu.module#MenuPageModule'
   },
   { path: 'history', loadChildren: './history/history.module#HistoryPageModule' },
-  { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' }
-
-
+  { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
 ];
 
 @NgModule({

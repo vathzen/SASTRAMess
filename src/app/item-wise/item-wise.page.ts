@@ -34,8 +34,8 @@ export class ItemWisePage implements OnInit {
     //get new data and push
     this.items.push({itemname:'Gobi Manchurian Dry', quantity:9, cost:200});
     this.items.push({itemname:'Paneer Fried Rice', quantity:5, cost:300});
-    this.items.push({itemname:'Masala Dosa', quantity:6, cost:300});
-    this.items.push({itemname:'French Fries', quantity:8, cost:400});
+    this.items.push({itemname:'Masala Dosa', quantity:4, cost:300});
+    this.items.push({itemname:'French Fries', quantity:1, cost:400});
     this.items.forEach(element => {
       this.quantityTotal+=element.quantity;
       this.costTotal+=element.cost;
@@ -44,7 +44,6 @@ export class ItemWisePage implements OnInit {
   }
 
   sortItem(){
-    //C ANIME.JS!!!
     this.itemHighlighted=true;
     this.quantHighlighted=false;
     this.costHighlighted=false;
@@ -65,7 +64,6 @@ export class ItemWisePage implements OnInit {
 }
 
 sortQuantity(){
-  //C ANIME.JS!!!
   this.itemHighlighted=false;
   this.quantHighlighted=true;
   this.costHighlighted=false;
@@ -89,7 +87,6 @@ else{
     this.itemHighlighted=false;
     this.quantHighlighted=false;
     this.costHighlighted=true;
-    //C ANIME.JS!!!
     this.quantitySortAsc=false;
     this.itemSortAsc=false;
     this.costSortAsc=!this.costSortAsc;

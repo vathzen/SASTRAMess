@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthService } from './services/auth.service';
 import { RestService } from './services/rest.service';
+import { ModalPageModule } from './modal/modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,8 @@ import { RestService } from './services/rest.service';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalPageModule
   ],
   providers: [
     AuthService,

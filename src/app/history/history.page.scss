@@ -2,8 +2,15 @@ ion-toolbar{
     --background:orange;
     color:white;
 }
-ion-menu-button{
-    color: white;
+ion-back-button{
+    --icon-margin-end:0px;
+    --icon-padding-end:0px;
+    --margin-end-:0px;
+    --padding-end:0px;
+    --icon-margin-start:0px;
+    --icon-padding-start:0px;
+    --margin-start-:0px;
+    --padding-start:0px;
 }
 ion-content{
     text-align: center;

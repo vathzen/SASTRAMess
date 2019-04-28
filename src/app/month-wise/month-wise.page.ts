@@ -70,7 +70,6 @@ export class MonthWisePage implements OnInit {
   }
 
   sortItem(){
-    //C ANIME.JS!!!
     this.dateHighlighted=false;
     this.itemHighlighted=true;
     this.costHighlighted=false;
@@ -91,7 +90,6 @@ export class MonthWisePage implements OnInit {
 }
 
   sortCost(){
-    //C ANIME.JS!!!
     this.dateHighlighted=false;
     this.itemHighlighted=false;
     this.costHighlighted=true;

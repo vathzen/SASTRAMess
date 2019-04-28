@@ -45,7 +45,7 @@ ion-content{
     line-height:25px;
 }
 ion-list{
-    margin:0 10%;
+    padding:0 10%;
     background: none;
 }
 ion-card{
@@ -75,10 +75,12 @@ ion-card-content{
     font-size: 14px;
 }
 .itemparent{
+    float: right;
     --background:#f2f2f2;
     --padding-start:0%;
     --inner-padding-start:0%;
     --inner-padding-end:0%;
+    width: 0%;
 }
 .itemborder{
     width: 94%;
@@ -126,6 +128,9 @@ ion-card-content{
     height: 40px;
     margin-inline-start: 10px;
     margin-inline-end: 10px;
+}
+.loading{
+    background: #cacaca;
 }
 .dosaico{
     background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
