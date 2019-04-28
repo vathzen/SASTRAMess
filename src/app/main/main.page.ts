@@ -37,13 +37,37 @@ export class MainPage implements OnInit{
   }
 
   ngAfterViewInit(){
+    anime({
+      targets: '.transparent',
+      translateY: 65,
+      duration: 1,
+      easing: 'easeInOutSine'
+    });
     setTimeout(() => {
       this.startAnim();
-    }, 1500);
+    }, 1000);
   }
 
   startAnim(){
     var self=this;
+    anime({
+      targets: '.head',
+      marginTop: 0,
+      duration: 300,
+      easing: 'easeInOutSine'
+    });
+    anime({
+      targets: '.card1margin, .card2margin',
+      marginLeft: '0.5%',
+      duration: 400,
+      easing: 'easeInOutSine'
+    });
+    anime({
+      targets: '.transparent',
+      translateY: 0,
+      duration: 300,
+      easing: 'easeInOutSine'
+    });
     anime({
       targets: '.itemparent',
       width: '100%',
@@ -57,6 +81,30 @@ export class MainPage implements OnInit{
   doRefresh(event:any) {
     var self=this;
     this.loading=true;
+    anime({
+      targets: '.head',
+      marginTop: -65,
+      duration: 300,
+      easing: 'easeInOutSine'
+    });
+    anime({
+      targets: '.card1margin',
+      marginLeft: '-120%',
+      duration: 400,
+      easing: 'easeInOutSine'
+    });
+    anime({
+      targets: '.card2margin',
+      marginLeft: '120%',
+      duration: 400,
+      easing: 'easeInOutSine'
+    });
+    anime({
+      targets: '.transparent',
+      translateY: 65,
+      duration: 300,
+      easing: 'easeInOutSine'
+    });
     anime({
       targets: '.itemparent',
       width: '0%',
