@@ -17,7 +17,7 @@ export class AppComponent {
       direction: 'root'
     },
     {
-      title: 'Menu',
+      title: 'General Menu',
       url: '/menu',
       icon: 'menu',
       direction: 'forward'

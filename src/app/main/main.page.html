@@ -39,11 +39,11 @@
     </ion-item>
     
       <ion-item class="itemmenu" lines="none">
-        <div class="icosize loading" *ngIf="loading"></div>
-        <div class="icosize {{entry.tagico}}ico" *ngIf="!loading"></div>
+        <div class="icosize loading" *ngIf="animating"></div>
+        <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
         <div class="itemname">
-          <ion-label *ngIf="loading"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
-          <ion-label text-wrap *ngIf="!loading">{{entry.val}}</ion-label>
+          <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
+          <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
         </div>
         <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
       </ion-item>
@@ -67,11 +67,11 @@
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
         <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
-          <div class="icosize loading" *ngIf="loading"></div>
-          <div class="icosize {{entry.tagico}}ico" *ngIf="!loading"></div>
+          <div class="icosize loading" *ngIf="animating"></div>
+          <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
           <div class="itemname">
-            <ion-label *ngIf="loading"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
-            <ion-label text-wrap *ngIf="!loading">{{entry.val}}</ion-label>
+            <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
+            <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
           </div>         
           <ion-note class="itemnote {{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
           <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>

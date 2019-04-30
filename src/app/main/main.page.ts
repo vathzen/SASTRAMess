@@ -10,14 +10,15 @@ import anime from 'node_modules/animejs/lib/anime.js';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements OnInit{
+export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
-  public menu: Array<{tag: string, tagico: string, icon: string, val: string, note: string, isChecked: boolean, color: string, price: number}> = [];
+  public menu: Array<{tag: string, tagico: string, icon: string, val: string, note:string, isChecked: boolean, color: string, price: number}> = [];
   public oldmenu: Array<{tag: string, tagico: string, icon: string, val: string, hasOrdered: boolean, code: string, color: string}> = [];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  loading:boolean=true;
+  animating:boolean=true;
+  loading:number=0;
   checks = [];
   nullIndices = [];
   disablekey:boolean=false;
@@ -28,14 +29,6 @@ export class MainPage implements OnInit{
 
   constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController) { }
 
-  ngOnInit() {
-    this.updateHeader();
-    //call func - read from db, modify list size, update list values
-    this.updateCode();
-    this.updateMenu();
-    this.checkTimeUp();
-  }
-
   ngAfterViewInit(){
     anime({
       targets: '.transparent',
@@ -43,44 +36,55 @@ export class MainPage implements OnInit{
       duration: 1,
       easing: 'easeInOutSine'
     });
-    setTimeout(() => {
-      this.startAnim();
-    }, 1000);
   }
 
-  startAnim(){
+  ionViewWillEnter(){
+    this.updatePage();
+  }
+
+  ionViewWillLeave(){
+    this.slideOut();
+  }
+
+  slideIn(){
     var self=this;
-    anime({
-      targets: '.head',
-      marginTop: 0,
-      duration: 300,
-      easing: 'easeInOutSine'
-    });
+    this.animating=true;
     anime({
       targets: '.card1margin, .card2margin',
       marginLeft: '0.5%',
       duration: 400,
-      easing: 'easeInOutSine'
-    });
-    anime({
-      targets: '.transparent',
-      translateY: 0,
-      duration: 300,
-      easing: 'easeInOutSine'
-    });
-    anime({
-      targets: '.itemparent',
-      width: '100%',
-      duration: 800,
+      easing: 'easeInOutSine',
       complete: function() {
-        self.loading=false;
+        startAnim();
       }
     });
+    function startAnim(){
+      anime({
+        targets: '.head',
+        marginTop: 0,
+        duration: 300,
+        easing: 'easeInOutSine'
+      });
+      anime({
+        targets: '.transparent',
+        translateY: 0,
+        duration: 300,
+        easing: 'easeInOutSine'
+      });
+      anime({
+        targets: '.itemparent',
+        width: '100%',
+        duration: 800,
+        complete: function() {
+          self.animating=false;
+        }
+      });
+    }
   }
 
-  doRefresh(event:any) {
+  slideOut(){
     var self=this;
-    this.loading=true;
+    this.animating=true;
     anime({
       targets: '.head',
       marginTop: -65,
@@ -110,31 +114,43 @@ export class MainPage implements OnInit{
       width: '0%',
       duration: 800,
       complete:function(){
-          self.updateCode();
-          self.updateMenu();
-          self.updateChecks();
-          self.checkTimeUp();
-          setTimeout(() => {
-            event.target.complete();
-          }, 1200);
-          setTimeout(() => {
-          self.startAnim();
-        }, 800);
+        self.animating=false;
       }
     });
   }
 
+  doRefresh(event:any) {
+    this.slideOut();
+    setTimeout(() => {
+      this.updatePage(event);
+    }, 800);
+  }
+
+  updatePage(event:any=null){   //call func - read from db, modify list size, update list values
+    this.updateHeader();
+    this.updateCode();
+    this.updateMenu();
+    this.checkTimeUp();
+    while(this.loading!=0){} //Loading....
+      if(event!=null){
+        event.target.complete();
+      }
+      this.slideIn(); 
+  }
+  
   updateHeader(){
+    this.loading++;
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
     this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
     this.user.username='Shrihari'; //GET NAME FROM PWI
     this.user.contractor='Leaf & Agro'; //GET CONTRACTOR FROM DB
-    this.user.messname='Mega Hostel Mess';
-     //Get messname for given regnum
+    this.user.messname='Mega Hostel Mess'; //Get messname for given regnum
+    this.loading--;
   }
 
   //**********SERVER MAINTAINS TODAY'S DATE AND TIME OBJ***********
   updateCode(){
+    this.loading++;
     var dateObj = new Date();//get and store today's date
     this.todayDate = this.days[dateObj.getDay()] + '       ' + dateObj.getDate().toString() + ' ' + this.months[dateObj.getMonth()] + ' ' + dateObj.getFullYear().toString();
 
@@ -159,10 +175,12 @@ export class MainPage implements OnInit{
       item.tagico=this.iconDetect(item.val);//run icon detection
       item.hasOrdered=(item.code!=null);
     });
+    this.loading--;
   }
 
   updateMenu()
   { 
+    this.loading++;
     var dateObj = new Date();//get and store today's date
     dateObj.setDate(dateObj.getDate()+1);
     this.tmrwDate = this.days[dateObj.getDay()] + '       ' + dateObj.getDate().toString() + ' ' + this.months[dateObj.getMonth()] + ' ' + dateObj.getFullYear().toString();
@@ -201,6 +219,67 @@ export class MainPage implements OnInit{
     this.menu.forEach(item => {
       item.tagico=this.iconDetect(item.val);//run icon detection
     });
+    this.updateChecks();
+    this.loading--;
+  }
+
+  updateChecks(){
+    //GET ROW OF CODES FROM DB
+    var codes = [null,null,'B3G3K9',null,null,'G3GJJ8']; //ASSUMING WE GET THIS
+    var x = 0;
+    this.nullIndices.forEach(element => {
+      codes.splice(element-x,1);
+      x++;
+    });
+    var i = 0;
+    this.menu.forEach(item => {
+      if(codes[i]){
+        item.isChecked=true;
+        item.note='Added!';
+      }
+      else{
+        item.isChecked=false;
+        item.note='Add:'
+      }
+      i++;
+    });
+    this.checkChanged=false;
+  }
+
+  updateOrder(){
+    this.checkTimeUp();
+    if(!this.disablekey){
+      if(this.checkChanged){
+        this.checks.splice(0,this.checks.length);
+        this.deleteRow=true;
+        this.menu.forEach(item => {
+          if(item.isChecked){
+            this.deleteRow=false;
+          }
+          this.checks.push(item.isChecked);
+        });
+        this.nullIndices.forEach(element => {
+          this.checks.splice(element,0,null);
+        });
+        this.openModal();
+      }
+    }
+    else{
+      this.showTimeout();
+    }
+  }
+  
+  async openModal(){
+    const modal = await this.modalController.create({
+      component: ModalPage,
+      componentProps: {checks: this.checks, deleteRow: this.deleteRow},
+      backdropDismiss: false
+    });
+    modal.present();
+    const updateSuccess = await modal.onDidDismiss();
+    if(updateSuccess.data){
+      this.updateChecks();
+    }
   }
 
   iconDetect(item: string){
@@ -229,6 +308,7 @@ export class MainPage implements OnInit{
   }
 
   toggleChecked(val: string){
+    if(!this.disablekey){
     this.checkChanged=true;
     this.menu.forEach(item => {
       if(item.val==val){
@@ -236,63 +316,9 @@ export class MainPage implements OnInit{
       }
     });
   }
+  }
 
-  updateOrder(){
-    this.checkTimeUp();
-    if(!this.disablekey&&this.checkChanged){
-      this.checks.splice(0,this.checks.length);
-      this.deleteRow=true;
-        this.menu.forEach(item => {
-          if(item.isChecked){
-            this.deleteRow=false;
-          }
-          this.checks.push(item.isChecked);
-        });
-      this.nullIndices.forEach(element => {
-        this.checks.splice(element,0,null);
-      });
-      this.openModal();
-    }
-    else if(!this.checkChanged){}
-      else{
-        this.showTimeout();
-    }
-  }
-  
-  async openModal(){
-    const modal = await this.modalController.create({
-      component: ModalPage,
-      componentProps: {checks: this.checks, deleteRow: this.deleteRow},
-      backdropDismiss: false
-    });
-    modal.present();
-    await modal.onDidDismiss();
-    this.updateChecks();
-  }
-  
-  updateChecks(){
-    //GET ROW OF CODES FROM DB
-    var codes = [null,null,'B3G3K9',null,null,'G3GJJ8']; //ASSUMING WE GET THIS
-    var x = 0;
-    this.nullIndices.forEach(element => {
-      codes.splice(element-x,1);
-      x++;
-    });
-    var i = 0;
-    this.menu.forEach(item => {
-      if(codes[i]){
-        item.note='Added!';
-      }
-      else{
-        item.note='Add:';
-      }
-      i++;
-    });
-    this.checkChanged=false;
-  }
-  
-
-  checkTimeUp(){//use time obj from server
+  checkTimeUp(){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
     var d = new Date();
       if(d.getHours() > 7 && d.getHours() < 23 ){
         this.disablekey=false;
