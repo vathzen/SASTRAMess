@@ -11,7 +11,7 @@
 <ion-footer>
   <button (click)="pseudoAckRcv(true)">Rcv True Ack</button>
   <button (click)="pseudoAckRcv(false)">Rcv False Ack</button>
-  <ion-button expand="full" fill="solid" color={{buttonColor}} (click)="closeModal()">
+  <ion-button *ngIf="updationSuccess||updationFailure" expand="full" fill="solid" color={{buttonColor}} (click)="closeModal()">
     Close
   </ion-button>
 </ion-footer>

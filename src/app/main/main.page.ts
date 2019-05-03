@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
@@ -19,6 +19,7 @@ export class MainPage implements AfterViewInit {
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   animating:boolean=true;
   loading:number=0;
+  updateButtonPulled:boolean=false;
   checks = [];
   nullIndices = [];
   disablekey:boolean=false;
@@ -39,6 +40,7 @@ export class MainPage implements AfterViewInit {
   }
 
   ionViewWillEnter(){
+    this.updateHeader();
     this.updatePage();
   }
 
@@ -65,12 +67,18 @@ export class MainPage implements AfterViewInit {
         duration: 300,
         easing: 'easeInOutSine'
       });
+      if(!self.disablekey){ //Writing again here instead of using pull() for impeccable timing on animations
       anime({
         targets: '.transparent',
         translateY: 0,
         duration: 300,
         easing: 'easeInOutSine'
       });
+      self.updateButtonPulled=false;
+      }
+      else{
+        self.updateButtonPulled=true;
+      }
       anime({
         targets: '.itemparent',
         width: '100%',
@@ -79,6 +87,27 @@ export class MainPage implements AfterViewInit {
           self.animating=false;
         }
       });
+    }
+  }
+
+  setButtonPos(){
+    if(!this.disablekey){
+      anime({
+        targets: '.transparent',
+        translateY: 0,
+        duration: 300,
+        easing: 'easeInOutSine'
+      });
+      this.updateButtonPulled=false;
+    }
+    else{
+      anime({
+        targets: '.transparent',
+        translateY: 65,
+        duration: 300,
+        easing: 'easeInOutSine'
+      });
+      this.updateButtonPulled=true;
     }
   }
 
@@ -127,10 +156,9 @@ export class MainPage implements AfterViewInit {
   }
 
   updatePage(event:any=null){   //call func - read from db, modify list size, update list values
-    this.updateHeader();
     this.updateCode();
     this.updateMenu();
-    this.checkTimeUp();
+    this.checkTimeUp(true);
     while(this.loading!=0){} //Loading....
       if(event!=null){
         event.target.complete();
@@ -265,7 +293,7 @@ export class MainPage implements AfterViewInit {
       }
     }
     else{
-      this.showTimeout();
+      this.showTimeUp();
     }
   }
   
@@ -318,7 +346,7 @@ export class MainPage implements AfterViewInit {
   }
   }
 
-  checkTimeUp(){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
+  checkTimeUp(ignorePullButton:boolean=false){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
     var d = new Date();
       if(d.getHours() > 7 && d.getHours() < 23 ){
         this.disablekey=false;
@@ -326,9 +354,12 @@ export class MainPage implements AfterViewInit {
       else{
           this.disablekey=true;
       }
+    if(!ignorePullButton){
+      this.setButtonPos();
+    }
   }
 
-  async showTimeout(){
+  async showTimeUp(){
       const alert = await this.alertController.create({
         header:'Sorry',
         subHeader:'Orders are now Closed',
@@ -338,6 +369,17 @@ export class MainPage implements AfterViewInit {
 
       await alert.present();
   }
+
+  async showTimeout(){
+    const alert = await this.alertController.create({
+      header:'Sorry',
+      subHeader:'Orders are now Closed',
+      message:'Orders can only be made between 7am to 11pm!',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+}
 
   async showCode(val: string){
     var code = '';

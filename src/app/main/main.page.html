@@ -56,7 +56,8 @@
       <ion-item class="carditem" lines="none">
           <ion-label text-wrap><p class="listhead">What's on the menu tomorrow?<br class="cardbr"></p>
             <p class="date">{{tmrwDate}}</p>
-            <p class="closetime">Orders close at 11:00pm</p>
+            <p *ngIf="!updateButtonPulled" class="closetime">Orders close at 11:00pm</p>
+            <p *ngIf="updateButtonPulled" class="closetime">Orders closed<br>App updates at 12:00am</p>
           </ion-label>
       </ion-item>
       </ion-card-content>
