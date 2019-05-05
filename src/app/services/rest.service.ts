@@ -14,14 +14,6 @@ export class RestService {
 
   baseUrl:string = "https://sastramess.herokuapp.com/";
   user = new User();
-  httpOptions = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-  };
-
-  //private extractData(res: Response){
-//      let body = res;
-//      return body || {};
-//  }
 
   private handleError(err: HttpErrorResponse){
       console.error(err);
@@ -29,16 +21,14 @@ export class RestService {
   }
 
   public userAuth(regnum,pwd): Observable<Response>{
-
       this.user.username = regnum;
       this.user.password = pwd;
-      this.user.exist = 'false';
-
+      this.user.hostel = '';
       console.log(this.user);
-
       return this.httpClient
-      .post(this.baseUrl + 'users',this.user,this.httpOptions).pipe(
+      .post(this.baseUrl +'users',this.user).pipe(
       map(response => {
+          console.log(response);
           return new Response(response);
       }),
       catchError(this.handleError));

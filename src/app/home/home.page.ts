@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AlertController, NavController } from '@ionic/angular';
-
+import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { RestService } from '../services/rest.service';
 import { Response } from '../services/classes';
 
@@ -19,7 +18,8 @@ export class HomePage implements OnInit {
     public alertController: AlertController,
     private storage: Storage,
     private restService: RestService,
-    private navCtrl: NavController) {}
+    private navCtrl: NavController,
+    private loadCtrl: LoadingController) {}
 
   ngOnInit(){
     this.checkFirstTime();
@@ -39,40 +39,40 @@ export class HomePage implements OnInit {
   checkFirstTime(){
     this.storage.get('first_time').then((val) => {
       if (val == null) {
-         this.storage.set('first_time', 'false');
+         this.storage.set('first_timresponsee', 'false');
          this.popAlert('Hey!','Looks like its your first time here','Login with you PWI credentials',['OK']);
       }
    });
   }
 
-  login(){
+  async login(){
     if((this.regnum==null)||(this.pswrd==null)||(this.regnum=="")||(this.pswrd=="")){
       this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
-      //this.storage.set('reg_num', this.regnum);
-      //this.storage.set('pswrd', this.pswrd);
-      //this.navCtrl.navigateRoot(['main']);
-      //const authStatus = this.authService.userAuth(this.regnum,this.pswrd);
-      //if(authStatus == false){
-    //    this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
-      //}
-      //else{
-        //launch next page
-        //this.storage.set('reg_num', this.regnum);
-        //this.storage.set('pswrd', this.pswrd);
-        //this.navCtrl.navigateRoot(['main']);
-      //}
-
+      const loading = await this.loadCtrl.create({
+          message: 'Logging In'
+      });
+      await loading.present();
       this.restService.userAuth(this.regnum,this.pswrd).subscribe(
           (response) => {
-              console.log(response);
               this.authStatus = response;
+              if(this.authStatus.Status=="false"){
+                loading.dismiss();
+                this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
+              }
+              else{
+                //launch next page
+                this.storage.set('reg_num', this.regnum);
+                this.storage.set('pswrd', this.pswrd);
+                loading.dismiss();
+                this.navCtrl.navigateRoot(['main']);
+              }
           },err => {
               console.log(err);
           }
       );
-      console.log(this.authStatus.Status);
+
     }
   }
 
