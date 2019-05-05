@@ -11,7 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthService } from './services/auth.service';
+
 import { RestService } from './services/rest.service';
 import { ModalPageModule } from './modal/modal.module';
 
@@ -28,7 +28,6 @@ import { ModalPageModule } from './modal/modal.module';
     ModalPageModule
   ],
   providers: [
-    AuthService,
     StatusBar,
     SplashScreen,
     RestService,
