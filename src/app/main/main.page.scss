@@ -7,11 +7,12 @@ ion-menu-button{
 }
 ion-content{
     text-align: center;
-    --background: #fff url('../../assets/images/expanded.png') no-repeat center center / cover;
+    --background: none;
 }
 .head{
     background: rgb(172, 94, 0);
     height: 60px;
+    margin-top: -65px;
     font-size: 15px;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
@@ -45,14 +46,19 @@ ion-content{
     line-height:25px;
 }
 ion-list{
-    margin:0 10%;
+    padding:0 10%;
     background: none;
 }
 ion-card{
-    margin-left: 0.5%;
     width: 99%;
     --background:rgb(255,255,255,0.7);
-    border-top: 2px solid orange;
+    border-top: 2px solid rgb(255, 165, 0);
+}
+.card1margin{
+    margin-left: -120%;
+}
+.card2margin{
+    margin-left: 120%;
 }
 ion-card-content{
     padding-left:0%;
@@ -65,7 +71,7 @@ ion-card-content{
 .listhead{
     background: none;
     font-size: 17px;
-    color:darkorange;
+    color:rgb(255, 140, 0);
 }
 .date{
     font-size: 14px;
@@ -75,34 +81,38 @@ ion-card-content{
     font-size: 14px;
 }
 .itemparent{
+    float: right;
     --background:#f2f2f2;
     --padding-start:0%;
     --inner-padding-start:0%;
-    --inner-padding-end:3%;
+    --inner-padding-end:0%;
+    width: 0%;
+}
+.itemborder{
+    width: 94%;
+    height: 1px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    background: #bf9000;
 }
 .itemtag{
-    --background: #70ad47;
     --border-style: solid;
-    --border-color:#507e32;
     --border-width:2.5px;
     --border-radius: 5px;
     width: 22px;
 }
-.itemtag2{
+.tag{
+--background: #70ad47;
+--border-color:#507e32;
+}
+.tag2{
     --background: #5b9bd5;
-    --border-style: solid;
     --border-color:#41719c;
-    --border-width:2.5px;
-    --border-radius: 5px;
-    width: 22px;
 }
-.itemtag3{
+.tag3{
     --background: #ed7d31;
-    --border-style: solid;
     --border-color:#ae5a21;
-    --border-width:2.5px;
-    --border-radius: 5px;
-    width: 22px;
 }
 .tagicon{
     position: absolute;
@@ -114,65 +124,65 @@ ion-card-content{
 }
 .itemmenu{
     color:#b25414;
-    --border-color:#bf9000;
     font-size: 15px;
     width: 100%;
     --background:#f2f2f2;
     --padding-start:0%;
 }
-.itemtagico{
+.icosize{
     width: 40px;
     height: 40px;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+}
+.loading{
+    background: #cacaca;
+}
+.dosaico{
     background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
-.itemtag2ico{
-    width: 40px;
-    height: 40px;
+.noodleico{
     background: #f2f2f2 url('../../assets/images/noodle.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
 }
-.itemtag3ico{
-    width: 40px;
-    height: 40px;
+.riceico{
     background: #f2f2f2 url('../../assets/images/rice.png') no-repeat center center / cover;
-    margin-inline-start: 10px;
-    margin-inline-end: 10px;
+}
+.flakeico{
+    background: #f2f2f2 url('../../assets/images/cornsmall.png') no-repeat center center / cover;
+}
+.sandwichico{
+    background: #f2f2f2 url('../../assets/images/sandwich.png') no-repeat center center / cover;
+}
+.friesico{
+    background: #f2f2f2 url('../../assets/images/ffries.png') no-repeat center center / cover;
+}
+.chillyico{
+    background: #f2f2f2 url('../../assets/images/cpaneer.png') no-repeat center center / cover;
 }
 .itemname{
     width: 50%;
     --background: none;
 }
-.itemtagnote{
+.itemnote{
     position: absolute;
     top: 20%;
-    right:35px;
+    right:42px;
     font-size: 12px;
+    text-align: center;
+}
+.tagnote{
     --color:#507e32;
-    text-align: center;
 }
-.itemtag2note{
-    position: absolute;
-    top: 20%;
-    right:35px;
-    font-size: 12px;
+.tag2note{
     --color:#41719c;
-    text-align: center;
 }
-.itemtag3note{
-    position: absolute;
-    top: 20%;
-    right:35px;
-    font-size: 12px;
+.tag3note{
     --color:#ae5a21;
-    text-align: center;
 }
 ion-checkbox{
     position: absolute;
     top: -10%;
-    right:0px;
+    right:8px;
 }
 .codebutton{
     position: absolute;

@@ -9,62 +9,72 @@
   </ion-toolbar>
 
   <div class="head">
-      <ion-icon class="profileicon" size="large" name="person"></ion-icon>
-      <p class="profile">{{user.username}}<br class="headbr">{{user.regnum}}</p>
-      <ion-icon class="messicon" size="large" name="pizza"></ion-icon>
-      <p class="messname">{{user.contractor}}<br class="headbr">{{user.messname}}</p>
+    <ion-icon class="profileicon" size="large" name="person"></ion-icon>
+    <p class="profile">{{user.username}}<br class="headbr">{{user.regnum}}</p>
+    <ion-icon class="messicon" size="large" name="pizza"></ion-icon>
+    <p class="messname">{{user.contractor}}<br class="headbr">{{user.messname}}</p>
   </div>
     
 </ion-header>
 
-<ion-content fullscreen="true">
-  
-  <ion-list lines="inset">
-    <ion-card>
+<ion-content fullscreen="true" force-overscroll="false">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
+  <ion-list lines="none">
+    <ion-card class="card1margin">
       <ion-card-content>
     <ion-item class="carditem" lines="none">
         <ion-label text-wrap><p class="listhead">What's cooking today?<br class="cardbr"></p>
-          <p class="date">Tuesday      12 Feb 2019</p>
+          <p class="date">{{todayDate}}</p>
         </ion-label>
     </ion-item>
     </ion-card-content>
     </ion-card>
 
     <ion-item class="itemparent" lines="none" *ngFor="let entry of oldmenu">
-    <ion-item class="{{entry.tag}}" lines="none">
+    <div class="itemborder"></div>
+    <ion-item class="itemtag {{entry.tag}}" lines="none">
         <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
     </ion-item>
-      <ion-item class="itemmenu">
-        <div class="{{entry.tag}}ico"></div>
+    
+      <ion-item class="itemmenu" lines="none">
+        <div class="icosize loading" *ngIf="animating"></div>
+        <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
         <div class="itemname">
-          <ion-label text-wrap>{{entry.val}}</ion-label>
-        </div> 
+          <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
+          <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
+        </div>
         <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
       </ion-item>
     </ion-item>
   </ion-list>
 
-  <ion-list lines="inset">
-    <ion-card>
+  <ion-list lines="none">
+    <ion-card class="card2margin">
       <ion-card-content>
       <ion-item class="carditem" lines="none">
           <ion-label text-wrap><p class="listhead">What's on the menu tomorrow?<br class="cardbr"></p>
-            <p class="date">Wednesday       13 Feb 2019</p>
-            <p class="closetime">Orders close at 11:00pm</p>
+            <p class="date">{{tmrwDate}}</p>
+            <p *ngIf="!updateButtonPulled" class="closetime">Orders close at 11:00pm</p>
+            <p *ngIf="updateButtonPulled" class="closetime">Orders closed<br>App updates at 12:00am</p>
           </ion-label>
       </ion-item>
       </ion-card-content>
     </ion-card>
       <ion-item class="itemparent" lines="none" *ngFor="let entry of menu">
-      <ion-item class="{{entry.tag}}" lines="none">
+      <div class="itemborder"></div>
+      <ion-item class="itemtag {{entry.tag}}" lines="none">
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
         <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
-          <div class="{{entry.tag}}ico"></div>
+          <div class="icosize loading" *ngIf="animating"></div>
+          <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
           <div class="itemname">
-            <ion-label text-wrap>{{entry.val}}</ion-label>
+            <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
+            <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
           </div>         
-          <ion-note class="{{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
+          <ion-note class="itemnote {{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
           <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
         </ion-item>
       </ion-item>
@@ -78,5 +88,5 @@
         <ion-ripple-effect></ion-ripple-effect>
           Update Order
     </ion-button>
-    </div>
+  </div>
 </ion-footer>

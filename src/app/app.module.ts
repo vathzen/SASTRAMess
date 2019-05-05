@@ -11,7 +11,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { RestService } from  './services/rest.service';
+
+import { RestService } from './services/rest.service';
+import { ModalPageModule } from './modal/modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +25,7 @@ import { RestService } from  './services/rest.service';
     IonicStorageModule.forRoot(),
     FormsModule,
     HttpClientModule,
+    ModalPageModule
   ],
   providers: [
     StatusBar,

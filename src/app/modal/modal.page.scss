@@ -1,0 +1,36 @@
+ion-content{
+    text-align: center;
+}
+.symbol{
+    width: 180px;
+    height: 180px;
+    margin-top: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+ion-spinner{
+    margin-top: 70px;
+}
+.invisible{
+    opacity:0;
+}
+.success{
+    background: white url('../../assets/images/tick.png') no-repeat center center / cover;
+}
+.failure{
+    background: white url('../../assets/images/cross.png') no-repeat center center / cover;
+}
+.message{
+    margin-top: 10px;
+}
+.visible{
+    opacity: 1;
+}
+.headersuccess{
+    font-size: 26px;
+    color: green;
+}
+.headerfailure{
+    font-size: 26px;
+    color:red;
+}

@@ -1,0 +1,25 @@
+<ion-content padding>
+  <ion-card class="itemcard">
+      <ion-card-header>Item-wise</ion-card-header>
+      <ion-card-content>
+          <ion-list lines="inset">
+            <ion-item class="itemhead">
+                <ion-label class="whiteborder" [class.highlight]="itemHighlighted" (click)="sortItem()">Item</ion-label>
+                <ion-note class="whiteborder spacing font14" [class.highlight]="quantHighlighted" (click)="sortQuantity()">Quantity</ion-note>
+                <ion-note class="whiteborder spacing font14" [class.highlight]="costHighlighted" (click)="sortCost()">Cost</ion-note>
+              </ion-item>
+            <ion-item *ngFor="let item of items">
+              <ion-label text-wrap>{{item.itemname}}</ion-label>
+              <ion-badge color={{colors[item.quantity%10]}}>{{item.quantity}}</ion-badge>
+              <ion-note>{{item.cost}}</ion-note>
+            </ion-item>
+            <ion-item class="itemfoot">
+              <ion-label>{{quantityTotal}} Meals</ion-label>
+              <ion-note class="totalnote font14">Rs. {{costTotal}}</ion-note>
+            </ion-item>
+          </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+</ion-content>
+  

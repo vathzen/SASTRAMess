@@ -1,0 +1,32 @@
+<ion-content padding>
+    <ion-card>
+        <ion-card-header>
+                <ion-label text-wrap>Month-wise</ion-label>
+        </ion-card-header>
+        <ion-card-content>
+      <ion-item class="monthitem" lines="none">
+          <div class="monthdiv">
+          <ion-datetime #picker [(ngModel)]="month" min="2019-04-01" [max]=month (ionChange)="getPage()" displayFormat="MMMM YYYY" picker-format="MMMM YYYY" readonly="true" placeholder="Select a month"></ion-datetime>
+          </div>
+          <div class="calendar" slot="end" (click)="picker.open()"></div>
+      </ion-item>
+      <ion-list lines="inset">
+        <ion-item class="itemhead font14">
+            <div class="whiteborder datediv" [class.highlight]="dateHighlighted" (click)="sortDate()">Date</div>
+            <ion-label class="whiteborder itemlabel" [class.highlight]="itemHighlighted" (click)="sortItem()">Item</ion-label>
+            <ion-note class="whiteborder spacing font14" [class.highlight]="costHighlighted" (click)="sortCost()">Cost</ion-note>
+        </ion-item>
+        <ion-item *ngFor="let entry of entries">
+            <div>{{entry.date}}</div>
+            <ion-label class="centeralign">{{entry.itemname}}</ion-label>
+            <ion-note>{{entry.cost}}</ion-note>
+        </ion-item>
+        <ion-item class="centeralign font14">
+            <div>{{daysTotal}} Days</div>
+            <ion-label>{{mealsTotal}} Meals</ion-label>
+            <ion-note class="font14">Rs. {{costTotal}}</ion-note>
+        </ion-item>
+        </ion-list>
+      </ion-card-content>
+      </ion-card>
+</ion-content>
