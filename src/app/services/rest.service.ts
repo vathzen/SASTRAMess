@@ -10,10 +10,10 @@ import { User,Response } from './classes';
 })
 export class RestService {
 
-  constructor(public httpClient : HttpClient) { }
-
   baseUrl:string = "https://sastramess.herokuapp.com/";
   user = new User();
+
+  constructor(public httpClient : HttpClient) { }
 
   private handleError(err: HttpErrorResponse){
       console.error(err);
@@ -23,7 +23,6 @@ export class RestService {
   public userAuth(regnum,pwd): Observable<Response>{
       this.user.username = regnum;
       this.user.password = pwd;
-      this.user.hostel = '';
       console.log(this.user);
       return this.httpClient
       .post(this.baseUrl +'users',this.user).pipe(
@@ -32,5 +31,9 @@ export class RestService {
           return new Response(response);
       }),
       catchError(this.handleError));
+  }
+
+  public getMenu(): Observable<Menu>{
+    
   }
 }

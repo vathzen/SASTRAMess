@@ -163,16 +163,16 @@ export class MainPage implements AfterViewInit {
       if(event!=null){
         event.target.complete();
       }
-      this.slideIn(); 
+      this.slideIn();
   }
-  
+
   updateHeader(){
     this.loading++;
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
     this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
-    this.user.username='Shrihari'; //GET NAME FROM PWI
-    this.user.contractor='Leaf & Agro'; //GET CONTRACTOR FROM DB
-    this.user.messname='Mega Hostel Mess'; //Get messname for given regnum
+    this.storage.get('name').then(val =>{this.user.username=val});
+    this.storage.get('hostel').then(val =>{this.user.messname=val});
+    this.storage.get('contractor').then(val =>{this.user.contractor=val});
     this.loading--;
   }
 
@@ -206,8 +206,7 @@ export class MainPage implements AfterViewInit {
     this.loading--;
   }
 
-  updateMenu()
-  { 
+  updateMenu(){
     this.loading++;
     var dateObj = new Date();//get and store today's date
     dateObj.setDate(dateObj.getDate()+1);
@@ -296,7 +295,7 @@ export class MainPage implements AfterViewInit {
       this.showTimeUp();
     }
   }
-  
+
   async openModal(){
     const modal = await this.modalController.create({
       component: ModalPage,
