@@ -17,7 +17,6 @@ export class ModalPage implements OnInit {
   spinnerVisible:boolean=true;
   headerData:string=null;
   subheaderData:string=null;
-  msgData:string=null;
 
   ngOnInit() {
     //this.sendData();
@@ -42,13 +41,11 @@ export class ModalPage implements OnInit {
       this.buttonColor='success';
       this.headerData='Success!';
       this.subheaderData='Your order has been updated.';
-      this.msgData='Modifications if needed can be made before 11:00pm.';
     }
     else{
       this.buttonColor='danger';
       this.headerData='Failure!';
       this.subheaderData='Something went wrong.';
-      this.msgData='Check your connectoion and try again.';
     }
   }
 

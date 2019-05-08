@@ -2,9 +2,9 @@ ion-content{
     text-align: center;
 }
 .symbol{
-    width: 180px;
-    height: 180px;
-    margin-top: 30%;
+    width: 70px;
+    height: 70px;
+    margin-top:20px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -20,11 +20,11 @@ ion-spinner{
 .failure{
     background: white url('../../assets/images/cross.png') no-repeat center center / cover;
 }
-.message{
-    margin-top: 10px;
-}
 .visible{
     opacity: 1;
+}
+.header{
+    line-height: 2px;
 }
 .headersuccess{
     font-size: 26px;

@@ -13,3 +13,8 @@
 body{
     background: #fff url('assets/images/expanded.png') no-repeat center center / cover;
 }
+.custom-modal-css{
+    --width: 80%;
+    --height: 35%;
+    --border-radius: 10px;
+ }
