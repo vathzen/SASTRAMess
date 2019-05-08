@@ -32,4 +32,8 @@ export class RestService {
       }),
       catchError(this.handleError));
   }
+
+  public getMenu(): Observable<Menu>{
+    
+  }
 }
