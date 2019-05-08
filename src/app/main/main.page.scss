@@ -100,11 +100,13 @@ ion-card-content{
     --border-style: solid;
     --border-width:2.5px;
     --border-radius: 5px;
+    --padding-start:0px;
+    --inner-padding-end:0px;
     width: 22px;
 }
 .tag{
---background: #70ad47;
---border-color:#507e32;
+    --background: #70ad47;
+    --border-color:#507e32;
 }
 .tag2{
     --background: #5b9bd5;

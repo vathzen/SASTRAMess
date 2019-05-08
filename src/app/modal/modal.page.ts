@@ -9,7 +9,6 @@ import { ModalController, LoadingController } from '@ionic/angular';
 export class ModalPage implements OnInit {
   
   @Input() checks: any[];
-  @Input() deleteRow: any;
 
   constructor(private modalController: ModalController, private loadingController: LoadingController) { }
   buttonColor:string='dark';
@@ -24,21 +23,21 @@ export class ModalPage implements OnInit {
     //this.sendData();
   }
 
-  sendData(){ //IF DELETE ROW IS FALSE, USE INSERT... IF SUCCESSFUL, STORE ACKNOWLEDGEMENT       
-    console.log(this.deleteRow,this.checks);
+  sendData(){      
+    console.log(this.checks); //Use this array for orders
     this.updationSuccess = true; //STORE SUCCESS OR FAILURE OF UPDATION HERE
-    this.updationFailure = !this.updationSuccess //this line may look stupid but important!
+    this.updationFailure = !this.updationSuccess; //this line may look stupid but important!
     
-    this.ackRcv();
+    this.onAckRcv();
   }
 
   pseudoAckRcv(val:boolean){ //this func for testing
     this.updationSuccess=val;
     this.updationFailure=!this.updationSuccess;
-    this.ackRcv();
+    this.onAckRcv();
   }
 
-  ackRcv(){
+  onAckRcv(){
     if(this.updationSuccess){
       this.buttonColor='success';
       this.headerData='Success!';
