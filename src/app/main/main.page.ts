@@ -24,7 +24,6 @@ export class MainPage implements AfterViewInit {
   nullIndices = [];
   disablekey:boolean=false;
   checkChanged:boolean=false;
-  deleteRow:boolean=null;
   todayDate:string=null;
   tmrwDate:string=null;
 
@@ -279,11 +278,7 @@ export class MainPage implements AfterViewInit {
     if(!this.disablekey){
       if(this.checkChanged){
         this.checks.splice(0,this.checks.length);
-        this.deleteRow=true;
         this.menu.forEach(item => {
-          if(item.isChecked){
-            this.deleteRow=false;
-          }
           this.checks.push(item.isChecked);
         });
         this.nullIndices.forEach(element => {
@@ -300,7 +295,7 @@ export class MainPage implements AfterViewInit {
   async openModal(){
     const modal = await this.modalController.create({
       component: ModalPage,
-      componentProps: {checks: this.checks, deleteRow: this.deleteRow},
+      componentProps: {checks: this.checks},
       backdropDismiss: false
     });
     modal.present();
