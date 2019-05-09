@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-modal',
@@ -10,7 +10,7 @@ export class ModalPage implements OnInit {
   
   @Input() checks: any[];
 
-  constructor(private modalController: ModalController, private loadingController: LoadingController) { }
+  constructor(private modalController: ModalController) { }
   buttonColor:string='dark';
   updationSuccess:boolean=null;
   updationFailure:boolean=null;
