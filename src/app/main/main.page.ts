@@ -295,7 +295,8 @@ export class MainPage implements AfterViewInit {
     const modal = await this.modalController.create({
       component: ModalPage,
       componentProps: {checks: this.checks},
-      backdropDismiss: false
+      backdropDismiss: false,
+      cssClass: 'custom-modal-css'
     });
     modal.present();
     const updateSuccess = await modal.onDidDismiss();
@@ -341,7 +342,7 @@ export class MainPage implements AfterViewInit {
   }
 
   checkTimeUp(ignorePullButton:boolean=false){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
-    var d = new Date();
+    /*var d = new Date();
       if(d.getHours() > 7 && d.getHours() < 23 ){
         this.disablekey=false;
       }
@@ -350,7 +351,7 @@ export class MainPage implements AfterViewInit {
       }
     if(!ignorePullButton){
       this.setButtonPos();
-    }
+    }*/
   }
 
   async showTimeUp(){
