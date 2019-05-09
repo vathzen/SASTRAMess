@@ -3,7 +3,7 @@ import { HttpClient,HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { Observable,throwError } from 'rxjs';
 import { catchError,map } from 'rxjs/operators';
 
-import { User,Response } from './classes';
+import { User,Response,Menu } from './classes';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class RestService {
 
   baseUrl:string = "https://sastramess.herokuapp.com/";
   user = new User();
+  private menus = [];
 
   constructor(public httpClient : HttpClient) { }
 
@@ -34,6 +35,12 @@ export class RestService {
   }
 
   public getMenu(): Observable<Menu>{
-    
+      return this.httpClient
+      .get(this.baseUrl +'menu').pipe(
+        map(val => {
+          console.log(val);
+          return new Menu(val);
+        }),
+        catchError(this.handleError));
   }
 }
