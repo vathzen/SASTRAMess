@@ -2,15 +2,14 @@
   <div class="symbol" [class.success]="updationSuccess" [class.failure]="updationFailure">
     <ion-spinner [class.invisible]="updationSuccess||updationFailure" name="crescent"></ion-spinner>
   </div>
-  <div class="message invisible" [class.visible]="updationSuccess||updationFailure">
+  <div class="invisible" [class.visible]="updationSuccess||updationFailure">
     <p class="header" [class.headersuccess]="updationSuccess" [class.headerfailure]="updationFailure">{{headerData}}</p>
     <p>{{subheaderData}}</p>
-    <p>{{msgData}}</p>
   </div>
 </ion-content>
 <ion-footer>
-  <button (click)="pseudoAckRcv(true)">Rcv True Ack</button>
-  <button (click)="pseudoAckRcv(false)">Rcv False Ack</button>
+  <button *ngIf="!updationSuccess||updationFailure" (click)="pseudoAckRcv(true)">Rcv True Ack</button>
+  <button *ngIf="!updationSuccess||updationFailure" (click)="pseudoAckRcv(false)">Rcv False Ack</button>
   <ion-button *ngIf="updationSuccess||updationFailure" expand="full" fill="solid" color={{buttonColor}} (click)="closeModal()">
     Close
   </ion-button>
