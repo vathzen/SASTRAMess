@@ -26,6 +26,7 @@ export class ChangePasswordPage implements OnInit {
   }
 
  async changePassword(){
+   this.pswrd=this.pswrd+'~';
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
     });

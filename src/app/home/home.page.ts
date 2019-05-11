@@ -57,43 +57,41 @@ export class HomePage implements OnInit {
           message: 'Logging In'
       });
       await loading.present();*/
-      this.restService.userAuth(this.regnum,this.pswrd).subscribe(
-          (response) => {
-              this.authStatus = response;
-              if(this.authStatus.Status=="false"){
-                //loading.dismiss();
-                this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
-              }
-              else{
-                //loading.dismiss();
-                this.storage.get('first_time').then((val) => {
-                  if (val == null ) {
-                     this.presentAlertPrompt();
-                  }
-                  else{
-                    this.hasChangedPassword=false;//get hasChanged along with hostel,contractor
-                    if(this.hasChangedPassword){
-                      this.storage.set('reg_num', this.regnum);
-                      this.storage.set('pswrd', this.pswrd);
-                      this.storage.set('name',this.authStatus.Text.split(",")[0]);
-                      this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
-                      this.storage.set('contractor','Just get from db pls');
-                      this.navCtrl.navigateRoot(['main']);
-                    }
-                    else{
-                      this.changePassword();
-                    }
-                  }
-               });
-              }
-          },err => {
-              console.log(err);
-          }
-      );
+      this.restService.userAuth(this.regnum,this.pswrd[0]=='0' ? Number(this.pswrd[1]+this.pswrd[2]+this.pswrd[3]+this.pswrd[4]+this.pswrd[5]+this.pswrd[6]+this.pswrd[7]) : Number(this.pswrd)).subscribe(
+        (response) => {
+            this.authStatus = response;
+            if(this.authStatus.Status=="false"){
+              //loading.dismiss();
+              this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
+            }
+            else if(this.authStatus.Status=="sastra"){
+              //loading.dismiss();
+              this.storage.get('first_time').then((val) => {
+                if (val == null ) {
+                   this.presentEnterCode();// check code with server
+                }
+                else {
+                    this.changePassword();//update new password 
+                }
+             });
+            }
+            else{
+              //loading.dismiss();
+              this.storage.set('reg_num', this.regnum);
+              this.storage.set('pswrd', this.pswrd);
+              this.storage.set('name',this.authStatus.Text.split(",")[0]);
+              this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
+              this.storage.set('contractor','Leaf & Agro');
+              this.navCtrl.navigateRoot(['main']);
+            }
+        },err => {
+            console.log(err);
+        }
+    );
     }
   }
 
-  async presentAlertPrompt() {
+  async presentEnterCode() {
     const alert = await this.alertController.create({
       header: 'Enter 4-digit code',
       subHeader: 'To verify it is you, show your ID card to your mess authorities and enter the code they give you',
@@ -102,7 +100,7 @@ export class HomePage implements OnInit {
         {
           name: 'code',
           type: 'number',
-          placeholder: 'Enter code'
+          placeholder: 'Enter code',
         },
       ],
       buttons: [
@@ -116,7 +114,7 @@ export class HomePage implements OnInit {
               this.verifyCode(Number(data.code));
             }
             else{
-              this.presentAlertPrompt();
+              this.presentEnterCode();
             }
           }
         }
@@ -141,8 +139,8 @@ export class HomePage implements OnInit {
     }
     else{
       loading.dismiss();
-      this.presentAlertPrompt();
-      this.codeErrorAlert();
+      this.presentEnterCode();
+      this.popAlert('Wrong code','Check your code and try again','',['OK']);
     }
   }
 
@@ -154,35 +152,6 @@ export class HomePage implements OnInit {
     });
     modal.present();
     await modal.onDidDismiss();
-    this.hasChangedPassword=true; //Write this to server on dismiss
-    this.showChangedSuccess();
-  }
-
-  async showChangedSuccess(){
-    const alert = await this.alertController.create({
-      header: 'Password changed successfully!',
-      subHeader: 'You\'re all set! Log in to continue.',
-      buttons: [
-        {
-          text: 'Ok'
-        },
-      ]
-    });
-
-    await alert.present();
-  }
-
-  async codeErrorAlert(){
-    const alert = await this.alertController.create({
-      header: 'Wrong code',
-      subHeader: 'Check your code and try again',
-      buttons: [
-        {
-          text: 'Ok'
-        },
-      ]
-    });
-
-    await alert.present();
+    this.popAlert('Password changed successfully!','You\'re all set! Log in to continue.','',['Ok']);
   }
 }

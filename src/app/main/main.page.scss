@@ -162,29 +162,41 @@ ion-card-content{
     background: #f2f2f2 url('../../assets/images/cpaneer.png') no-repeat center center / cover;
 }
 .itemname{
-    width: 50%;
+    width: 40%;
     --background: none;
 }
-.itemnote{
+.price{
     position: absolute;
-    top: 20%;
-    right:42px;
+    top:32%;
+    right:70px;
     font-size: 12px;
     text-align: center;
 }
-.tagnote{
+.taglabel{
     --color:#507e32;
 }
-.tag2note{
+.tag2label{
     --color:#41719c;
 }
-.tag3note{
+.tag3label{
     --color:#ae5a21;
 }
-ion-checkbox{
+ion-badge{
     position: absolute;
-    top: -10%;
-    right:8px;
+    top: 27%;
+    right:40px;
+}
+.checkcover{
+    height: 100%;
+    width:30px;
+    position: absolute;
+    top: 0px;
+    right:0px;
+}
+ion-checkbox{
+    margin-top: 45%;
+    margin-left: auto;
+    margin-right: auto;
 }
 .codebutton{
     position: absolute;

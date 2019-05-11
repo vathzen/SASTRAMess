@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { PickerController } from '@ionic/angular';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -13,21 +14,36 @@ import anime from 'node_modules/animejs/lib/anime.js';
 export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
-  public menu: Array<{tag: string, tagico: string, icon: string, val: string, note:string, isChecked: boolean, color: string, price: number}> = [];
-  public oldmenu: Array<{tag: string, tagico: string, icon: string, val: string, hasOrdered: boolean, code: string, color: string}> = [];
+  public menu= [
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
+  ];
+  public oldmenu=[
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'danger'},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'danger'},
+  ];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   animating:boolean=true;
   loading:number=0;
   updateButtonPulled:boolean=false;
   checks = [];
-  nullIndices = [];
   disablekey:boolean=false;
   checkChanged:boolean=false;
+  todayDateObj:Date=null;
+  tmrwDateObj:Date=null;
   todayDate:string=null;
   tmrwDate:string=null;
 
-  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController) { }
+  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController, public pickerController: PickerController) { }
 
   ngAfterViewInit(){
     anime({
@@ -36,6 +52,7 @@ export class MainPage implements AfterViewInit {
       duration: 1,
       easing: 'easeInOutSine'
     });
+    this.getDate();
   }
 
   ionViewWillEnter(){
@@ -165,6 +182,14 @@ export class MainPage implements AfterViewInit {
       this.slideIn();
   }
 
+  getDate(){
+    var date_string = new Date().toString() //get today's date as date obj string
+
+    this.todayDateObj = new Date(date_string);
+    this.tmrwDateObj = new Date(this.todayDateObj);
+    this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
+  }
+
   updateHeader(){
     this.loading++;
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
@@ -178,72 +203,41 @@ export class MainPage implements AfterViewInit {
   //**********SERVER MAINTAINS TODAY'S DATE AND TIME OBJ***********
   updateCode(){
     this.loading++;
-    var dateObj = new Date();//get and store today's date
-    this.todayDate = this.days[dateObj.getDay()] + '       ' + dateObj.getDate().toString() + ' ' + this.months[dateObj.getMonth()] + ' ' + dateObj.getFullYear().toString();
+    this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    var oldmenu = ['Cornflakes with milk',30,null,null,'Veg. Sandwich',40,null,null,'Kadai Paneer',50,null,null];
+    var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
     //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    var codes = ['B3G3K9',null,null,null,'G3GJJ8',null];
+    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity
 
-    this.oldmenu.splice(0,this.oldmenu.length);
-    for (let i = 0; i < oldmenu.length; i+=2) {
-      if((i<4)&&(oldmenu[i]!=null)){
-        this.oldmenu.push({tag:'tag', tagico: '', icon:'partly-sunny', val:oldmenu[i].toString(), hasOrdered:false, code:codes[i/2], color:'success'});
-      }
-      else if ((i<8)&&(oldmenu[i]!=null)){
-        this.oldmenu.push({tag:'tag2', tagico: '', icon:'sunny', val:oldmenu[i].toString(), hasOrdered:false, code:codes[i/2], color:'primary'});
-      }
-      else if ((i<12)&&oldmenu[i]!=null){
-        this.oldmenu.push({tag:'tag3', tagico: '', icon:'moon', val:oldmenu[i].toString(), hasOrdered:false, code:codes[i/2], color:'danger'});
-      }
-    }
+    var i=0;
     this.oldmenu.forEach(item => {
-      item.tagico=this.iconDetect(item.val);//run icon detection
-      item.hasOrdered=(item.code!=null);
+      if(oldmenu[i]!='null'){
+        item.val=oldmenu[i];
+        item.code=codes[i/2];
+        item.tagico=this.iconDetect(item.val);//run icon detection
+        item.quantity=item.code[5]+item.code[6];
+      }
+      i+=2;
     });
     this.loading--;
   }
 
   updateMenu(){
     this.loading++;
-    var dateObj = new Date();//get and store today's date
-    dateObj.setDate(dateObj.getDate()+1);
-    this.tmrwDate = this.days[dateObj.getDay()] + '       ' + dateObj.getDate().toString() + ' ' + this.months[dateObj.getMonth()] + ' ' + dateObj.getFullYear().toString();
+    this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
 
     //ASSUMING MENU QUERY TAKES BELOW FORM
-    var menu = ['Dosa',30,null,null,'French Fries',40,null,null,'Noodles',50,'Fried Rice',50];
+    var menu = ['Dosa',30,'null','null','French Fries',40,'null','null','Noodles',50,'Fried Rice',50];
 
-    this.menu.splice(0,this.menu.length);
-    this.nullIndices.splice(0,this.nullIndices.splice.length);
-    for (let i = 0; i < menu.length; i+=2) {
-      if(i<4){
-        if(menu[i]!=null){
-          this.menu.push({tag:'tag', tagico: '', icon:'partly-sunny', val:menu[i].toString(), note:'Add:', isChecked:false, color:'success', price:Number(menu[i+1])});
-        }
-        else{
-          this.nullIndices.push(i/2);
-        }
-      }
-      else if (i<8){
-        if(menu[i]!=null){
-          this.menu.push({tag:'tag2', tagico: '', icon:'sunny', val:menu[i].toString(), note:'Add:', isChecked:false, color:'primary', price:Number(menu[i+1])});
-        }
-        else{
-          this.nullIndices.push(i/2);
-        }
-      }
-      else if (i<12){
-        if(menu[i]!=null){
-          this.menu.push({tag:'tag3', tagico: '', icon:'moon', val:menu[i].toString(), note:'Add:', isChecked:false, color:'danger', price:Number(menu[i+1])});
-        }
-        else{
-          this.nullIndices.push(i/2);
-        }
-      }
-    }
+    var i=0;
     this.menu.forEach(item => {
-      item.tagico=this.iconDetect(item.val);//run icon detection
+      if(menu[i]!='null'){
+        item.val=menu[i];
+        item.price=menu[i+1];
+        item.tagico=this.iconDetect(item.val);//run icon detection
+      }
+      i+=2;
     });
     this.updateChecks();
     this.loading--;
@@ -251,25 +245,75 @@ export class MainPage implements AfterViewInit {
 
   updateChecks(){
     //GET ROW OF CODES FROM DB
-    var codes = [null,null,'B3G3K9',null,null,'G3GJJ8']; //ASSUMING WE GET THIS
-    var x = 0;
-    this.nullIndices.forEach(element => {
-      codes.splice(element-x,1);
-      x++;
-    });
+    var codes = ['null','null','AB3G309','null','null','G3GJJ08']; //ASSUMING WE GET THIS
     var i = 0;
     this.menu.forEach(item => {
-      if(codes[i]){
+      if(codes[i]!='null'){
         item.isChecked=true;
-        item.note='Added!';
+        item.quantity=Number(codes[i][5]+codes[i][6]);
       }
       else{
         item.isChecked=false;
-        item.note='Add:'
       }
       i++;
     });
     this.checkChanged=false;
+  }
+
+  async showPicker(val:string){
+    const picker = await this.pickerController.create({
+      buttons: [{
+        text: 'Cancel',
+      },
+      {
+        text: 'Done',
+        handler: (data) => {
+          this.menu.forEach(item => {
+            if(item.val==val){
+              if(item.quantity!=((data.quantity_tens.value*10)+data.quantity_ones.value)){
+                item.quantity=(data.quantity_tens.value*10)+data.quantity_ones.value;
+                this.checkChanged=true;
+              }
+            }
+          });
+        }
+      }],
+      columns: [
+        {
+          name: 'quantity_tens',
+          options: [
+            {text: '0', value: 0},
+            {text: '1', value: 1},
+            {text: '2',value: 2},
+            {text: '3',value: 3},
+            {text: '4',value: 4},
+            {text: '5',value: 5},
+            {text: '6',value: 6},
+            {text: '7',value: 7},
+            {text: '8',value: 8},
+            {text: '9',value: 9}
+          ],
+          columnWidth:'20px',
+        },{
+          name: 'quantity_ones',
+          options: [
+            {text: '0', value: 0},
+            {text: '1', value: 1},
+            {text: '2',value: 2},
+            {text: '3',value: 3},
+            {text: '4',value: 4},
+            {text: '5',value: 5},
+            {text: '6',value: 6},
+            {text: '7',value: 7},
+            {text: '8',value: 8},
+            {text: '9',value: 9}
+          ],
+          columnWidth:'20px',
+          selectedIndex:1
+        }
+      ]
+    });
+    picker.present();
   }
 
   updateOrder(){
@@ -278,10 +322,9 @@ export class MainPage implements AfterViewInit {
       if(this.checkChanged){
         this.checks.splice(0,this.checks.length);
         this.menu.forEach(item => {
-          this.checks.push(item.isChecked);
-        });
-        this.nullIndices.forEach(element => {
-          this.checks.splice(element,0,null);
+          if(item.val!='null'){
+            this.checks.push(item.isChecked);
+          }
         });
         this.openModal();
       }
@@ -336,13 +379,19 @@ export class MainPage implements AfterViewInit {
     this.menu.forEach(item => {
       if(item.val==val){
         item.isChecked=!item.isChecked;
+        if(item.isChecked){
+          item.quantity=1;
+        }
+        else{
+          item.quantity=0;
+        }
       }
     });
   }
   }
 
   checkTimeUp(ignorePullButton:boolean=false){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
-    /*var d = new Date();
+    var d = new Date();
       if(d.getHours() > 7 && d.getHours() < 23 ){
         this.disablekey=false;
       }
@@ -351,7 +400,7 @@ export class MainPage implements AfterViewInit {
       }
     if(!ignorePullButton){
       this.setButtonPos();
-    }*/
+    }
   }
 
   async showTimeUp(){
@@ -377,17 +426,17 @@ export class MainPage implements AfterViewInit {
 }
 
   async showCode(val: string){
-    var code = '';
+    var msg = null;
     this.oldmenu.forEach(item => {
       if(item.val==val){
-        code=item.code;
+        msg=item.val+'\n\n'+item.code+'                Quantity: '+item.quantity;
       }
     });
     //show verification code
     const alert = await this.alertController.create({
       header:'Verification Code',
       subHeader:'Show this code to get your meal!',
-      message: code,
+      message: msg,
       buttons: ['OK']
     });
 
