@@ -8,8 +8,8 @@
   </div>
 </ion-content>
 <ion-footer>
-  <button *ngIf="!updationSuccess||updationFailure" (click)="pseudoAckRcv(true)">Rcv True Ack</button>
-  <button *ngIf="!updationSuccess||updationFailure" (click)="pseudoAckRcv(false)">Rcv False Ack</button>
+  <button *ngIf="!(updationSuccess||updationFailure)" (click)="pseudoAckRcv(true)">Rcv True Ack</button>
+  <button *ngIf="!(updationSuccess||updationFailure)" (click)="pseudoAckRcv(false)">Rcv False Ack</button>
   <ion-button *ngIf="updationSuccess||updationFailure" expand="full" fill="solid" color={{buttonColor}} (click)="closeModal()">
     Close
   </ion-button>

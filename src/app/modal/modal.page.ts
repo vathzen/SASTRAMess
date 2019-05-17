@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
+import anime from 'node_modules/animejs/lib/anime.js';
 
 @Component({
   selector: 'app-modal',
@@ -17,6 +18,7 @@ export class ModalPage implements OnInit {
   spinnerVisible:boolean=true;
   headerData:string=null;
   subheaderData:string=null;
+  vibrate_times:number=0;
 
   ngOnInit() {
     //this.sendData();
@@ -38,15 +40,68 @@ export class ModalPage implements OnInit {
 
   onAckRcv(){
     if(this.updationSuccess){
+      anime({
+        targets: '.symbol',
+        rotateY: 360,
+        duration: 400,
+        easing: 'easeInOutSine'
+      });
       this.buttonColor='success';
       this.headerData='Success!';
-      this.subheaderData='Your order has been updated.';
+      this.subheaderData='Your order has been updated.';      
     }
     else{
+      this.vibrate();
       this.buttonColor='danger';
       this.headerData='Failure!';
       this.subheaderData='Something went wrong.';
     }
+  }
+
+  vibrate(){
+    var self=this;
+    anime({
+      targets: '.symbol',
+      translateX: -2,
+      duration: 30,
+      complete (){
+        anime({
+          targets: '.symbol',
+          translateY: -3,
+          duration: 10,
+          complete(){
+            anime({
+              targets: '.symbol',
+              translateX: 4,
+              duration: 10,
+              complete(){
+                anime({
+                  targets: '.symbol',
+                  translateY: 0,
+                  duration: 10,
+                  complete(){
+                    anime({
+                      targets: '.symbol',
+                      translateX: 0,
+                      duration: 10,
+                      complete(){
+                        self.vibrate_times++
+                        if(self.vibrate_times<=1){
+                          self.vibrate();
+                        }
+                        else{
+                          self.vibrate_times=0;
+                        }
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
   }
 
   closeModal(){

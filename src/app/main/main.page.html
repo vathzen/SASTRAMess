@@ -32,7 +32,8 @@
     </ion-card-content>
     </ion-card>
 
-    <ion-item class="itemparent" lines="none" *ngFor="let entry of oldmenu">
+    <ng-container *ngFor="let entry of oldmenu">
+    <ion-item class="itemparent" lines="none" *ngIf="entry.val">
     <div class="itemborder"></div>
     <ion-item class="itemtag {{entry.tag}}" lines="none">
         <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
@@ -45,9 +46,10 @@
           <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
           <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
         </div>
-        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{!entry.hasOrdered}}" (click)="showCode(entry.val)">Code</ion-button>
+        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{entry.code=='null'}}" (click)="showCode(entry.val)">Code</ion-button>
       </ion-item>
     </ion-item>
+    </ng-container>
   </ion-list>
 
   <ion-list lines="none">
@@ -62,22 +64,28 @@
       </ion-item>
       </ion-card-content>
     </ion-card>
-      <ion-item class="itemparent" lines="none" *ngFor="let entry of menu">
+      <ng-container *ngFor="let entry of menu">
+      <ion-item class="itemparent" lines="none" *ngIf="entry.val">
       <div class="itemborder"></div>
       <ion-item class="itemtag {{entry.tag}}" lines="none">
           <ion-icon class="tagicon" name="{{entry.icon}}"></ion-icon>
       </ion-item>
-        <ion-item class="itemmenu" (click)="toggleChecked(entry.val)">
+        <ion-item class="itemmenu">
           <div class="icosize loading" *ngIf="animating"></div>
           <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
           <div class="itemname">
             <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
             <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
           </div>         
-          <ion-note class="itemnote {{entry.tag}}note">Rs.{{entry.price}}<br>{{entry.note}}</ion-note>
-          <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
+          <div><ion-label class="price {{entry.tag}}label">Rs.{{entry.price}}</ion-label></div>
+          <ion-badge *ngIf="!(entry.isChecked&&!disablekey)" color="medium">0</ion-badge>
+          <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showPicker(entry.val)">{{entry.quantity}}</ion-badge>
+          <div class="checkcover" (click)="toggleChecked(entry.val)">
+            <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
+          </div>
         </ion-item>
       </ion-item>
+      </ng-container>
     </ion-list>
   
 </ion-content>

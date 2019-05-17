@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { RestService } from './services/rest.service';
 import { ModalPageModule } from './modal/modal.module';
+import { ChangePasswordPageModule } from './change-password/change-password.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import { ModalPageModule } from './modal/modal.module';
     IonicStorageModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    ModalPageModule
+    ModalPageModule,
+    ChangePasswordPageModule
   ],
   providers: [
     StatusBar,
