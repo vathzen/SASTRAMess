@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 import { AlertController, NavController, LoadingController, ModalController } from '@ionic/angular';
 import { RestService } from '../services/rest.service';
 import { Response } from '../services/classes';
-import { ChangePasswordPage } from '../change-password/change-password.page';
+import { SignupPage } from '../signup/signup.page';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
 
   regnum:string=null;
   pswrd:string=null;
-  hasChangedPassword:boolean=null;
+  verified:boolean=null;
   authStatus = new Response();
   constructor(
     public alertController: AlertController,
@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
   checkFirstTime(){
     this.storage.get('first_time').then((val) => {
       if (val == null) {
-         this.popAlert('Hey!','Looks like its your first time here','Login with you PWI credentials',['OK']);
+         this.popAlert('Hey!','Looks like its your first time here','Sign up to start ordering!',['OK']);
       }
    });
   }
@@ -57,37 +57,46 @@ export class HomePage implements OnInit {
           message: 'Logging In'
       });
       await loading.present();*/
-      this.restService.userAuth(this.regnum,this.pswrd[0]=='0' ? Number(this.pswrd[1]+this.pswrd[2]+this.pswrd[3]+this.pswrd[4]+this.pswrd[5]+this.pswrd[6]+this.pswrd[7]) : Number(this.pswrd)).subscribe(
+      this.restService.userAuth(this.regnum,Number(this.pswrd)).subscribe( //pswrd number until you make change in db, use this.verified too
         (response) => {
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
               //loading.dismiss();
               this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
             }
-            else if(this.authStatus.Status=="sastra"){
-              //loading.dismiss();
-              this.storage.get('first_time').then((val) => {
-                if (val == null ) {
-                   this.presentEnterCode();// check code with server
-                }
-                else {
-                    this.changePassword();//update new password 
-                }
-             });
-            }
             else{
               //loading.dismiss();
+              if(true){ //if(this.verified)
+              this.storage.set('first_time', 'false');
               this.storage.set('reg_num', this.regnum);
               this.storage.set('pswrd', this.pswrd);
               this.storage.set('name',this.authStatus.Text.split(",")[0]);
               this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
               this.storage.set('contractor','Leaf & Agro');
               this.navCtrl.navigateRoot(['main']);
+              }
+              else{
+                this.presentEnterCode();
+              }
             }
         },err => {
             console.log(err);
         }
     );
+    }
+  }
+
+  async signUp(){
+    const modal = await this.modalController.create({
+      component: SignupPage,
+      cssClass: 'custom-modal-css'
+    });
+    modal.present();
+    const regnum = await modal.onDidDismiss();
+    if(regnum.data){
+      this.regnum=regnum.data;
+      this.storage.set('first_time', 'false');
+      this.presentEnterCode();
     }
   }
 
@@ -123,7 +132,7 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
-  
+
   async verifyCode(code:number){
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
@@ -133,9 +142,8 @@ export class HomePage implements OnInit {
     //verify code
 
     if(true){
-      this.storage.set('first_time', 'false');
       loading.dismiss();
-      this.changePassword();
+      this.popAlert('You\'re all set!','Login to start ordering.','',['OK']);
     }
     else{
       loading.dismiss();
@@ -144,14 +152,4 @@ export class HomePage implements OnInit {
     }
   }
 
-  async changePassword(){
-      const modal = await this.modalController.create({
-      component: ChangePasswordPage,
-      backdropDismiss: false,
-      cssClass: 'custom-modal-css'
-    });
-    modal.present();
-    await modal.onDidDismiss();
-    this.popAlert('Password changed successfully!','You\'re all set! Log in to continue.','',['Ok']);
-  }
 }

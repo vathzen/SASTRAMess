@@ -20,9 +20,21 @@
             <ion-label position="floating">Registration Number</ion-label>
             <ion-input [(ngModel)]="regnum" type="number"></ion-input>
         </ion-item>
-        <ion-item class="seconditem">
+        <ion-item>
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" [(ngModel)]="pswrd"></ion-input>
+        </ion-item>
+        <ion-item class="lastitem" lines="none">
+          <div>
+            <ion-chip class="forgot" color="danger">
+                <ion-icon name="help-circle"></ion-icon>
+                <ion-label>Forgot password</ion-label>
+            </ion-chip>
+            <ion-chip class="signup" color="success" (click)="signUp()">
+                <ion-icon name="person-add"></ion-icon>
+                <ion-label>Sign Up</ion-label>
+            </ion-chip>
+          </div>
         </ion-item>
      </ion-list>
     <ion-button color="warning" fill="solid" (click)="onClickLogin()">

@@ -14,3 +14,12 @@ ion-item {
     --highlight-color-valid:orange;
     --highlight-color-invalid:orange;
 }
+.success{
+    color: green;
+}
+.failure{
+    color: red;
+}
+ion-footer{
+    text-align: center;
+}

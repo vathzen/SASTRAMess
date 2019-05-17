@@ -28,3 +28,19 @@ ion-item {
 .firstitem{
     margin-top: -7%;
 }
+.lastitem{
+    --padding-start:0px;
+    --inner-padding-end:0px;
+}
+div{
+    width: 100%;
+    margin-top: 20px;
+}
+.forgot{
+    float: left;
+    font-size: 10px;
+}
+.signup{
+    float: right;
+    font-size: 10px;
+}
