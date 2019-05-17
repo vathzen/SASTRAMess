@@ -4,6 +4,7 @@ import { AlertController, NavController, LoadingController, ModalController } fr
 import { RestService } from '../services/rest.service';
 import { Response } from '../services/classes';
 import { SignupPage } from '../signup/signup.page';
+import anime from 'node_modules/animejs/lib/anime.js';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,8 @@ export class HomePage implements OnInit {
   regnum:string=null;
   pswrd:string=null;
   verified:boolean=null;
+  forgotClicked:boolean=false;
+  signupClicked:boolean=false;
   authStatus = new Response();
   constructor(
     public alertController: AlertController,
@@ -149,6 +152,68 @@ export class HomePage implements OnInit {
       loading.dismiss();
       this.presentEnterCode();
       this.popAlert('Wrong code','Check your code and try again','',['OK']);
+    }
+  }
+
+  onForgotClicked(){
+    if(!this.forgotClicked){
+        anime({
+          targets: '.forgotlabel',
+          fontSize: 12,
+          duration: 200,
+          easing: 'easeInOutSine'
+        });
+        anime({
+          targets: '.forgoticon',
+          marginRight: 8,
+          duration: 20,
+        });
+      this.forgotClicked=true;
+    }
+    else{
+      anime({
+        targets: '.forgotlabel',
+        fontSize: 0,
+        duration: 200,
+        easing: 'easeInOutSine'
+      });
+      anime({
+        targets: '.forgoticon',
+        marginRight: 0,
+        duration: 20,
+      });
+    this.forgotClicked=false;
+    }
+  }
+
+  onSignupClicked(){
+    if(!this.signupClicked){
+        anime({
+          targets: '.signuplabel',
+          fontSize: 12,
+          duration: 200,
+          easing: 'easeInOutSine'
+        });
+        anime({
+          targets: '.signupicon',
+          marginLeft: 8,
+          duration: 20,
+        });
+      this.signupClicked=true;
+    }
+    else{
+      anime({
+        targets: '.signuplabel',
+        fontSize: 0,
+        duration: 200,
+        easing: 'easeInOutSine'
+      });
+      anime({
+        targets: '.signupicon',
+        marginLeft: 0,
+        duration: 20,
+      });
+      this.signupClicked=false;
     }
   }
 
