@@ -5,19 +5,20 @@
   </ion-item>
   <ion-item lines="inset">
     <ion-label>Register Number:<br>
-      <p *ngIf="!regnumValid&&regnum!=null" class="failure">No such number</p>
     </ion-label>
     <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="text"></ion-input>
-    <ion-spinner *ngIf="!regnumValid&&regnum!=null"name="crescent"></ion-spinner>
-    <ion-icon *ngIf="regnumValid&&regnum!=null" color ="success" name="checkmark-circle"></ion-icon>
+    <ion-spinner *ngIf="regnumValid==0" name="crescent"></ion-spinner>
+    <ion-icon *ngIf="regnumValid==-1&&regnum" color ="danger" name="close-circle"></ion-icon>
+    <ion-icon *ngIf="regnumValid==1" color ="success" name="checkmark-circle"></ion-icon>
   </ion-item>
   <ion-item lines="inset">
-    <ion-label>Enter new password:<br><p>(Min 8 characters)</p></ion-label>
-    <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="password"></ion-input>
+    <ion-label>Enter password:<br><p *ngIf="!sufficientLength&&pswrd">Min 8 characters</p></ion-label>
+    <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="{{inputType}}"></ion-input>
+    <ion-icon *ngIf="pswrd" name="{{eyeIcon}}" color="dark" (click)="changeInputType()"></ion-icon>
   </ion-item>
 </ion-content>
 <ion-footer>
-  <ion-button *ngIf="regnumValid&&sufficientLength" fill="solid" color="warning" (click)="signUp()">
+  <ion-button *ngIf="regnumValid==1&&sufficientLength" fill="solid" color="warning" (click)="signUp()">
     Sign Up
   </ion-button>
   <ion-button class="cancelbutton" fill="solid" color="dark" (click)="cancel()">

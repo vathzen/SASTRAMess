@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController} from '@ionic/angular';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -12,24 +13,31 @@ export class SignupPage implements OnInit {
 
   regnum:string=null;
   pswrd:string=null;
-  regnumValid:boolean=null;
+  regnumValid:number=null;
+  timeVar:any=null;
+  inputType:string='password';
+  eyeIcon:string='eye';
   sufficientLength:boolean=null;
 
   ngOnInit() {
   }
 
   regnumInputChanged(){
+    clearTimeout(this.timeVar);
     if(this.regnum.length==9){
       //check if regnum exists in pwi
       if(true){
-        this.regnumValid=true;
+        this.regnumValid=1;
       }
       else{
-        this.regnumValid=false;
+        this.regnumValid=-1;
       }
     }
     else{
-      this.regnumValid=false;
+      this.regnumValid=0;
+      this.timeVar = setTimeout(() => {
+        this.regnumValid=-1;
+      }, 1500);
     }
   }
 
@@ -39,6 +47,17 @@ export class SignupPage implements OnInit {
     }
     else{
       this.sufficientLength=false;
+    }
+  }
+
+  changeInputType(){
+    if(this.inputType=='password'){
+      this.inputType='text';
+      this.eyeIcon='eye-off';
+    }
+    else{
+      this.inputType='password';
+      this.eyeIcon='eye';
     }
   }
 
