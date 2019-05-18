@@ -1,0 +1,26 @@
+<ion-content>
+  <ion-item lines="full" class="headitem">
+    <ion-icon class="signupicon" name="person-add"></ion-icon>
+    <ion-label class="head" text-wrap>Sign Up</ion-label>
+  </ion-item>
+  <ion-item lines="inset">
+    <ion-label>Register Number:<br>
+      <p *ngIf="!regnumValid&&regnum!=null" class="failure">No such number</p>
+    </ion-label>
+    <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="text"></ion-input>
+    <ion-spinner *ngIf="!regnumValid&&regnum!=null"name="crescent"></ion-spinner>
+    <ion-icon *ngIf="regnumValid&&regnum!=null" color ="success" name="checkmark-circle"></ion-icon>
+  </ion-item>
+  <ion-item lines="inset">
+    <ion-label>Enter new password:<br><p>(Min 8 characters)</p></ion-label>
+    <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="password"></ion-input>
+  </ion-item>
+</ion-content>
+<ion-footer>
+  <ion-button *ngIf="regnumValid&&sufficientLength" fill="solid" color="warning" (click)="signUp()">
+    Sign Up
+  </ion-button>
+  <ion-button class="cancelbutton" fill="solid" color="dark" (click)="cancel()">
+    Cancel
+  </ion-button>
+</ion-footer>

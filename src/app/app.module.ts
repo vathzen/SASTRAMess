@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { RestService } from './services/rest.service';
 import { ModalPageModule } from './modal/modal.module';
-import { ChangePasswordPageModule } from './change-password/change-password.module';
+import { SignupPageModule } from './signup/signup.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +27,7 @@ import { ChangePasswordPageModule } from './change-password/change-password.modu
     FormsModule,
     HttpClientModule,
     ModalPageModule,
-    ChangePasswordPageModule
+    SignupPageModule
   ],
   providers: [
     StatusBar,

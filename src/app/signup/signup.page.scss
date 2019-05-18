@@ -4,7 +4,7 @@
     font-size: 22px;
     font-weight: 200;
 }
-ion-icon{
+.signupicon{
     margin-right: 15px;
     color: white;
 }
@@ -13,4 +13,13 @@ ion-item {
     --highlight-color-focused:orange;
     --highlight-color-valid:orange;
     --highlight-color-invalid:orange;
+}
+.success{
+    color: green;
+}
+.failure{
+    color: red;
+}
+ion-footer{
+    text-align: center;
 }

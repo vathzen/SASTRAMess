@@ -28,3 +28,31 @@ ion-item {
 .firstitem{
     margin-top: -7%;
 }
+.lastitem{
+    --padding-start:0px;
+    --inner-padding-end:0px;
+}
+div{
+    width: 100%;
+    margin-top: 20px;
+}
+.forgot{
+    float: left;
+}
+.forgoticon{
+    margin: 0px;
+}
+.forgotlabel{
+    margin-top: 3px;
+    font-size: 0px;
+}
+.signup{
+    float: right;
+}
+.signupicon{
+    margin: 0px;
+}
+.signuplabel{
+    margin-top: 3px;
+    font-size: 0px;
+}
