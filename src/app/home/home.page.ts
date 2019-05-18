@@ -17,6 +17,7 @@ export class HomePage implements OnInit {
   pswrd:string=null;
   hasChangedPassword:boolean=null;
   authStatus = new Response();
+  
   constructor(
     public alertController: AlertController,
     private storage: Storage,
@@ -71,7 +72,7 @@ export class HomePage implements OnInit {
                    this.presentEnterCode();// check code with server
                 }
                 else {
-                    this.changePassword();//update new password 
+                    this.changePassword();//update new password
                 }
              });
             }
@@ -123,7 +124,7 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
-  
+
   async verifyCode(code:number){
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
