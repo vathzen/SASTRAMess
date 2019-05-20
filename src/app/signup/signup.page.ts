@@ -15,7 +15,7 @@ export class SignupPage implements OnInit {
 
   regnum:number=null;
   pswrd:string=null;
-  regnumValid:number=null;
+  regnumValid:number=0;
   timeVar:any=null;
   inputType:string='password';
   eyeIcon:string='eye';
@@ -27,8 +27,8 @@ export class SignupPage implements OnInit {
 
   regnumInputChanged(){
     if(this.regnum.toString().length==9){
-      //check if regnum exists in pwi
-        this.regnumValid=true;
+      //we cant check as and when user types increases server load exponentially.
+        this.regnumValid=1;
       }
       else{
         this.regnumValid=-1;
