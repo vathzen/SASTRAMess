@@ -3,6 +3,7 @@ import { AlertController, LoadingController, ModalController, ToastController} f
 import { RestService } from '../services/rest.service';
 import { Response } from '../services/classes';
 
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -14,7 +15,10 @@ export class SignupPage implements OnInit {
 
   regnum:number=null;
   pswrd:string=null;
-  regnumValid:boolean=null;
+  regnumValid:number=null;
+  timeVar:any=null;
+  inputType:string='password';
+  eyeIcon:string='eye';
   sufficientLength:boolean=null;
   authStatus = new Response();
 
@@ -27,7 +31,7 @@ export class SignupPage implements OnInit {
         this.regnumValid=true;
       }
       else{
-        this.regnumValid=false;
+        this.regnumValid=-1;
       }
   }
 
@@ -37,6 +41,17 @@ export class SignupPage implements OnInit {
     }
     else{
       this.sufficientLength=false;
+    }
+  }
+
+  changeInputType(){
+    if(this.inputType=='password'){
+      this.inputType='text';
+      this.eyeIcon='eye-off';
+    }
+    else{
+      this.inputType='password';
+      this.eyeIcon='eye';
     }
   }
 
