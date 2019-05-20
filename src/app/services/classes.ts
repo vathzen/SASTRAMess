@@ -1,6 +1,6 @@
 export class User {
-   username: number;
-   password: number;
+   username: string;
+   password: string;
    constructor(values: Object = {}) {
         Object.assign(this, values);
    }

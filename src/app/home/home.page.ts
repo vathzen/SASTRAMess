@@ -70,14 +70,14 @@ export class HomePage implements OnInit {
             }
             else{
               //loading.dismiss();
-              if(true){ //if(this.verified)
-              this.storage.set('first_time', 'false');
-              this.storage.set('reg_num', this.regnum);
-              this.storage.set('pswrd', this.pswrd);
-              this.storage.set('name',this.authStatus.Text.split(",")[0]);
-              this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
-              this.storage.set('contractor','Leaf & Agro');
-              this.navCtrl.navigateRoot(['main']);
+              if(this.authStatus.Text.split(",")[2] == "true"){
+                  this.storage.set('first_time', 'false');
+                  this.storage.set('reg_num', this.regnum);
+                  this.storage.set('pswrd', this.pswrd);
+                  this.storage.set('name',this.authStatus.Text.split(",")[0]);
+                  this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
+                  this.storage.set('contractor','Leaf & Agro');
+                  this.navCtrl.navigateRoot(['main']);
               }
               else{
                 this.presentEnterCode();

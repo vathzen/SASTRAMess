@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController} from '@ionic/angular';
+import { RestService } from '../services/rest.service';
+import { Response } from '../services/classes';
 
 @Component({
   selector: 'app-signup',
@@ -8,12 +10,13 @@ import { AlertController, LoadingController, ModalController, ToastController} f
 })
 export class SignupPage implements OnInit {
 
-  constructor( public alertController: AlertController, private loadCtrl: LoadingController, private modalController: ModalController, public toastController: ToastController ) { }
+  constructor( public alertController: AlertController, private loadCtrl: LoadingController, private modalController: ModalController, public toastController: ToastController, public  restService: RestService ) { }
 
   regnum:string=null;
   pswrd:string=null;
   regnumValid:boolean=null;
   sufficientLength:boolean=null;
+  authStatus = new Response();
 
   ngOnInit() {
   }
@@ -48,25 +51,33 @@ export class SignupPage implements OnInit {
     });
     await loading.present();
 
-    //Insert row, Generate code for this user
-
-    if(true){ //if insertion success
-      loading.dismiss();
-      this.showSuccess();
-      this.modalController.dismiss(this.regnum);
-    }
-    else if(false){ //if row already exists
-      loading.dismiss();
-      this.pswrd=null;
-      this.popAlert('Register number already exists!','','',['Ok']);
-    }
-    else { //insertion error
-      loading.dismiss();
-      this.pswrd=null;
-      this.popAlert('Something went wrong','Please try again','',['Ok']);
-    }
+    this.restService.newUser(this.regnum,this.pswrd).subscribe(
+            response => {
+                this.authStatus = response;
+                if(this.authStatus.Status == "OK"){ //if insertion success
+                  loading.dismiss();
+                  this.showSuccess();
+                  this.modalController.dismiss(this.regnum);
+                }
+                else if(this.authStatus.Status == "Exists"){ //if row already exists
+                  loading.dismiss();
+                  this.pswrd=null;
+                  this.popAlert('Register number already exists!','','',['Ok']);
+                }
+                else if(this.authStatus.Status == "Wrong"){
+                    loading.dismiss();
+                    this.pswrd=null;
+                    this.popAlert('Wrong Registration No.!','Please try again','',['Ok']);
+                }
+                else { //insertion error
+                  loading.dismiss();
+                  this.pswrd=null;
+                  this.popAlert('Something went wrong','Please try again','',['Ok']);
+                }
+            }
+    );
   }
-  
+
   async showSuccess(){
       const toast = await this.toastController.create({
         message: 'Signup Successfull!',
@@ -90,4 +101,3 @@ export class SignupPage implements OnInit {
     this.modalController.dismiss();
   }
 }
-
