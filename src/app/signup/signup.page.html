@@ -7,7 +7,7 @@
     <ion-label>Register Number:<br>
       <p *ngIf="!regnumValid&&regnum!=null" class="failure">No such number</p>
     </ion-label>
-    <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="text"></ion-input>
+    <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="number"></ion-input>
     <ion-spinner *ngIf="!regnumValid&&regnum!=null"name="crescent"></ion-spinner>
     <ion-icon *ngIf="regnumValid&&regnum!=null" color ="success" name="checkmark-circle"></ion-icon>
   </ion-item>

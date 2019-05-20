@@ -12,7 +12,7 @@ export class SignupPage implements OnInit {
 
   constructor( public alertController: AlertController, private loadCtrl: LoadingController, private modalController: ModalController, public toastController: ToastController, public  restService: RestService ) { }
 
-  regnum:string=null;
+  regnum:number=null;
   pswrd:string=null;
   regnumValid:boolean=null;
   sufficientLength:boolean=null;
@@ -22,18 +22,13 @@ export class SignupPage implements OnInit {
   }
 
   regnumInputChanged(){
-    if(this.regnum.length==9){
+    if(this.regnum.toString().length==9){
       //check if regnum exists in pwi
-      if(true){
         this.regnumValid=true;
       }
       else{
         this.regnumValid=false;
       }
-    }
-    else{
-      this.regnumValid=false;
-    }
   }
 
   pswrdInputChanged(){

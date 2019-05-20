@@ -57,19 +57,19 @@ export class HomePage implements OnInit {
       this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
-      /*const loading = await this.loadCtrl.create({
+      const loading = await this.loadCtrl.create({
           message: 'Logging In'
       });
-      await loading.present();*/
-      this.restService.userAuth(this.regnum,Number(this.pswrd)).subscribe( //pswrd number until you make change in db, use this.verified too
+      await loading.present();
+      this.restService.userAuth(this.regnum,this.pswrd).subscribe( //pswrd number until you make change in db, use this.verified too
         (response) => {
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
-              //loading.dismiss();
+              loading.dismiss();
               this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
             }
             else{
-              //loading.dismiss();
+              loading.dismiss();
               if(this.authStatus.Text.split(",")[2] == "true"){
                   this.storage.set('first_time', 'false');
                   this.storage.set('reg_num', this.regnum);
