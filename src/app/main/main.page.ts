@@ -35,7 +35,7 @@ export class MainPage implements AfterViewInit {
   animating:boolean=true;
   loading:number=0;
   updateButtonPulled:boolean=false;
-  checks = [];
+checks = [];
   disablekey:boolean=false;
   checkChanged:boolean=false;
   todayDateObj:Date=null;

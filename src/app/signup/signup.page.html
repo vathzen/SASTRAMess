@@ -6,7 +6,7 @@
   <ion-item lines="inset">
     <ion-label>Register Number:<br>
     </ion-label>
-    <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="text"></ion-input>
+    <ion-input [(ngModel)]="regnum" (ionChange)="regnumInputChanged()" type="number"></ion-input>
     <ion-spinner *ngIf="regnumValid==0" name="crescent"></ion-spinner>
     <ion-icon *ngIf="regnumValid==-1&&regnum" color ="danger" name="close-circle"></ion-icon>
     <ion-icon *ngIf="regnumValid==1" color ="success" name="checkmark-circle"></ion-icon>
