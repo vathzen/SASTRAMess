@@ -25,3 +25,11 @@ export class Menu {
       Object.assign(this, values);
   }
 }
+
+export class Code {
+    username: string;
+    code: string;
+    constructor(values: Object = {}){
+        Object.assign(this,values);
+    }
+}

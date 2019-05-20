@@ -112,7 +112,7 @@ export class HomePage implements OnInit {
       inputs: [
         {
           name: 'code',
-          type: 'number',
+          type: 'text',
           placeholder: 'Enter code',
         },
       ],
@@ -124,7 +124,7 @@ export class HomePage implements OnInit {
           text: 'Verify',
           handler: (data) => {
             if(data.code){
-              this.verifyCode(Number(data.code));
+              this.verifyCode(data.code);
             }
             else{
               this.presentEnterCode();
@@ -137,23 +137,28 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async verifyCode(code:number){
+  async verifyCode(code){
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
     });
     await loading.present();
 
-    //verify code
-
-    if(true){
-      loading.dismiss();
-      this.popAlert('You\'re all set!','Login to start ordering.','',['OK']);
-    }
-    else{
-      loading.dismiss();
-      this.presentEnterCode();
-      this.popAlert('Wrong code','Check your code and try again','',['OK']);
-    }
+    this.restService.verCode(this.regnum,code).subscribe(
+        (response) => {
+            this.authStatus = response;
+            if(this.authStatus.Status == "true"){
+                loading.dismiss();
+                this.popAlert('You\'re all set!','Login to start ordering.','',['OK']);
+            }else{
+                loading.dismiss();
+                this.presentEnterCode();
+                this.popAlert('Wrong code','Check your code and try again','',['OK']);
+            }
+        },
+        (err) => {
+            console.log(err)
+        }
+    )
   }
 
   onForgotClicked(){
