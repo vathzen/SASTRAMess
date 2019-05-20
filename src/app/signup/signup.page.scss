@@ -14,11 +14,8 @@ ion-item {
     --highlight-color-valid:orange;
     --highlight-color-invalid:orange;
 }
-.success{
-    color: green;
-}
-.failure{
-    color: red;
+ion-spinner{
+    width: 8%;
 }
 ion-footer{
     text-align: center;
