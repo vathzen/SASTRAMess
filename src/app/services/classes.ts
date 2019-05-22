@@ -15,15 +15,32 @@ export class Response {
 }
 
 export class Menu {
-  bf1: string;
-  bf2: string;
-  lun1: string;
-  lun2: string;
-  din1: string;
-  din2: string;
-  constructor(values: Object = {}){
-      Object.assign(this, values);
-  }
+    Day: string;
+    Bf1: string;
+    Bf1c: string;
+    Bf2: string;
+    Bf2c: string;
+    Lun1: string;
+    Lun1c: string;
+    Lun2: string;
+    Lun2c: string;
+    Din1: string;
+    Din1c: string;
+    Din2: string;
+    Din2c: string;
+
+    constructor(values: Object = {}){
+        Object.assign(this, values);
+    }
+
+    convToObj(): Object{
+        var asd = [this.Bf1,this.Bf1c,this.Bf2,this.Bf2c,this.Lun1,this.Lun1c,this.Lun2,this.Lun2c,this.Din1,this.Din1c,this.Din2,this.Din2c];
+        return asd;
+    }
+
+    getBf1(){
+        console.log(this.Bf1);
+    }
 }
 
 export class Code {
