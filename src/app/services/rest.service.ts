@@ -47,8 +47,8 @@ export class RestService {
       );
   }
 
-  public getMenu(): Observable<Menu>{
-      return this.httpClient.get(this.baseUrl +'menu').pipe(
+  public getMenu(day): Observable<Menu>{
+      return this.httpClient.get(this.baseUrl + 'menu' + '?day=' + day).pipe(
         map(val => {
           console.log(val);
           return new Menu(val);

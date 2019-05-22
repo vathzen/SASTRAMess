@@ -3,6 +3,8 @@ import { Storage } from '@ionic/storage';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { PickerController } from '@ionic/angular';
+import { RestService } from '../services/rest.service';
+import { Menu } from '../services/classes';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -13,6 +15,7 @@ import anime from 'node_modules/animejs/lib/anime.js';
 })
 export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
+  todayMenu = new Menu();
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
@@ -35,7 +38,7 @@ export class MainPage implements AfterViewInit {
   animating:boolean=true;
   loading:number=0;
   updateButtonPulled:boolean=false;
-checks = [];
+  checks = [];
   disablekey:boolean=false;
   checkChanged:boolean=false;
   todayDateObj:Date=null;
@@ -43,7 +46,7 @@ checks = [];
   todayDate:string=null;
   tmrwDate:string=null;
 
-  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController, public pickerController: PickerController) { }
+  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController, public pickerController: PickerController, private restService: RestService) { }
 
   ngAfterViewInit(){
     anime({
@@ -206,20 +209,28 @@ checks = [];
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    this.restService.getMenu("0").subscribe(
+        (val) => {
+            this.todayMenu = val;
+            var oldmenu = this.todayMenu.convToObj();
+            var i=0;
+            this.oldmenu.forEach(item => {
+              if(oldmenu[i]!='null'){
+                item.val=oldmenu[i];
+                item.code=codes[i/2];
+                item.tagico=this.iconDetect(item.val);//run icon detection
+                item.quantity=item.code[5]+item.code[6];
+              }
+              i+=2;
+            });
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
     //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity
-
-    var i=0;
-    this.oldmenu.forEach(item => {
-      if(oldmenu[i]!='null'){
-        item.val=oldmenu[i];
-        item.code=codes[i/2];
-        item.tagico=this.iconDetect(item.val);//run icon detection
-        item.quantity=item.code[5]+item.code[6];
-      }
-      i+=2;
-    });
+    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.loading--;
   }
 
@@ -227,25 +238,31 @@ checks = [];
     this.loading++;
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
 
-    //ASSUMING MENU QUERY TAKES BELOW FORM
-    var menu = ['Dosa',30,'null','null','French Fries',40,'null','null','Noodles',50,'Fried Rice',50];
-
-    var i=0;
-    this.menu.forEach(item => {
-      if(menu[i]!='null'){
-        item.val=menu[i];
-        item.price=menu[i+1];
-        item.tagico=this.iconDetect(item.val);//run icon detection
-      }
-      i+=2;
-    });
+    this.restService.getMenu("1").subscribe(
+        (val) => {
+            this.todayMenu = val;
+            var menu = this.todayMenu.convToObj();
+            var i=0;
+            this.menu.forEach(item => {
+              if(menu[i]!='null'){
+                item.val=menu[i];
+                item.price=menu[i+1];
+                item.tagico=this.iconDetect(item.val);//run icon detection
+              }
+              i+=2;
+            });
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
     this.updateChecks();
     this.loading--;
   }
 
   updateChecks(){
     //GET ROW OF CODES FROM DB
-    var codes = ['null','null','AB3G309','null','null','G3GJJ08']; //ASSUMING WE GET THIS
+    var codes = ['null','null','AB3G309','null','null','G3GJJ08']; //ASSUMING WE GET THIS //tomo menu oda code
     var i = 0;
     this.menu.forEach(item => {
       if(codes[i]!='null'){
