@@ -1,8 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
-import { PickerController } from '@ionic/angular';
 import { RestService } from '../services/rest.service';
 import { Menu } from '../services/classes';
 import anime from 'node_modules/animejs/lib/anime.js';
@@ -387,6 +386,9 @@ export class MainPage implements AfterViewInit {
     }
     else if(low_item.includes("chilly")||low_item.includes("manchurian")||low_item.includes("kadai")){
       return 'chilly';
+    }
+    else{
+      return 'cloche';
     }
   }
 

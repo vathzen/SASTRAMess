@@ -90,9 +90,10 @@ export class HomePage implements OnInit {
     }
   }
 
-  async signUp(){
+  async signUp(forgotPassword:boolean=false){
     const modal = await this.modalController.create({
       component: SignupPage,
+      componentProps : {forgotPassword: forgotPassword},
       cssClass: 'custom-modal-css'
     });
     modal.present();
@@ -159,6 +160,11 @@ export class HomePage implements OnInit {
             console.log(err)
         }
     )
+  }
+
+  forgotPswrd(){
+    this.signUp(true);
+    this.popAlert('Forgot Password','For security reasons, you need to show your ID card again to reset your password','',['Ok']);
   }
 
   onForgotClicked(){
