@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController} from '@ionic/angular';
 import { RestService } from '../services/rest.service';
 import { Response } from '../services/classes';
@@ -11,11 +11,13 @@ import { Response } from '../services/classes';
 })
 export class SignupPage implements OnInit {
 
+  @Input() forgotPassword: any[];
+
   constructor( public alertController: AlertController, private loadCtrl: LoadingController, private modalController: ModalController, public toastController: ToastController, public  restService: RestService ) { }
 
-  regnum:number=null;
+  regnum:string=null; //do not change regnum to type number
   pswrd:string=null;
-  regnumValid:number=0;
+  regnumValid:number=null;
   timeVar:any=null;
   inputType:string='password';
   eyeIcon:string='eye';
@@ -25,14 +27,43 @@ export class SignupPage implements OnInit {
   ngOnInit() {
   }
 
-  regnumInputChanged(){
-    if(this.regnum.toString().length==9){
-      //we cant check as and when user types increases server load exponentially.
-        this.regnumValid=1;
+  regnumInputChanged(){    
+    clearTimeout(this.timeVar);
+    if(this.regnum){ //only if not null
+    this.regnum=this.regnum.toString();
+    }
+    if(this.regnum&&this.regnum.length==9){
+      //check if regnum exists in pwi
+      if(true){ //if regnum exists in pwi
+        if(this.forgotPassword){ //if forgot password
+          //check if regnum exists in db too
+          if(true){ //if regnum already exists in our db
+            this.regnumValid=1;
+          }
+          else{ //if regnum does not exist in our db
+            this.regnumValid=-1;
+          }
+        }
+        else{ //if not forgot password
+          //check if regnum exists in db too
+          if(false){ //if regnum does not exist in our db
+            this.regnumValid=-1;
+          }
+          else{ //if regnum already exists in our db
+            this.regnumValid=1;
+          }
+        }
       }
       else{
         this.regnumValid=-1;
       }
+    }
+    else{
+      this.regnumValid=0;
+      this.timeVar = setTimeout(() => {
+        this.regnumValid=-1;
+      }, 1500);
+    }
   }
 
   pswrdInputChanged(){
@@ -61,31 +92,37 @@ export class SignupPage implements OnInit {
     });
     await loading.present();
 
-    this.restService.newUser(this.regnum,this.pswrd).subscribe(
-            response => {
-                this.authStatus = response;
-                if(this.authStatus.Status == "OK"){ //if insertion success
-                  loading.dismiss();
-                  this.showSuccess();
-                  this.modalController.dismiss(this.regnum);
-                }
-                else if(this.authStatus.Status == "Exists"){ //if row already exists
-                  loading.dismiss();
-                  this.pswrd=null;
-                  this.popAlert('Register number already exists!','','',['Ok']);
-                }
-                else if(this.authStatus.Status == "Wrong"){
-                    loading.dismiss();
-                    this.pswrd=null;
-                    this.popAlert('Wrong Registration No.!','Please try again','',['Ok']);
-                }
-                else { //insertion error
-                  loading.dismiss();
-                  this.pswrd=null;
-                  this.popAlert('Something went wrong','Please try again','',['Ok']);
-                }
+    if(this.forgotPassword){ //logic for forgot password
+      //find that regnum and simply change to new password... no need to delete and insert
+    }
+
+    else{//logic for signup
+      this.restService.newUser(this.regnum,this.pswrd).subscribe(
+        response => {
+            this.authStatus = response;
+            if(this.authStatus.Status == "OK"){ //if insertion success
+              loading.dismiss();
+              this.showSuccess();
+              this.modalController.dismiss(this.regnum);
             }
-    );
+            else if(this.authStatus.Status == "Exists"){ //remove this as it will be covered above
+              loading.dismiss();
+              this.pswrd=null;
+              this.popAlert('Register number already exists!','','',['Ok']);
+            }
+            else if(this.authStatus.Status == "Wrong"){ //remove this as it will be covered above
+                loading.dismiss();
+                this.pswrd=null;
+                this.popAlert('Wrong Registration No.!','Please try again','',['Ok']);
+            }
+            else { //insertion error
+              loading.dismiss();
+              this.pswrd=null;
+              this.popAlert('Something went wrong','Please try again','',['Ok']);
+            }
+        }
+      );
+    }  
   }
 
   async showSuccess(){

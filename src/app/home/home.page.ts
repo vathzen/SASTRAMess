@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
     }
     else{
       const loading = await this.loadCtrl.create({
-          message: 'Logging In'
+          message: 'Verifying...'
       });
       await loading.present();
       this.restService.userAuth(this.regnum,this.pswrd).subscribe( //pswrd number until you make change in db, use this.verified too
@@ -66,7 +66,7 @@ export class HomePage implements OnInit {
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
               loading.dismiss();
-              this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
+              this.popAlert('Typo?','Incorrect registration number or password','Please try again',['OK']);
             }
             else{
               loading.dismiss();
@@ -90,9 +90,10 @@ export class HomePage implements OnInit {
     }
   }
 
-  async signUp(){
+  async signUp(forgotPassword:boolean=false){
     const modal = await this.modalController.create({
       component: SignupPage,
+      componentProps : {forgotPassword: forgotPassword},
       cssClass: 'custom-modal-css'
     });
     modal.present();
@@ -159,6 +160,11 @@ export class HomePage implements OnInit {
             console.log(err)
         }
     )
+  }
+
+  forgotPswrd(){
+    this.signUp(true);
+    this.popAlert('Forgot Password','For security reasons, you need to show your ID card again to reset your password','',['Ok']);
   }
 
   onForgotClicked(){
