@@ -208,8 +208,6 @@ export class MainPage implements AfterViewInit {
     this.loading++;
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
-    //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
     this.restService.getMenu("0").subscribe(
         (val) => {
             this.todayMenu = val;
@@ -237,7 +235,6 @@ export class MainPage implements AfterViewInit {
   updateMenu(){
     this.loading++;
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
-
     this.restService.getMenu("1").subscribe(
         (val) => {
             this.todayMenu = val;
@@ -340,7 +337,7 @@ export class MainPage implements AfterViewInit {
         this.checks.splice(0,this.checks.length);
         this.menu.forEach(item => {
           if(item.val!='null'){
-            this.checks.push(item.isChecked);
+            this.checks.push(item.quantity);
           }
         });
         this.openModal();

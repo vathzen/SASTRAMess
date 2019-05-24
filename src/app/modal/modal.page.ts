@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { Checks,Response } from '../services/classes';
+import { RestService } from '../services/rest.service';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 @Component({
@@ -8,10 +11,10 @@ import anime from 'node_modules/animejs/lib/anime.js';
   styleUrls: ['./modal.page.scss'],
 })
 export class ModalPage implements OnInit {
-  
+
   @Input() checks: any[];
 
-  constructor(private modalController: ModalController, private loadingController: LoadingController) { }
+  constructor(private modalController: ModalController, private loadingController: LoadingController, private restService: RestService, private storage: Storage) { }
   buttonColor:string='dark';
   updationSuccess:boolean=null;
   updationFailure:boolean=null;
@@ -21,15 +24,36 @@ export class ModalPage implements OnInit {
   vibrate_times:number=0;
 
   ngOnInit() {
-    //this.sendData();
+    this.sendData();
   }
 
-  sendData(){      
-    console.log(this.checks); //Use this array for orders
-    this.updationSuccess = true; //STORE SUCCESS OR FAILURE OF UPDATION HERE
-    this.updationFailure = !this.updationSuccess; //this line may look stupid but important!
-    
-    this.onAckRcv();
+  sendData(){
+    var authStatus = new Response();
+    var checksObj = new Checks(this.checks);
+    this.storage.get('reg_num').then((val) => {
+        console.log(val);
+        checksObj.username = val*1;
+        console.log(checksObj);
+        this.restService.putOrder(checksObj).subscribe(
+            (val) => {
+                authStatus = val;
+                if(authStatus.Status == "true"){
+                    this.updationSuccess = true;
+                    this.updationFailure = !this.updationSuccess; //this line may look stupid but important!
+                    this.onAckRcv();
+                }else{
+                    this.updationSuccess = false;
+                    this.updationFailure = !this.updationSuccess; //this line may look stupid but important!
+                    this.onAckRcv();
+                }
+            },
+            (err) => {
+                this.updationSuccess = false;
+                this.updationFailure = !this.updationSuccess; //this line may look stupid but important!
+                this.onAckRcv();
+            }
+        );
+    });
   }
 
   pseudoAckRcv(val:boolean){ //this func for testing
@@ -48,7 +72,7 @@ export class ModalPage implements OnInit {
       });
       this.buttonColor='success';
       this.headerData='Success!';
-      this.subheaderData='Your order has been updated.';      
+      this.subheaderData='Your order has been updated.';
     }
     else{
       this.vibrate();

@@ -68,4 +68,14 @@ export class RestService {
           catchError(this.handleError)
       );
   }
+
+  public putOrder(order): Observable<Response>{
+      return this.httpClient.post(this.baseUrl + 'orders',order).pipe(
+          map(response => {
+              console.log(response);
+              return new Response(response);
+          }),
+          catchError(this.handleError)
+      );
+  }
 }
