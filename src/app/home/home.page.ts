@@ -16,7 +16,6 @@ export class HomePage implements OnInit {
 
   regnum:string=null;
   pswrd:string=null;
-  verified:boolean=null;
   forgotClicked:boolean=false;
   signupClicked:boolean=false;
   authStatus = new Response();
@@ -33,7 +32,7 @@ export class HomePage implements OnInit {
     this.checkFirstTime();
   }
 
-  async popAlert(_header,_subHeader,_message,_buttons){
+  async popAlert(_header:string,_subHeader:string,_message:string,_buttons:any){
     const alert = await this.alertController.create({
       header: _header,
       subHeader: _subHeader,
@@ -138,7 +137,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async verifyCode(code){
+  async verifyCode(code:string){
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
     });

@@ -14,7 +14,6 @@ import anime from 'node_modules/animejs/lib/anime.js';
 })
 export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
-  todayMenu = new Menu();
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
@@ -208,13 +207,12 @@ export class MainPage implements AfterViewInit {
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
     //ASSUMING USER BASED QUERY TAKES BELOW FORM
     var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.restService.getMenu("0").subscribe(
         (val) => {
-            this.todayMenu = val;
-            var oldmenu = this.todayMenu.convToObj();
+            var oldmenu = val.convToObj();
             var i=0;
             this.oldmenu.forEach(item => {
               if(oldmenu[i]!='null'){
@@ -238,8 +236,7 @@ export class MainPage implements AfterViewInit {
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
     this.restService.getMenu("1").subscribe(
         (val) => {
-            this.todayMenu = val;
-            var menu = this.todayMenu.convToObj();
+            var menu = val.convToObj();
             var i=0;
             this.menu.forEach(item => {
               if(menu[i]!='null'){
@@ -443,6 +440,9 @@ export class MainPage implements AfterViewInit {
     else if(low_item.includes("chilly")||low_item.includes("manchurian")||low_item.includes("kadai")){
       return 'chilly';
     }
+    else if(low_item.includes("soup")){
+      return 'soup';
+    }
     else{
       return 'cloche';
     }
@@ -488,17 +488,6 @@ export class MainPage implements AfterViewInit {
 
       await alert.present();
   }
-
-  async showTimeout(){
-    const alert = await this.alertController.create({
-      header:'Sorry',
-      subHeader:'Orders are now Closed',
-      message:'Orders can only be made between 7am to 11pm!',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-}
 
   async showCode(val: string){
     var msg = null;
