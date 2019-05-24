@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
     }
     else{
       const loading = await this.loadCtrl.create({
-          message: 'Logging In'
+          message: 'Verifying...'
       });
       await loading.present();
       this.restService.userAuth(this.regnum,this.pswrd).subscribe( //pswrd number until you make change in db, use this.verified too
@@ -66,7 +66,7 @@ export class HomePage implements OnInit {
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
               loading.dismiss();
-              this.popAlert('Typo?','Incorrect register number or password','Please try again',['OK']);
+              this.popAlert('Typo?','Incorrect registration number or password','Please try again',['OK']);
             }
             else{
               loading.dismiss();

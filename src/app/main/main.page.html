@@ -79,7 +79,7 @@
           </div>         
           <div><ion-label class="price {{entry.tag}}label">Rs.{{entry.price}}</ion-label></div>
           <ion-badge *ngIf="!(entry.isChecked&&!disablekey)" color="medium">0</ion-badge>
-          <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showPicker(entry.val)">{{entry.quantity}}</ion-badge>
+          <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showOnesPicker(entry.val,entry.quantity)">{{entry.quantity}}</ion-badge>
           <div class="checkcover" (click)="toggleChecked(entry.val)">
             <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
           </div>

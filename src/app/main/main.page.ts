@@ -208,7 +208,9 @@ export class MainPage implements AfterViewInit {
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    //ASSUMING USER BASED QUERY TAKES BELOW FORM
+    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.restService.getMenu("0").subscribe(
         (val) => {
             this.todayMenu = val;
@@ -228,15 +230,12 @@ export class MainPage implements AfterViewInit {
             console.log(err);
         }
     )
-    //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.loading--;
   }
 
   updateMenu(){
     this.loading++;
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
-
     this.restService.getMenu("1").subscribe(
         (val) => {
             this.todayMenu = val;
@@ -276,9 +275,66 @@ export class MainPage implements AfterViewInit {
     this.checkChanged=false;
   }
 
-  async showPicker(val:string){
+  async showOnesPicker(val:string,quantity:number){
+    if(quantity>9){
+      this.showTensPicker(val,quantity);
+    }
+    else{
     const picker = await this.pickerController.create({
       buttons: [{
+        text: 'Show x10',
+        handler: () => {
+          this.showTensPicker(val,10);
+        }
+      },
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Done',
+        handler: (data) => {
+          this.menu.forEach(item => {
+            if(item.val==val){
+              if(item.quantity!=data.quantity_ones.value){
+                item.quantity=data.quantity_ones.value;
+                this.checkChanged=true;
+              }
+            }
+          });
+        }
+      }
+    ],
+      columns: [
+        {
+          name: 'quantity_ones',
+          options: [
+            {text: '1', value: 1},
+            {text: '2',value: 2},
+            {text: '3',value: 3},
+            {text: '4',value: 4},
+            {text: '5',value: 5},
+            {text: '6',value: 6},
+            {text: '7',value: 7},
+            {text: '8',value: 8},
+            {text: '9',value: 9}
+          ],
+          selectedIndex:quantity-1
+        }
+      ]
+    });
+    picker.present();
+  }
+  }
+
+  async showTensPicker(val:string,quantity:number){
+    const picker = await this.pickerController.create({
+      buttons: [{
+        text: 'Show x1',
+        handler: () => {
+          this.showOnesPicker(val,1);
+        }
+      },
+      {
         text: 'Cancel',
       },
       {
@@ -298,7 +354,6 @@ export class MainPage implements AfterViewInit {
         {
           name: 'quantity_tens',
           options: [
-            {text: '0', value: 0},
             {text: '1', value: 1},
             {text: '2',value: 2},
             {text: '3',value: 3},
@@ -310,6 +365,7 @@ export class MainPage implements AfterViewInit {
             {text: '9',value: 9}
           ],
           columnWidth:'20px',
+          selectedIndex:(quantity/10)-1
         },{
           name: 'quantity_ones',
           options: [
@@ -322,10 +378,10 @@ export class MainPage implements AfterViewInit {
             {text: '6',value: 6},
             {text: '7',value: 7},
             {text: '8',value: 8},
-            {text: '9',value: 9}
+            {text: '9',value: 9},
           ],
           columnWidth:'20px',
-          selectedIndex:1
+          selectedIndex:quantity%10
         }
       ]
     });
