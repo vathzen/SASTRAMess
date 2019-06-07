@@ -17,6 +17,7 @@ export class SignupPage implements OnInit {
 
   regnum:string=null; //do not change regnum to type number
   pswrd:string=null;
+  name:string=null;
   regnumValid:number=null;
   timeVar:any=null;
   inputType:string='password';

@@ -73,7 +73,7 @@ export class HomePage implements OnInit {
                   this.storage.set('first_time', 'false');
                   this.storage.set('reg_num', this.regnum);
                   this.storage.set('pswrd', this.pswrd);
-                  this.storage.set('name',this.authStatus.Text.split(",")[0]);
+                  this.storage.set('name',this.authStatus.Text.split(",")[0]); //replace this with nickname this since nickname is added
                   this.storage.set('hostel',this.authStatus.Text.split(",")[1]);
                   this.storage.set('contractor','Leaf & Agro');
                   this.navCtrl.navigateRoot(['main']);

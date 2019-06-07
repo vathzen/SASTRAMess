@@ -18,9 +18,13 @@
     <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="{{inputType}}"></ion-input>
     <ion-icon *ngIf="pswrd" name="{{eyeIcon}}" color="dark" (click)="changeInputType()"></ion-icon>
   </ion-item>
+  <ion-item lines="inset">
+    <ion-label>Enter nickname:</ion-label>
+    <ion-input [(ngModel)]="name" type="text"></ion-input>
+  </ion-item>
 </ion-content>
 <ion-footer>
-  <ion-button *ngIf="regnumValid==1&&sufficientLength" fill="solid" color="warning" (click)="signUp()">
+  <ion-button *ngIf="regnumValid==1&&sufficientLength&&name" fill="solid" color="warning" (click)="signUp()">
     Sign Up
   </ion-button>
   <ion-button class="cancelbutton" fill="solid" color="dark" (click)="cancel()">

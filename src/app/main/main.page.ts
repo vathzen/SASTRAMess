@@ -1,9 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AlertController, ModalController, PickerController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { RestService } from '../services/rest.service';
-import { Menu } from '../services/classes';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -44,7 +43,14 @@ export class MainPage implements AfterViewInit {
   todayDate:string=null;
   tmrwDate:string=null;
 
-  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController, public pickerController: PickerController, private restService: RestService) { }
+  constructor(
+    private storage: Storage,
+    public alertController: AlertController,
+    private modalController: ModalController, 
+    public pickerController: PickerController, 
+    private restService: RestService,
+    private navCtrl: NavController,
+    ) { }
 
   ngAfterViewInit(){
     anime({
@@ -493,7 +499,9 @@ export class MainPage implements AfterViewInit {
     var msg = null;
     this.oldmenu.forEach(item => {
       if(item.val==val){
-        msg=item.val+'\n\n'+item.code+'                Quantity: '+item.quantity;
+        msg='abc'+'\n'
+        +'                                                        '+'\n'
+        +item.code+'                Quantity: '+item.quantity;
       }
     });
     //show verification code
@@ -505,5 +513,10 @@ export class MainPage implements AfterViewInit {
     });
 
     await alert.present();
+  }
+
+  changeNickname(){
+    this.storage.set('navToSettingsForName',true);
+    this.navCtrl.navigateForward(['settings']);
   }
 }
