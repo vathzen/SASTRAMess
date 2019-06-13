@@ -15,7 +15,7 @@
   </ion-item>
   <ion-item lines="inset">
     <ion-label>Enter password:<br><p *ngIf="!sufficientLength&&pswrd">Min 8 characters</p></ion-label>
-    <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="{{inputType}}"></ion-input>
+    <ion-input [(ngModel)]="pswrd" (ionChange)="pswrdInputChanged()" type="{{inputType}}" clearOnEdit=false></ion-input>
     <ion-icon *ngIf="pswrd" name="{{eyeIcon}}" color="dark" (click)="changeInputType()"></ion-icon>
   </ion-item>
   <ion-item lines="inset">
