@@ -22,13 +22,13 @@
         </ion-item>
         <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" [(ngModel)]="pswrd"></ion-input>
+            <ion-input type="password" [(ngModel)]="pswrd" clearOnEdit=false></ion-input>
         </ion-item>
         <ion-item class="lastitem" lines="none">
           <div>
             <ion-chip class="forgot" color="danger">
                 <ion-icon class="forgoticon" name="help-circle" (click)="onForgotClicked()"></ion-icon>
-                <p class="forgotlabel">Forgot password</p>
+                <p class="forgotlabel" (click)="forgotPswrd()">Forgot password</p>
             </ion-chip>
             <ion-chip class="signup" color="success">
                 <p class="signuplabel" (click)="signUp()">Sign Up</p>

@@ -1,10 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
-import { PickerController } from '@ionic/angular';
 import { RestService } from '../services/rest.service';
-import { Menu } from '../services/classes';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -15,7 +13,6 @@ import anime from 'node_modules/animejs/lib/anime.js';
 })
 export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
-  todayMenu = new Menu();
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
@@ -46,7 +43,14 @@ export class MainPage implements AfterViewInit {
   todayDate:string=null;
   tmrwDate:string=null;
 
-  constructor(private storage: Storage, public alertController: AlertController, private modalController: ModalController, public pickerController: PickerController, private restService: RestService) { }
+  constructor(
+    private storage: Storage,
+    public alertController: AlertController,
+    private modalController: ModalController, 
+    public pickerController: PickerController, 
+    private restService: RestService,
+    private navCtrl: NavController,
+    ) { }
 
   ngAfterViewInit(){
     anime({
@@ -208,10 +212,13 @@ export class MainPage implements AfterViewInit {
     this.loading++;
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
 
+    //ASSUMING OLDMENU QUERY TAKES BELOW FORM
+    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
+    //ASSUMING USER BASED QUERY TAKES BELOW FORM
+    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.restService.getMenu("0").subscribe(
         (val) => {
-            this.todayMenu = val;
-            var oldmenu = this.todayMenu.convToObj();
+            var oldmenu = val.convToObj();
             var i=0;
             this.oldmenu.forEach(item => {
               if(oldmenu[i]!='null'){
@@ -227,8 +234,6 @@ export class MainPage implements AfterViewInit {
             console.log(err);
         }
     )
-    //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.loading--;
   }
 
@@ -237,8 +242,7 @@ export class MainPage implements AfterViewInit {
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
     this.restService.getMenu("1").subscribe(
         (val) => {
-            this.todayMenu = val;
-            var menu = this.todayMenu.convToObj();
+            var menu = val.convToObj();
             var i=0;
             this.menu.forEach(item => {
               if(menu[i]!='null'){
@@ -274,9 +278,66 @@ export class MainPage implements AfterViewInit {
     this.checkChanged=false;
   }
 
-  async showPicker(val:string){
+  async showOnesPicker(val:string,quantity:number){
+    if(quantity>9){
+      this.showTensPicker(val,quantity);
+    }
+    else{
     const picker = await this.pickerController.create({
       buttons: [{
+        text: 'Show x10',
+        handler: () => {
+          this.showTensPicker(val,10);
+        }
+      },
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Done',
+        handler: (data) => {
+          this.menu.forEach(item => {
+            if(item.val==val){
+              if(item.quantity!=data.quantity_ones.value){
+                item.quantity=data.quantity_ones.value;
+                this.checkChanged=true;
+              }
+            }
+          });
+        }
+      }
+    ],
+      columns: [
+        {
+          name: 'quantity_ones',
+          options: [
+            {text: '1', value: 1},
+            {text: '2',value: 2},
+            {text: '3',value: 3},
+            {text: '4',value: 4},
+            {text: '5',value: 5},
+            {text: '6',value: 6},
+            {text: '7',value: 7},
+            {text: '8',value: 8},
+            {text: '9',value: 9}
+          ],
+          selectedIndex:quantity-1
+        }
+      ]
+    });
+    picker.present();
+  }
+  }
+
+  async showTensPicker(val:string,quantity:number){
+    const picker = await this.pickerController.create({
+      buttons: [{
+        text: 'Show x1',
+        handler: () => {
+          this.showOnesPicker(val,1);
+        }
+      },
+      {
         text: 'Cancel',
       },
       {
@@ -296,7 +357,6 @@ export class MainPage implements AfterViewInit {
         {
           name: 'quantity_tens',
           options: [
-            {text: '0', value: 0},
             {text: '1', value: 1},
             {text: '2',value: 2},
             {text: '3',value: 3},
@@ -308,6 +368,7 @@ export class MainPage implements AfterViewInit {
             {text: '9',value: 9}
           ],
           columnWidth:'20px',
+          selectedIndex:(quantity/10)-1
         },{
           name: 'quantity_ones',
           options: [
@@ -320,10 +381,10 @@ export class MainPage implements AfterViewInit {
             {text: '6',value: 6},
             {text: '7',value: 7},
             {text: '8',value: 8},
-            {text: '9',value: 9}
+            {text: '9',value: 9},
           ],
           columnWidth:'20px',
-          selectedIndex:1
+          selectedIndex:quantity%10
         }
       ]
     });
@@ -385,6 +446,12 @@ export class MainPage implements AfterViewInit {
     else if(low_item.includes("chilly")||low_item.includes("manchurian")||low_item.includes("kadai")){
       return 'chilly';
     }
+    else if(low_item.includes("soup")){
+      return 'soup';
+    }
+    else{
+      return 'cloche';
+    }
   }
 
   toggleChecked(val: string){
@@ -428,22 +495,13 @@ export class MainPage implements AfterViewInit {
       await alert.present();
   }
 
-  async showTimeout(){
-    const alert = await this.alertController.create({
-      header:'Sorry',
-      subHeader:'Orders are now Closed',
-      message:'Orders can only be made between 7am to 11pm!',
-      buttons: ['OK']
-    });
-
-    await alert.present();
-}
-
   async showCode(val: string){
     var msg = null;
     this.oldmenu.forEach(item => {
       if(item.val==val){
-        msg=item.val+'\n\n'+item.code+'                Quantity: '+item.quantity;
+        msg='abc'+'\n'
+        +'                                                        '+'\n'
+        +item.code+'                Quantity: '+item.quantity;
       }
     });
     //show verification code
@@ -455,5 +513,10 @@ export class MainPage implements AfterViewInit {
     });
 
     await alert.present();
+  }
+
+  changeNickname(){
+    this.storage.set('navToSettingsForName',true);
+    this.navCtrl.navigateForward(['settings']);
   }
 }
