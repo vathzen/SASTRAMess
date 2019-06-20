@@ -14,6 +14,25 @@ export class Response {
     }
 }
 
+export class Checks {
+    username: number;
+    bf1: number;
+    bf2: number;
+    lun1: number;
+    lun2: number;
+    din1: number;
+    din2: number;
+
+    constructor(values: number[]){
+        this.bf1 = values[0];
+        this.bf2 = values[1];
+        this.lun1 = values[2];
+        this.lun2 = values[3];
+        this.din1 = values[4];
+        this.din2 = values[5];
+    }
+}
+
 export class Menu {
     Day: string;
     Bf1: string;
@@ -36,10 +55,6 @@ export class Menu {
     convToObj(): Object{
         var asd = [this.Bf1,this.Bf1c,this.Bf2,this.Bf2c,this.Lun1,this.Lun1c,this.Lun2,this.Lun2c,this.Din1,this.Din1c,this.Din2,this.Din2c];
         return asd;
-    }
-
-    getBf1(){
-        console.log(this.Bf1);
     }
 }
 

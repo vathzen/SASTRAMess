@@ -398,7 +398,7 @@ export class MainPage implements AfterViewInit {
         this.checks.splice(0,this.checks.length);
         this.menu.forEach(item => {
           if(item.val!='null'){
-            this.checks.push(item.isChecked);
+            this.checks.push(item.quantity);
           }
         });
         this.openModal();
