@@ -9,7 +9,7 @@
   </ion-toolbar>
 
   <div class="head">
-    <ion-icon class="profileicon" (click)="changeNickname()" size="large" name="person"></ion-icon>
+    <ion-icon class="profileicon" size="large" name="person"></ion-icon>
     <p class="profile" (click)="changeNickname()">{{user.username}}<br class="headbr">{{user.regnum}}</p>
     <ion-icon class="messicon" size="large" name="pizza"></ion-icon>
     <p class="messname">{{user.contractor}}<br class="headbr">{{user.messname}}</p>
@@ -80,14 +80,15 @@
           <div><ion-label class="price {{entry.tag}}label">Rs.{{entry.price}}</ion-label></div>
           <ion-badge *ngIf="!(entry.isChecked&&!disablekey)" color="medium">0</ion-badge>
           <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showOnesPicker(entry.val,entry.quantity)">{{entry.quantity}}</ion-badge>
-          <div class="checkcover" (click)="toggleChecked(entry.val)">
-            <ion-checkbox color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
+          <div id="check{{entry.val}}" class="checkcover" (click)="toggleChecked(entry.val)">
+            <ion-checkbox *ngIf="!entry.isChecked||disablekey" color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
+            <ion-icon class="cancelicon" color="{{entry.color}}" name="close-circle"></ion-icon>
           </div>
         </ion-item>
+        <ion-icon *ngIf="entry.quantity!=entry.oldquantity" class="excmark" color="danger" name="alert" (click)="showNotUpdated()"></ion-icon>
       </ion-item>
       </ng-container>
     </ion-list>
-  
 </ion-content>
 
 <ion-footer no-border>
