@@ -15,12 +15,12 @@ export class MainPage implements AfterViewInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
   ];
   public oldmenu=[
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
@@ -178,7 +178,7 @@ export class MainPage implements AfterViewInit {
     }, 800);
   }
 
-  updatePage(event:any=null){   //call func - read from db, modify list size, update list values
+  updatePage(event:any=null){
     this.updateCode();
     this.updateMenu();
     this.checkTimeUp(true);
@@ -190,8 +190,9 @@ export class MainPage implements AfterViewInit {
   }
 
   getDate(){
-    var date_string = new Date().toString() //get today's date as date obj string
-
+    var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
+    
+    var date_string = new Date(serveDate).toString()
     this.todayDateObj = new Date(date_string);
     this.tmrwDateObj = new Date(this.todayDateObj);
     this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
@@ -239,8 +240,9 @@ export class MainPage implements AfterViewInit {
 
   updateMenu(){
     this.loading++;
+    var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
-    this.restService.getMenu("1").subscribe(
+    /*this.restService.getMenu("1").subscribe(
         (val) => {
             var menu = val.convToObj();
             var i=0;
@@ -256,7 +258,16 @@ export class MainPage implements AfterViewInit {
         (err) => {
             console.log(err);
         }
-    )
+    )*/
+    var i=0;
+            this.menu.forEach(item => {
+              if(menu[i]!='null'){
+                item.val=menu[i];
+                item.price=menu[i+1];
+                item.tagico=this.iconDetect(item.val);//run icon detection
+              }
+              i+=2;
+            });
     this.updateChecks();
     this.loading--;
   }
@@ -269,13 +280,13 @@ export class MainPage implements AfterViewInit {
       if(codes[i]!='null'){
         item.isChecked=true;
         item.quantity=Number(codes[i][5]+codes[i][6]);
+        item.oldquantity=item.quantity;
       }
       else{
         item.isChecked=false;
       }
       i++;
     });
-    this.checkChanged=false;
   }
 
   async showOnesPicker(val:string,quantity:number){
@@ -298,10 +309,7 @@ export class MainPage implements AfterViewInit {
         handler: (data) => {
           this.menu.forEach(item => {
             if(item.val==val){
-              if(item.quantity!=data.quantity_ones.value){
                 item.quantity=data.quantity_ones.value;
-                this.checkChanged=true;
-              }
             }
           });
         }
@@ -345,10 +353,7 @@ export class MainPage implements AfterViewInit {
         handler: (data) => {
           this.menu.forEach(item => {
             if(item.val==val){
-              if(item.quantity!=((data.quantity_tens.value*10)+data.quantity_ones.value)){
                 item.quantity=(data.quantity_tens.value*10)+data.quantity_ones.value;
-                this.checkChanged=true;
-              }
             }
           });
         }
@@ -394,7 +399,13 @@ export class MainPage implements AfterViewInit {
   updateOrder(){
     this.checkTimeUp();
     if(!this.disablekey){
-      if(this.checkChanged){
+      var checkChanged=false;
+      this.menu.forEach(item => {
+        if(item.quantity!=item.oldquantity){
+          checkChanged=true;
+        }
+      });
+      if(checkChanged){
         this.checks.splice(0,this.checks.length);
         this.menu.forEach(item => {
           if(item.val!='null'){
@@ -456,24 +467,47 @@ export class MainPage implements AfterViewInit {
 
   toggleChecked(val: string){
     if(!this.disablekey){
-    this.checkChanged=true;
     this.menu.forEach(item => {
       if(item.val==val){
-        item.isChecked=!item.isChecked;
+        var checkcover = document.getElementById('check'+item.val);
         if(item.isChecked){
-          item.quantity=1;
+          item.isChecked=!item.isChecked;
+          anime({
+            targets: checkcover,
+            rotateY: 0,
+            duration: 300,
+            easing: 'easeInOutSine',
+          });
+          item.quantity=0;
         }
         else{
-          item.quantity=0;
+          setTimeout(() => {
+            item.isChecked=!item.isChecked; 
+            anime({
+              targets: checkcover,
+              rotateY: 180,
+              duration: 300,
+              easing: 'easeInOutSine',
+            });
+            if(item.oldquantity!=0){
+              item.quantity=item.oldquantity;
+            }
+            else{
+              item.quantity=1;
+            }
+          }, 320);
         }
       }
     });
   }
   }
 
-  checkTimeUp(ignorePullButton:boolean=false){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
-    var d = new Date();
-      if(d.getHours() > 7 && d.getHours() < 23 ){
+  animateCheck(){
+    
+  }
+
+  checkTimeUp(ignorePullButton:boolean=false){
+      if(this.todayDateObj.getHours() > 7 && this.todayDateObj.getHours() < 23 ){
         this.disablekey=false;
       }
       else{
@@ -495,13 +529,22 @@ export class MainPage implements AfterViewInit {
       await alert.present();
   }
 
+  async showNotUpdated(){
+    const alert = await this.alertController.create({
+      header:'Warning!',
+      subHeader:'Your order for this item has not been updated.',
+      message:'Press Update Order to update your order.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+}
+
   async showCode(val: string){
     var msg = null;
     this.oldmenu.forEach(item => {
       if(item.val==val){
-        msg='abc'+'\n'
-        +'                                                        '+'\n'
-        +item.code+'                Quantity: '+item.quantity;
+        msg=item.val+'\n'+item.code+'                Quantity: '+item.quantity;
       }
     });
     //show verification code
