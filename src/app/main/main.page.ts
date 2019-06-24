@@ -1,8 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, ModalController, NavController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { RestService } from '../services/rest.service';
+import { NetworkService } from '../services/network.service';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -11,7 +12,7 @@ import anime from 'node_modules/animejs/lib/anime.js';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements AfterViewInit {
+export class MainPage implements OnInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
@@ -50,7 +51,13 @@ export class MainPage implements AfterViewInit {
     public pickerController: PickerController, 
     private restService: RestService,
     private navCtrl: NavController,
+    private networkService: NetworkService
     ) { }
+
+  ngOnInit(){
+    this.storage.set('navIfNetwork','main');
+    this.networkService.checkDisconnection();
+  }
 
   ngAfterViewInit(){
     anime({
@@ -561,5 +568,9 @@ export class MainPage implements AfterViewInit {
   changeNickname(){
     this.storage.set('navToSettingsForName',true);
     this.navCtrl.navigateForward(['settings']);
+  }
+
+  ngOnDestroy(){
+    this.networkService.disconnectDisconnectSubscription();
   }
 }

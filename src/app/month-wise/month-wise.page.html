@@ -6,7 +6,7 @@
         <ion-card-content>
       <ion-item class="monthitem" lines="none">
           <div class="monthdiv">
-          <ion-datetime #picker [(ngModel)]="month" min="2019-04-01" [max]=month (ionChange)="getPage()" displayFormat="MMMM YYYY" picker-format="MMMM YYYY" readonly="true" placeholder="Select a month"></ion-datetime>
+          <ion-datetime #picker [(ngModel)]="month" min="2019-04-01" [max]=maxmonth (ionChange)="getPage()" displayFormat="MMMM YYYY" picker-format="MMMM YYYY" readonly="true" placeholder="Select a month"></ion-datetime>
           </div>
           <div class="calendar" slot="end" (click)="picker.open()"></div>
       </ion-item>
@@ -16,10 +16,11 @@
             <ion-label class="whiteborder itemlabel" [class.highlight]="itemHighlighted" (click)="sortItem()">Item</ion-label>
             <ion-note class="whiteborder spacing font14" [class.highlight]="costHighlighted" (click)="sortCost()">Cost</ion-note>
         </ion-item>
-        <ion-item *ngFor="let entry of entries">
-            <div>{{entry.date}}</div>
+        <ion-item class="monthitem" *ngFor="let entry of entries">
+            <ion-icon class="mealicon" name="{{entry.icon}}" color="{{entry.color}}"></ion-icon>
+            <div>  {{entry.date}}</div>
             <ion-label class="centeralign">{{entry.itemname}}</ion-label>
-            <ion-note>{{entry.cost}}</ion-note>
+            <ion-note>{{entry.quantity}}  {{entry.cost}}</ion-note>
         </ion-item>
         <ion-item class="centeralign font14">
             <div>{{daysTotal}} Days</div>

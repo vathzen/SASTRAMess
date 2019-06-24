@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { NetworkService } from '../services/network.service';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -9,9 +10,11 @@ import { Storage } from '@ionic/storage';
 })
 export class SettingsPage implements OnInit {
 
-  constructor(public alertController: AlertController, private storage: Storage) { }
+  constructor(public alertController: AlertController, private storage: Storage, private networkService: NetworkService) { }
 
   ngOnInit() {
+    this.storage.set('navIfNetwork','settings');
+    this.networkService.checkDisconnection();
     this.storage.get('navToSettingsForName').then(forName =>{
       if(forName){
         this.showChangeName();
@@ -58,6 +61,10 @@ export class SettingsPage implements OnInit {
 
   ionViewWillLeave(){
     this.storage.set('navToSettingsForName',false);
+  }
+
+  ngOnDestroy(){
+    this.networkService.disconnectDisconnectSubscription();
   }
 
 }

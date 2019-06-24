@@ -1,7 +1,17 @@
 <ion-content padding>
-  <ion-card class="itemcard">
+  <ion-card>
       <ion-card-header>Item-wise</ion-card-header>
       <ion-card-content>
+          <ion-item class="monthitem" lines="none">
+              <div>
+              <ion-datetime #picker1 [(ngModel)]="fromdate" min="2019-04-01" [max]="maxdate" (ionChange)="getPage()" readonly="true" placeholder="From"></ion-datetime>
+              </div>
+              <div class="calendar" (click)="picker1.open()"></div>
+              <div>
+                <ion-datetime #picker2 [(ngModel)]="todate" min="2019-04-01" [max]=maxdate (ionChange)="getPage()" readonly="true" placeholder="To"></ion-datetime>
+                </div>
+                <div class="calendar" (click)="picker2.open()"></div>
+          </ion-item>
           <ion-list lines="inset">
             <ion-item class="itemhead">
                 <ion-label class="whiteborder" [class.highlight]="itemHighlighted" (click)="sortItem()">Item</ion-label>

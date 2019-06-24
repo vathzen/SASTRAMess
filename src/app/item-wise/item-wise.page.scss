@@ -25,6 +25,20 @@ ion-item{
     --inner-padding-start: 10px;
     font-size: 14px;
 }
+.monthitem{
+    --padding-start:0px;
+    --inner-padding-start: 0px;
+}
+ion-datetime{
+    color: rgb(70, 70, 70);
+}
+.calendar{
+    width: 20px;
+    height: 20px;
+    margin-left:auto;
+    margin-right: auto;
+    background: #fff url('../../assets/images/calendaricoorange.png') no-repeat center center / cover;
+}
 .itemhead{
     --inner-padding-start: 2px;
     --inner-padding-end: 5px;
