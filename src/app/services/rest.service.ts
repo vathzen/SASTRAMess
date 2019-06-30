@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { Observable,throwError } from 'rxjs';
 import { catchError,map } from 'rxjs/operators';
-import { User,Response,Menu,Code } from './classes';
+import { User,Response,Menu,Code,Codes } from './classes';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ export class RestService {
   baseUrl:string = "https://sastramess.herokuapp.com/";
   user = new User();
   coder = new Code();
+  quants = new Codes();
   private menus = [];
 
   constructor(public httpClient : HttpClient) { }
@@ -25,7 +26,7 @@ export class RestService {
       this.user.username = regnum;
       this.user.password = pwd;
       console.log(this.user);
-      return this.httpClient.post(this.baseUrl +'users',this.user).pipe(
+      return this.httpClient.post(this.baseUrl +'users?user=0',this.user).pipe(
           map(response => {
               console.log(response);
               return new Response(response);
@@ -74,6 +75,16 @@ export class RestService {
           map(response => {
               console.log(response);
               return new Response(response);
+          }),
+          catchError(this.handleError)
+      );
+  }
+
+  public getOrders(day,regno): Observable<Codes>{
+      return this.httpClient.get(this.baseUrl + 'orders?day= '+ day + '&regno=' + regno).pipe(
+          map(val => {
+              //console.log(val);
+              return new Codes(val);
           }),
           catchError(this.handleError)
       );
