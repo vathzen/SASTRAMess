@@ -31,7 +31,6 @@ export class HomePage implements OnInit {
   ngOnInit(){
     this.checkFirstTime();
     this.storage.get('navIfNetwork').then(page=>{
-      console.log(page);
     })
   }
 

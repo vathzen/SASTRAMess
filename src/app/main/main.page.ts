@@ -71,7 +71,9 @@ export class MainPage implements OnInit {
 
   ionViewWillEnter(){
     this.updateHeader();
-    this.updatePage();
+    this.updatePage().then(()=>{
+      this.tryLoading();
+    });
   }
 
   ionViewWillLeave(){
@@ -181,19 +183,32 @@ export class MainPage implements OnInit {
   doRefresh(event:any) {
     this.slideOut();
     setTimeout(() => {
-      this.updatePage(event);
+      this.updatePage(event).then(()=>{
+        this.tryLoading(event);
+      })
     }, 800);
   }
 
-  updatePage(event:any=null){
-    this.updateCode();
-    this.updateMenu();
+  async updatePage(event:any=null){
+    this.loading+=3;
+    this.updateCode(event).then(()=>{
+      this.loading--;
+      this.tryLoading(event);
+    });
+    this.updateMenu().then(()=>{
+      this.loading--;
+      this.tryLoading(event);
+    });
     this.checkTimeUp(true);
-    while(this.loading!=0){} //Loading....
+  }
+
+  tryLoading(event:any=null){
+    if(this.loading==0){
       if(event!=null){
         event.target.complete();
       }
       this.slideIn();
+    }
   }
 
   getDate(){
@@ -206,17 +221,14 @@ export class MainPage implements OnInit {
   }
 
   updateHeader(){
-    this.loading++;
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
     this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
     this.storage.get('name').then(val =>{this.user.username=val});
     this.storage.get('hostel').then(val =>{this.user.messname=val});
     this.storage.get('contractor').then(val =>{this.user.contractor=val});
-    this.loading--;
   }
 
-  updateCode(){
-    this.loading++;
+  async updateCode(event:any){
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
     //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
@@ -225,7 +237,10 @@ export class MainPage implements OnInit {
     this.restService.getOrders(0,this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
-            this.updateCode2(codes);
+            this.updateCode2(codes).then(()=>{
+              this.loading--;
+              this.tryLoading(event);
+            });
         },
         (err) => {
             console.log(err);
@@ -233,7 +248,7 @@ export class MainPage implements OnInit {
     )
   }
 
-  updateCode2(codes:any){
+  async updateCode2(codes:any){
       this.restService.getMenu("0").subscribe(
           (val) => {
               var oldmenu = val.convToObj();
@@ -252,14 +267,12 @@ export class MainPage implements OnInit {
               console.log(err);
           }
       )
-      this.loading--;
   }
 
-  updateMenu(){
-    this.loading++;
-    var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
+  async updateMenu(){
+    //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
-    /*this.restService.getMenu("1").subscribe(
+    this.restService.getMenu("1").subscribe(
         (val) => {
             var menu = val.convToObj();
             var i=0;
@@ -271,21 +284,11 @@ export class MainPage implements OnInit {
               }
               i+=2;
             });
-            this.loading--;
         },
         (err) => {
             console.log(err);
         }
-    )*/
-    var i=0;
-            this.menu.forEach(item => {
-              if(menu[i]!='null'){
-                item.val=menu[i];
-                item.price=menu[i+1];
-                item.tagico=this.iconDetect(item.val);//run icon detection
-              }
-              i+=2;
-            });
+    )
     this.updateChecks();
   }
 
