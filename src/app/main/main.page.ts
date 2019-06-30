@@ -46,8 +46,8 @@ export class MainPage implements AfterViewInit {
   constructor(
     private storage: Storage,
     public alertController: AlertController,
-    private modalController: ModalController, 
-    public pickerController: PickerController, 
+    private modalController: ModalController,
+    public pickerController: PickerController,
     private restService: RestService,
     private navCtrl: NavController,
     ) { }
@@ -207,34 +207,44 @@ export class MainPage implements AfterViewInit {
     this.loading--;
   }
 
-  //**********SERVER MAINTAINS TODAY'S DATE AND TIME OBJ***********
   updateCode(){
     this.loading++;
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
-
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
     //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
     //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
-    this.restService.getMenu("0").subscribe(
+    //var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
+    this.restService.getOrders(0,this.user.regnum).subscribe(
         (val) => {
-            var oldmenu = val.convToObj();
-            var i=0;
-            this.oldmenu.forEach(item => {
-              if(oldmenu[i]!='null'){
-                item.val=oldmenu[i];
-                item.code=codes[i/2];
-                item.tagico=this.iconDetect(item.val);//run icon detection
-                item.quantity=item.code[5]+item.code[6];
-              }
-              i+=2;
-            });
+            var codes = val.convToObj();
+            this.updateCode2(codes);
         },
         (err) => {
             console.log(err);
         }
     )
-    this.loading--;
+  }
+
+  updateCode2(codes:any){
+      this.restService.getMenu("0").subscribe(
+          (val) => {
+              var oldmenu = val.convToObj();
+              var i=0;
+              this.oldmenu.forEach(item => {
+                if(oldmenu[i]!='null'){
+                  item.val=oldmenu[i];
+                  item.code=codes[i/2];
+                  item.tagico=this.iconDetect(item.val);//run icon detection
+                  item.quantity=item.code[5]+item.code[6];
+                }
+                i+=2;
+              });
+          },
+          (err) => {
+              console.log(err);
+          }
+      )
+      this.loading--;
   }
 
   updateMenu(){
@@ -252,30 +262,37 @@ export class MainPage implements AfterViewInit {
               }
               i+=2;
             });
+            this.loading--;
         },
         (err) => {
             console.log(err);
         }
     )
     this.updateChecks();
-    this.loading--;
   }
 
   updateChecks(){
-    //GET ROW OF CODES FROM DB
-    var codes = ['null','null','AB3G309','null','null','G3GJJ08']; //ASSUMING WE GET THIS //tomo menu oda code
-    var i = 0;
-    this.menu.forEach(item => {
-      if(codes[i]!='null'){
-        item.isChecked=true;
-        item.quantity=Number(codes[i][5]+codes[i][6]);
-      }
-      else{
-        item.isChecked=false;
-      }
-      i++;
-    });
-    this.checkChanged=false;
+    //var codes = ['null','null','AB3G309','null','null','G3GJJ08'];//tomo menu oda code
+    this.restService.getOrders(1,this.user.regnum).subscribe(
+        (val) => {
+            var codes = val.convToObj();
+            var i = 0;
+            this.menu.forEach(item => {
+              if(codes[i]!='null'){
+                item.isChecked=true;
+                item.quantity=Number(codes[i][5]+codes[i][6]);
+              }
+              else{
+                item.isChecked=false;
+              }
+              i++;
+            });
+            this.checkChanged=false;
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
   }
 
   async showOnesPicker(val:string,quantity:number){
