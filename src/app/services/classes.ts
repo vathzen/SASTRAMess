@@ -65,3 +65,20 @@ export class Code {
         Object.assign(this,values);
     }
 }
+
+
+export class Codes{
+    Bf1: string;
+    Bf2: string;
+    Lun1: string;
+    Lun2: string;
+    Din1: string;
+    Din2: string;
+    constructor(values: Object = {}){
+        Object.assign(this, values);
+    }
+    convToObj(): Object{
+        var asd = [this.Bf1,this.Bf2,this.Lun1,this.Lun2,this.Din1,this.Din2];
+        return asd;
+    }
+}
