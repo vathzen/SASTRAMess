@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NetworkService } from '../services/network.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-history',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HistoryPage implements OnInit {
 
-  constructor() { }
+  constructor(private networkService: NetworkService, private storage: Storage) { }
 
   ngOnInit() {
+    this.storage.set('navIfNetwork','history');
+    this.networkService.checkDisconnection();
+  }
+
+  ngOnDestroy(){
+    this.networkService.disconnectDisconnectSubscription();
   }
 
 }

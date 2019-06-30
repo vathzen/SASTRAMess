@@ -21,6 +21,7 @@ const routes: Routes = [
   },
   { path: 'history', loadChildren: './history/history.module#HistoryPageModule' },
   { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
+  { path: 'no-internet', loadChildren: './no-internet/no-internet.module#NoInternetPageModule' },
 
 ];
 

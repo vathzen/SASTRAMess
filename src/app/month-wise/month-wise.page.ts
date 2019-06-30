@@ -8,14 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class MonthWisePage implements OnInit {
 
   constructor() { }
-  public entries=[
-    {date:'10 Apr', itemname:'Gobi Manchurian Dry', cost:20},
-    {date:'10 Apr', itemname:'Gobi Manchurian Dry', cost:20}
-  ];
+  public entries=[];
   costTotal:number=null;
   daysTotal:number=null;
   mealsTotal:number=null;
   month=new Date().toISOString().split('T')[0];
+  maxmonth=null;
   itemHighlighted:boolean=null;
   dateHighlighted:boolean=null;
   costHighlighted:boolean=null;
@@ -26,17 +24,78 @@ export class MonthWisePage implements OnInit {
 
   ngOnInit() {
     this.getPage();
+    this.maxmonth=this.month;
   }
 
   getPage(){
     console.log(this.month.split('T')[0]);//use this date to get data
+
+    let data = [{ //assuming we get this
+      "date" : "01-04-2019",
+      "bf1" : "Idly-2-43",
+      "bf2" : "null-0-0",
+      "lun1" : "Poori-3-77",
+      "lun2" : "null-0-0",
+      "din1" : "null-0-0",
+      "din2" : "Lasagna-4-13",
+    },
+      {
+      "date" : "02-04-2019",
+      "bf1" : "Dosa-2-43",
+      "bf2" : "null-0-0",
+      "lun1" : "Poori-3-77",
+      "lun2" : "Lasagna-4-13",
+      "din1" : "null-0-0",
+      "din2" : "Lasagna-4-13",
+    },
+    {
+      "date" : "03-04-2019",
+      "bf1" : "Vada-2-43",
+      "bf2" : "null-0-0",
+      "lun1" : "Poori-3-77",
+      "lun2" : "Lasagna-4-13",
+      "din1" : "null-0-0",
+      "din2" : "Lasagna-4-13",
+    },{
+      "date" : "04-04-2019",
+      "bf1" : "Vada-2-43",
+      "bf2" : "null-0-0",
+      "lun1" : "Poori-3-77",
+      "lun2" : "Lasagna-4-13",
+      "din1" : "null-0-0",
+      "din2" : "null-0-0",
+    },]
+
     this.entries.splice(0,this.entries.length);
     this.costTotal=0;
-    //getnewdata
-    this.entries.push({date:'10 Apr', itemname:'D', cost:30});
-    this.entries.push({date:'11 Apr', itemname:'A', cost:40});
-    this.entries.push({date:'12 Apr', itemname:'F', cost:40});
-    this.entries.push({date:'13 Apr', itemname:'A', cost:40});
+
+    data.forEach(element => {
+      let date = element.date.split('-')[0]+' '+new Date(this.month.split('T')[0]).toString().split(' ')[1];
+      let splitted = element.bf1.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'partly-sunny', color:'success', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.bf2.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'partly-sunny', color:'success', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.lun1.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'sunny', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.lun2.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'sunny', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.din1.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'moon', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.din2.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'moon', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+    });
 
     var dates=[];
     this.entries.forEach(element => {
