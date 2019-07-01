@@ -14,6 +14,9 @@ export class ItemWisePage implements OnInit {
     {itemname:'Paneer Fried Rice', quantity:20, cost:300},
   ];
   public colors=['primary','secondary','tertiary','success','warning','danger','light','medium','dark'];
+  fromdate=null;
+  todate=null;
+  maxdate=null;
   costTotal:number=null;
   quantityTotal:number=null;
   itemHighlighted:boolean=null;
@@ -25,6 +28,10 @@ export class ItemWisePage implements OnInit {
   itemSortNeeded=true;
 
   ngOnInit() {
+    this.todate=new Date();
+    this.maxdate=this.todate.toISOString().split('T')[0];
+    this.fromdate=new Date();
+    this.fromdate.setDate(1);
     this.getPage();
   }
 

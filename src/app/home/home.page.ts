@@ -30,6 +30,8 @@ export class HomePage implements OnInit {
 
   ngOnInit(){
     this.checkFirstTime();
+    this.storage.get('navIfNetwork').then(page=>{
+    })
   }
 
   async popAlert(_header:string,_subHeader:string,_message:string,_buttons:any){

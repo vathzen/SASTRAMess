@@ -1,0 +1,18 @@
+ion-content{
+    --background: orange;
+    text-align: center;
+}
+.wifiicon{
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 75px;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/wifi.png') no-repeat center center / cover;
+}
+ion-text{
+    font-size: 25px;
+}
+ion-button{
+    margin-top: 75px;
+}

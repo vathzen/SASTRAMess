@@ -1,8 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, ModalController, NavController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { RestService } from '../services/rest.service';
+import { NetworkService } from '../services/network.service';
 import anime from 'node_modules/animejs/lib/anime.js';
 
 
@@ -11,16 +12,16 @@ import anime from 'node_modules/animejs/lib/anime.js';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements AfterViewInit {
+export class MainPage implements OnInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', quantity:0 ,price:null},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
   ];
   public oldmenu=[
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
@@ -50,7 +51,13 @@ export class MainPage implements AfterViewInit {
     public pickerController: PickerController,
     private restService: RestService,
     private navCtrl: NavController,
+    private networkService: NetworkService
     ) { }
+
+  ngOnInit(){
+    this.storage.set('navIfNetwork','main');
+    this.networkService.checkDisconnection();
+  }
 
   ngAfterViewInit(){
     anime({
@@ -64,7 +71,9 @@ export class MainPage implements AfterViewInit {
 
   ionViewWillEnter(){
     this.updateHeader();
-    this.updatePage();
+    this.updatePage().then(()=>{
+      this.tryLoading();
+    });
   }
 
   ionViewWillLeave(){
@@ -174,41 +183,52 @@ export class MainPage implements AfterViewInit {
   doRefresh(event:any) {
     this.slideOut();
     setTimeout(() => {
-      this.updatePage(event);
+      this.updatePage(event).then(()=>{
+        this.tryLoading(event);
+      })
     }, 800);
   }
 
-  updatePage(event:any=null){   //call func - read from db, modify list size, update list values
-    this.updateCode();
-    this.updateMenu();
+  async updatePage(event:any=null){
+    this.loading+=3;
+    this.updateCode(event).then(()=>{
+      this.loading--;
+      this.tryLoading(event);
+    });
+    this.updateMenu().then(()=>{
+      this.loading--;
+      this.tryLoading(event);
+    });
     this.checkTimeUp(true);
-    while(this.loading!=0){} //Loading....
+  }
+
+  tryLoading(event:any=null){
+    if(this.loading==0){
       if(event!=null){
         event.target.complete();
       }
       this.slideIn();
+    }
   }
 
   getDate(){
-    var date_string = new Date().toString() //get today's date as date obj string
+    var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
 
+    var date_string = new Date(serveDate).toString()
     this.todayDateObj = new Date(date_string);
     this.tmrwDateObj = new Date(this.todayDateObj);
     this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
   }
 
   updateHeader(){
-    this.loading++;
     this.storage.get('reg_num').then(val =>{this.user.regnum=val});
     this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
     this.storage.get('name').then(val =>{this.user.username=val});
     this.storage.get('hostel').then(val =>{this.user.messname=val});
     this.storage.get('contractor').then(val =>{this.user.contractor=val});
-    this.loading--;
   }
 
-  updateCode(){
-    this.loading++;
+  async updateCode(event:any){
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
     //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
@@ -217,7 +237,10 @@ export class MainPage implements AfterViewInit {
     this.restService.getOrders(0,this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
-            this.updateCode2(codes);
+            this.updateCode2(codes).then(()=>{
+              this.loading--;
+              this.tryLoading(event);
+            });
         },
         (err) => {
             console.log(err);
@@ -225,7 +248,7 @@ export class MainPage implements AfterViewInit {
     )
   }
 
-  updateCode2(codes:any){
+  async updateCode2(codes:any){
       this.restService.getMenu("0").subscribe(
           (val) => {
               var oldmenu = val.convToObj();
@@ -244,11 +267,10 @@ export class MainPage implements AfterViewInit {
               console.log(err);
           }
       )
-      this.loading--;
   }
 
-  updateMenu(){
-    this.loading++;
+  async updateMenu(){
+    //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
     this.restService.getMenu("1").subscribe(
         (val) => {
@@ -315,10 +337,7 @@ export class MainPage implements AfterViewInit {
         handler: (data) => {
           this.menu.forEach(item => {
             if(item.val==val){
-              if(item.quantity!=data.quantity_ones.value){
                 item.quantity=data.quantity_ones.value;
-                this.checkChanged=true;
-              }
             }
           });
         }
@@ -362,10 +381,7 @@ export class MainPage implements AfterViewInit {
         handler: (data) => {
           this.menu.forEach(item => {
             if(item.val==val){
-              if(item.quantity!=((data.quantity_tens.value*10)+data.quantity_ones.value)){
                 item.quantity=(data.quantity_tens.value*10)+data.quantity_ones.value;
-                this.checkChanged=true;
-              }
             }
           });
         }
@@ -411,7 +427,13 @@ export class MainPage implements AfterViewInit {
   updateOrder(){
     this.checkTimeUp();
     if(!this.disablekey){
-      if(this.checkChanged){
+      var checkChanged=false;
+      this.menu.forEach(item => {
+        if(item.quantity!=item.oldquantity){
+          checkChanged=true;
+        }
+      });
+      if(checkChanged){
         this.checks.splice(0,this.checks.length);
         this.menu.forEach(item => {
           if(item.val!='null'){
@@ -473,24 +495,47 @@ export class MainPage implements AfterViewInit {
 
   toggleChecked(val: string){
     if(!this.disablekey){
-    this.checkChanged=true;
     this.menu.forEach(item => {
       if(item.val==val){
-        item.isChecked=!item.isChecked;
+        var checkcover = document.getElementById('check'+item.val);
         if(item.isChecked){
-          item.quantity=1;
+          item.isChecked=!item.isChecked;
+          anime({
+            targets: checkcover,
+            rotateY: 0,
+            duration: 300,
+            easing: 'easeInOutSine',
+          });
+          item.quantity=0;
         }
         else{
-          item.quantity=0;
+          setTimeout(() => {
+            item.isChecked=!item.isChecked;
+            anime({
+              targets: checkcover,
+              rotateY: 180,
+              duration: 300,
+              easing: 'easeInOutSine',
+            });
+            if(item.oldquantity!=0){
+              item.quantity=item.oldquantity;
+            }
+            else{
+              item.quantity=1;
+            }
+          }, 320);
         }
       }
     });
   }
   }
 
-  checkTimeUp(ignorePullButton:boolean=false){//use time obj from server *VERY VITAL* generate codes in server before 12:00am
-    var d = new Date();
-      if(d.getHours() > 7 && d.getHours() < 23 ){
+  animateCheck(){
+
+  }
+
+  checkTimeUp(ignorePullButton:boolean=false){
+      if(this.todayDateObj.getHours() > 7 && this.todayDateObj.getHours() < 23 ){
         this.disablekey=false;
       }
       else{
@@ -512,13 +557,22 @@ export class MainPage implements AfterViewInit {
       await alert.present();
   }
 
+  async showNotUpdated(){
+    const alert = await this.alertController.create({
+      header:'Warning!',
+      subHeader:'Your order for this item has not been updated.',
+      message:'Press Update Order to update your order.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+}
+
   async showCode(val: string){
     var msg = null;
     this.oldmenu.forEach(item => {
       if(item.val==val){
-        msg='abc'+'\n'
-        +'                                                        '+'\n'
-        +item.code+'                Quantity: '+item.quantity;
+        msg=item.val+'\n'+item.code+'                Quantity: '+item.quantity;
       }
     });
     //show verification code
@@ -535,5 +589,9 @@ export class MainPage implements AfterViewInit {
   changeNickname(){
     this.storage.set('navToSettingsForName',true);
     this.navCtrl.navigateForward(['settings']);
+  }
+
+  ngOnDestroy(){
+    this.networkService.disconnectDisconnectSubscription();
   }
 }

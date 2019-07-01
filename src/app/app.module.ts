@@ -13,8 +13,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { RestService } from './services/rest.service';
+import { NetworkService } from './services/network.service';
 import { ModalPageModule } from './modal/modal.module';
 import { SignupPageModule } from './signup/signup.module';
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +35,8 @@ import { SignupPageModule } from './signup/signup.module';
     StatusBar,
     SplashScreen,
     RestService,
+    NetworkService,
+    Network,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

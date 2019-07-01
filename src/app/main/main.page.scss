@@ -86,7 +86,6 @@ ion-card-content{
     --padding-start:0%;
     --inner-padding-start:0%;
     --inner-padding-end:0%;
-    width: 0%;
 }
 .itemborder{
     width: 94%;
@@ -101,7 +100,6 @@ ion-card-content{
     --border-width:2.5px;
     --border-radius: 5px;
     --padding-start:0px;
-    --inner-padding-end:0px;
     width: 22px;
 }
 .tag{
@@ -131,6 +129,13 @@ ion-card-content{
     --background:#f2f2f2;
     --padding-start:0%;
 }
+.excmark{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 2px;
+    left: 22px;
+}
 .icosize{
     width: 40px;
     height: 40px;
@@ -141,31 +146,31 @@ ion-card-content{
     background: #cacaca;
 }
 .dosaico{
-    background: #f2f2f2 url('../../assets/images/dosa.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/dosa.png') no-repeat center center / cover;
 }
 .noodleico{
-    background: #f2f2f2 url('../../assets/images/noodle.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/noodle.png') no-repeat center center / cover;
 }
 .riceico{
-    background: #f2f2f2 url('../../assets/images/rice.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/rice.png') no-repeat center center / cover;
 }
 .flakeico{
-    background: #f2f2f2 url('../../assets/images/cornsmall.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/cornsmall.png') no-repeat center center / cover;
 }
 .sandwichico{
-    background: #f2f2f2 url('../../assets/images/sandwich.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/sandwich.png') no-repeat center center / cover;
 }
 .friesico{
-    background: #f2f2f2 url('../../assets/images/ffries.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/ffries.png') no-repeat center center / cover;
 }
 .chillyico{
-    background: #f2f2f2 url('../../assets/images/cpaneer.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/cpaneer.png') no-repeat center center / cover;
 }
 .soupico{
-    background: #f2f2f2 url('../../assets/images/soup.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/soup.png') no-repeat center center / cover;
 }
 .clocheico{
-    background: #f2f2f2 url('../../assets/images/cloche.png') no-repeat center center / cover;
+    background: rgba(0, 0, 0, 0) url('../../assets/images/cloche.png') no-repeat center center / cover;
 }
 .itemname{
     width: 40%;
@@ -200,9 +205,17 @@ ion-badge{
     right:0px;
 }
 ion-checkbox{
+    width: 18px;
+    height: 18px;
     margin-top: 45%;
     margin-left: auto;
     margin-right: auto;
+}
+.cancelicon{
+    width: 25px;
+    height: 25px;
+    margin-top: 32%;
+    margin-left: 10%;
 }
 .codebutton{
     position: absolute;
