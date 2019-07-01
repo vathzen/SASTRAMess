@@ -213,7 +213,11 @@ export class MainPage implements OnInit {
 
   getDate(){
     var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
     var date_string = new Date(serveDate).toString()
     this.todayDateObj = new Date(date_string);
     this.tmrwDateObj = new Date(this.todayDateObj);
@@ -510,7 +514,11 @@ export class MainPage implements OnInit {
         }
         else{
           setTimeout(() => {
+<<<<<<< HEAD
             item.isChecked=!item.isChecked;
+=======
+            item.isChecked=!item.isChecked; 
+>>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
             anime({
               targets: checkcover,
               rotateY: 180,
@@ -531,7 +539,11 @@ export class MainPage implements OnInit {
   }
 
   animateCheck(){
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
   }
 
   checkTimeUp(ignorePullButton:boolean=false){
