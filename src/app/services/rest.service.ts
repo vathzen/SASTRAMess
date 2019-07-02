@@ -85,9 +85,17 @@ export class RestService {
       console.log(url);
       return this.httpClient.get(url).pipe(
           map(val => {
-              //
               console.log(val);
               return new Codes(val);
+          }),
+          catchError(this.handleError)
+      );
+  }
+
+  public getStatus(): Observable<Response>{
+      return this.httpClient.get(this.baseUrl).pipe(
+          map(val => {
+              return new Response(val);
           }),
           catchError(this.handleError)
       );

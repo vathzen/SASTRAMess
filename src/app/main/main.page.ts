@@ -69,7 +69,7 @@ export class MainPage implements OnInit {z
     this.getDate();
   }
 
-  ionViewWillEnter(){
+  updateHeader(){
       this.storage.get('reg_num').then(val =>{
           this.user.regnum=val;
           this.updatePage().then(()=>{
@@ -216,13 +216,22 @@ export class MainPage implements OnInit {z
     }
   }
 
-  getDate(){
-    var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
-
-    var date_string = new Date(serveDate).toString()
-    this.todayDateObj = new Date(date_string);
-    this.tmrwDateObj = new Date(this.todayDateObj);
-    this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
+  async getDate(){
+    //var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
+    this.restService.getStatus().subscribe(
+        (val) => {
+            console.log(val);
+            var serveDate = val.Text;
+            var date_string = new Date(serveDate).toString();
+            this.todayDateObj = new Date(date_string);
+            this.tmrwDateObj = new Date(this.todayDateObj);
+            this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
+            this.updateHeader();
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
   }
 
   async updateCode(event:any){
