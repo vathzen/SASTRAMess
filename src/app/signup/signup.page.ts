@@ -28,36 +28,40 @@ export class SignupPage implements OnInit {
   ngOnInit() {
   }
 
-  regnumInputChanged(){    
+  regnumInputChanged(){
     clearTimeout(this.timeVar);
     if(this.regnum){ //only if not null
     this.regnum=this.regnum.toString();
     }
     if(this.regnum&&this.regnum.length==9){
-      //check if regnum exists in pwi
-      if(true){ //if regnum exists in pwi
-        if(this.forgotPassword){ //if forgot password
-          //check if regnum exists in db too
-          if(true){ //if regnum already exists in our db
-            this.regnumValid=1;
-          }
-          else{ //if regnum does not exist in our db
-            this.regnumValid=-1;
-          }
-        }
-        else{ //if not forgot password
-          //check if regnum exists in db too
-          if(false){ //if regnum does not exist in our db
-            this.regnumValid=-1;
-          }
-          else{ //if regnum already exists in our db
-            this.regnumValid=1;
-          }
-        }
-      }
-      else{
-        this.regnumValid=-1;
-      }
+     this.restService.getExist(this.regnum).subscribe(
+         (val) => {
+             if(val.Status == "true"){ //if regnum exists in pwi
+               if(this.forgotPassword){ //if forgot password
+                 //check if regnum exists in db too
+                 if(val.Text == "true"){ //if regnum already exists in our db
+                   this.regnumValid=1;
+                 }
+                 else{ //if regnum does not exist in our db
+                   this.regnumValid=-1;
+                 }
+               }
+               else{ //if not forgot password
+                 //check if regnum exists in db too
+                 if(val.Text == "true"){//if regnum already exists in our db
+                   this.regnumValid=-1;
+                 }
+                 else{  //if regnum does not exist in our db 
+                   this.regnumValid=1;
+                 }
+               }
+             }
+             else{
+               this.regnumValid=-1;
+             }
+         }
+     )
+
     }
     else{
       this.regnumValid=0;
@@ -123,7 +127,7 @@ export class SignupPage implements OnInit {
             }
         }
       );
-    }  
+    }
   }
 
   async showSuccess(){

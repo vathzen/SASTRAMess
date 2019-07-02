@@ -100,4 +100,13 @@ export class RestService {
           catchError(this.handleError)
       );
   }
+
+  public getExist(reg): Observable<Response>{
+      return this.httpClient.get(this.baseUrl + 'users?reg=' + reg).pipe(
+        map(val => {
+            return new Response(val);
+        }),
+        catchError(this.handleError)
+      );
+  }
 }
