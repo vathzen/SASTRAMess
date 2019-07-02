@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { NetworkService } from '../services/network.service';
+import { ForgotPage } from '../forgot/forgot.page';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -10,7 +11,7 @@ import { Storage } from '@ionic/storage';
 })
 export class SettingsPage implements OnInit {
 
-  constructor(public alertController: AlertController, private storage: Storage, private networkService: NetworkService) { }
+  constructor(public alertController: AlertController, private storage: Storage, private networkService: NetworkService, private modalController: ModalController) { }
 
   ngOnInit() {
     this.storage.set('navIfNetwork','settings');
@@ -20,6 +21,24 @@ export class SettingsPage implements OnInit {
         this.showChangeName();
       }
     });
+  }
+
+  showChangePassword(){
+    this.storage.get('reg_num').then((regnum)=>{
+      this.storage.get('pswrd').then(async (pswrd)=>{
+        const modal = await this.modalController.create({
+          component: ForgotPage,
+          componentProps : {regnum: regnum, pswrd: pswrd},
+          cssClass: 'custom-modal-css'
+        });
+        modal.present();
+        await modal.onDidDismiss();
+        const newpw = await modal.onDidDismiss();
+        if(newpw.data){
+          this.storage.set('pswrd', newpw.data);
+        }
+      })
+    })
   }
 
   async showChangeName(){

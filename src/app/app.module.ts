@@ -16,6 +16,7 @@ import { RestService } from './services/rest.service';
 import { NetworkService } from './services/network.service';
 import { ModalPageModule } from './modal/modal.module';
 import { SignupPageModule } from './signup/signup.module';
+import { ForgotPageModule } from './forgot/forgot.module';
 import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
@@ -29,7 +30,8 @@ import { Network } from '@ionic-native/network/ngx';
     FormsModule,
     HttpClientModule,
     ModalPageModule,
-    SignupPageModule
+    SignupPageModule,
+    ForgotPageModule
   ],
   providers: [
     StatusBar,

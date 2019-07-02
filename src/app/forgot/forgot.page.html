@@ -1,0 +1,30 @@
+<ion-content>
+  <ion-item lines="full" class="headitem">
+    <ion-icon class="keyicon" name="key"></ion-icon>
+    <ion-label text-wrap>Change Password</ion-label>
+  </ion-item>
+  <ion-item lines="inset">
+    <ion-label>Enter old password:</ion-label>
+    <ion-input [(ngModel)]="oldpw" type="password" clearOnEdit=false></ion-input>
+    <ion-spinner *ngIf="oldpw<pswrd && oldpw" name="crescent"></ion-spinner>
+    <ion-icon *ngIf="oldpw==pswrd" color ="success" name="checkmark-circle"></ion-icon>
+  </ion-item>
+  <ion-item lines="inset">
+    <ion-label>Enter new password:<br><p *ngIf="!sufficientLength&&newpw">Min 8 characters</p></ion-label>
+    <ion-input [(ngModel)]="newpw" type="password" (ionChange)="pswrdInputChanged()" type="{{inputType}}" clearOnEdit=false></ion-input>
+    <ion-icon *ngIf="newpw" name="{{eyeIcon}}" color="dark" (click)="changeInputType()"></ion-icon>
+  </ion-item>
+  <ion-item lines="inset" *ngIf="inputType=='password'">
+    <ion-label>Confirm new password:<br><p *ngIf="!(newpw==confirmpw)&&confirmpw">Passwords don't match!</p></ion-label>
+    <ion-input [(ngModel)]="confirmpw" type="password" clearOnEdit=false></ion-input>
+  </ion-item>
+</ion-content>
+
+<ion-footer>
+  <ion-button *ngIf="(oldpw==pswrd)&&(inputType=='password'?newpw==confirmpw:sufficientLength)" fill="solid" color="warning" (click)="updatePassword()">
+    Change
+  </ion-button>
+  <ion-button fill="solid" color="dark" (click)="cancel()">
+    Cancel
+  </ion-button>
+</ion-footer>

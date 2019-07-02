@@ -66,6 +66,9 @@ export class MainPage implements OnInit {z
       duration: 1,
       easing: 'easeInOutSine'
     });
+  }
+
+  ionViewWillEnter(){
     this.getDate();
   }
 
