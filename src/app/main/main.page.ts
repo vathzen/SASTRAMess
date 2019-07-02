@@ -12,7 +12,7 @@ import anime from 'node_modules/animejs/lib/anime.js';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements OnInit {
+export class MainPage implements OnInit {z
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
   public menu= [
@@ -70,10 +70,15 @@ export class MainPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    this.updateHeader();
-    this.updatePage().then(()=>{
-      this.tryLoading();
-    });
+      this.storage.get('reg_num').then(val =>{
+          this.user.regnum=val;
+          this.updatePage().then(()=>{
+            this.tryLoading();
+          });
+      });
+      this.storage.get('name').then(val =>{this.user.username=val});
+      this.storage.get('hostel').then(val =>{this.user.messname=val});
+      this.storage.get('contractor').then(val =>{this.user.contractor=val});
   }
 
   ionViewWillLeave(){
@@ -213,23 +218,11 @@ export class MainPage implements OnInit {
 
   getDate(){
     var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
     var date_string = new Date(serveDate).toString()
     this.todayDateObj = new Date(date_string);
     this.tmrwDateObj = new Date(this.todayDateObj);
     this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
-  }
-
-  updateHeader(){
-    this.storage.get('reg_num').then(val =>{this.user.regnum=val});
-    this.storage.get('pswrd').then(val =>{this.user.pswrd=val});
-    this.storage.get('name').then(val =>{this.user.username=val});
-    this.storage.get('hostel').then(val =>{this.user.messname=val});
-    this.storage.get('contractor').then(val =>{this.user.contractor=val});
   }
 
   async updateCode(event:any){
@@ -299,14 +292,16 @@ export class MainPage implements OnInit {
 
   updateChecks(){
     //var codes = ['null','null','AB3G309','null','null','G3GJJ08'];//tomo menu oda code
-    this.restService.getOrders(1,this.user.regnum).subscribe(
+    this.restService.getOrders("1",this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
+            console.log(codes);
             var i = 0;
             this.menu.forEach(item => {
               if(codes[i]!='null'){
                 item.isChecked=true;
                 item.quantity=Number(codes[i][5]+codes[i][6]);
+                item.oldquantity=item.quantity;
               }
               else{
                 item.isChecked=false;
@@ -514,11 +509,7 @@ export class MainPage implements OnInit {
         }
         else{
           setTimeout(() => {
-<<<<<<< HEAD
             item.isChecked=!item.isChecked;
-=======
-            item.isChecked=!item.isChecked; 
->>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
             anime({
               targets: checkcover,
               rotateY: 180,
@@ -539,11 +530,7 @@ export class MainPage implements OnInit {
   }
 
   animateCheck(){
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 5ef690ae64f34944787144f4c9f00bde45b02442
   }
 
   checkTimeUp(ignorePullButton:boolean=false){

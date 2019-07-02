@@ -81,9 +81,12 @@ export class RestService {
   }
 
   public getOrders(day,regno): Observable<Codes>{
-      return this.httpClient.get(this.baseUrl + 'orders?day= '+ day + '&regno=' + regno).pipe(
+      var url = this.baseUrl + 'orders?day='+ day.toString() + '&regno=' + regno;
+      console.log(url);
+      return this.httpClient.get(url).pipe(
           map(val => {
-              //console.log(val);
+              //
+              console.log(val);
               return new Codes(val);
           }),
           catchError(this.handleError)
