@@ -35,9 +35,10 @@ export class RestService {
       );
   }
 
-  public newUser(regnum,pwd): Observable<Response>{
+  public newUser(regnum,pwd,name): Observable<Response>{
       this.user.username = regnum;
       this.user.password = pwd;
+      this.user.nickname = name;
       console.log(this.user);
       return this.httpClient.put(this.baseUrl + 'users',this.user).pipe(
         map(response => {
@@ -103,6 +104,18 @@ export class RestService {
 
   public getExist(reg): Observable<Response>{
       return this.httpClient.get(this.baseUrl + 'users?reg=' + reg).pipe(
+        map(val => {
+            return new Response(val);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  public changeNickname(regnum,nick): Observable<Response>{
+      this.user.username = regnum;
+      this.user.nickname = nick;
+      console.log(this.user)
+      return this.httpClient.post(this.baseUrl + 'users?user=2',this.user).pipe(
         map(val => {
             return new Response(val);
         }),
