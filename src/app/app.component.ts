@@ -58,8 +58,8 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.show()
-      this.statusBar.backgroundColorByHexString('#da8d00');
+      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#ffffff');
       this.splashScreen.hide();
       this.storage.get('navIfNetwork').then(page=>{
         if(page!=''){
