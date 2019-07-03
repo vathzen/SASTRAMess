@@ -44,12 +44,14 @@ export class AppComponent {
     }
   ];
 
+  showSplash:boolean=true;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: Storage,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.initializeApp();
   }
@@ -57,12 +59,17 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+      this.statusBar.overlaysWebView(true);
+      this.statusBar.backgroundColorByHexString('#da8d00');
       this.splashScreen.hide();
       this.storage.get('navIfNetwork').then(page=>{
         if(page!=''){
           this.navCtrl.navigateRoot(page);
         }
       })
+      setTimeout(() => {
+        this.showSplash=false;
+      }, 3000);
     });
   }
 
