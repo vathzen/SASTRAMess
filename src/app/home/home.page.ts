@@ -99,7 +99,6 @@ export class HomePage implements OnInit {
     modal.present();
     const regnum = await modal.onDidDismiss();
     if(regnum.data){
-      this.regnum=regnum.data;
       this.storage.set('first_time', 'false');
       this.presentEnterCode();
     }
