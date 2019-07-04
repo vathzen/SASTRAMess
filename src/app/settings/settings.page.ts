@@ -12,8 +12,6 @@ import { RestService } from '../services/rest.service';
 })
 export class SettingsPage implements OnInit {
 
-  constructor(public alertController: AlertController, private storage: Storage, private networkService: NetworkService,private restService: RestService) { }
-
   constructor(public alertController: AlertController, private storage: Storage, private networkService: NetworkService,private modalController: ModalController,private restService: RestService) { }
 
 
