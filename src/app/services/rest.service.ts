@@ -122,4 +122,15 @@ export class RestService {
         catchError(this.handleError)
       );
   }
+
+  public changePassword(regn,pass): Observable<Response>{
+      this.user.username = regn;
+      this.user.password = pass;
+      return this.httpClient.post(this.baseUrl + 'pass',this.user).pipe(
+          map(val => {
+              return new Response(val);
+          }),
+          catchError(this.handleError)
+      );
+  }
 }
