@@ -104,21 +104,11 @@ export class SignupPage implements OnInit {
     else{//logic for signup
       this.restService.newUser(Number(this.regnum),this.pswrd,this.name).subscribe(
         response => {
+            loading.dismiss();
             this.authStatus = response;
             if(this.authStatus.Status == "OK"){ //if insertion success
-              loading.dismiss();
               this.showSuccess();
               this.modalController.dismiss(this.regnum);
-            }
-            else if(this.authStatus.Status == "Exists"){ //remove this as it will be covered above
-              loading.dismiss();
-              this.pswrd=null;
-              this.popAlert('Register number already exists!','','',['Ok']);
-            }
-            else if(this.authStatus.Status == "Wrong"){ //remove this as it will be covered above
-                loading.dismiss();
-                this.pswrd=null;
-                this.popAlert('Wrong Registration No.!','Please try again','',['Ok']);
             }
             else { //insertion error
               loading.dismiss();

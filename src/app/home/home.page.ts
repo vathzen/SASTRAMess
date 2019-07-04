@@ -64,13 +64,12 @@ export class HomePage implements OnInit {
       await loading.present();
       this.restService.userAuth(this.regnum,this.pswrd).subscribe( //pswrd number until you make change in db, use this.verified too
         (response) => {
+            loading.dismiss();
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
-              loading.dismiss();
               this.popAlert('Typo?','Incorrect registration number or password','Please try again',['OK']);
             }
             else{
-              loading.dismiss();
               if(this.authStatus.Text.split(",")[2] == "true"){
                   this.storage.set('first_time', 'false');
                   this.storage.set('reg_num', this.regnum);
@@ -147,12 +146,11 @@ export class HomePage implements OnInit {
 
     this.restService.verCode(Number(this.regnum),code).subscribe(
         (response) => {
+            loading.dismiss();
             this.authStatus = response;
             if(this.authStatus.Status == "true"){
-                loading.dismiss();
                 this.popAlert('You\'re all set!','Login to start ordering.','',['OK']);
             }else{
-                loading.dismiss();
                 this.presentEnterCode();
                 this.popAlert('Wrong code','Check your code and try again','',['OK']);
             }
