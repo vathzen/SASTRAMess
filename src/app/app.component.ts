@@ -53,12 +53,12 @@ export class AppComponent {
     private storage: Storage,
     private navCtrl: NavController,
   ) {
-    this.statusBar.backgroundColorByHexString('#ffffff');
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.statusBar.backgroundColorByHexString('#c78100');
       this.splashScreen.hide();
       this.storage.get('navIfNetwork').then(page=>{
         if(page!=''){
