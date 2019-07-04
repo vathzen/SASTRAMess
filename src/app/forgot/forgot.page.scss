@@ -1,0 +1,22 @@
+.headitem{
+    --background: orange;
+    --color: white;
+    font-size: 22px;
+    font-weight: 200;
+}
+.keyicon{
+    margin-right: 15px;
+    color: white;
+}
+ion-item {
+    --border-color:burlywood;
+    --highlight-color-focused:orange;
+    --highlight-color-valid:orange;
+    --highlight-color-invalid:orange;
+}
+ion-spinner{
+    width: 8%;
+}
+ion-footer{
+    text-align: center;
+}

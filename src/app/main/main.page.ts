@@ -66,15 +66,34 @@ export class MainPage implements OnInit {z
       duration: 1,
       easing: 'easeInOutSine'
     });
+  }
+
+  ionViewWillEnter(){
     this.getDate();
+  }
+
+  async getDate(){
+    //var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
+    this.restService.getStatus().subscribe(
+        (val) => {
+            console.log(val);
+            var serveDate = val.Text;
+            var date_string = new Date(serveDate).toString();
+            this.todayDateObj = new Date(date_string);
+            this.tmrwDateObj = new Date(this.todayDateObj);
+            this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
+            this.updateHeader();
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
   }
 
   updateHeader(){
       this.storage.get('reg_num').then(val =>{
           this.user.regnum=val;
-          this.updatePage().then(()=>{
-            this.tryLoading();
-          });
+          this.updatePage();
       });
       this.storage.get('name').then(val =>{this.user.username=val});
       this.storage.get('hostel').then(val =>{this.user.messname=val});
@@ -186,28 +205,21 @@ export class MainPage implements OnInit {z
   }
 
   doRefresh(event:any) {
+    console.log(this.loading)
     this.slideOut();
     setTimeout(() => {
-      this.updatePage(event).then(()=>{
-        this.tryLoading(event);
-      })
+      this.updatePage(event);
     }, 800);
   }
 
-  async updatePage(event:any=null){
-    this.loading+=3;
-    this.updateCode(event).then(()=>{
-      this.loading--;
-      this.tryLoading(event);
-    });
-    this.updateMenu().then(()=>{
-      this.loading--;
-      this.tryLoading(event);
-    });
+  updatePage(event:any=null){
+    this.updateCode(event);
+    this.updateMenu(event);
     this.checkTimeUp(true);
   }
 
   tryLoading(event:any=null){
+    console.log(this.loading);
     if(this.loading==0){
       if(event!=null){
         event.target.complete();
@@ -216,25 +228,8 @@ export class MainPage implements OnInit {z
     }
   }
 
-  async getDate(){
-    //var serveDate = '2019-07-06 22:59:59' //get server date as yyyy-mm-dd hh:mm:ss
-    this.restService.getStatus().subscribe(
-        (val) => {
-            console.log(val);
-            var serveDate = val.Text;
-            var date_string = new Date(serveDate).toString();
-            this.todayDateObj = new Date(date_string);
-            this.tmrwDateObj = new Date(this.todayDateObj);
-            this.tmrwDateObj.setDate(this.todayDateObj.getDate()+1);
-            this.updateHeader();
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
-  }
-
-  async updateCode(event:any){
+  updateCode(event:any=null){
+    ++this.loading;
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
     //ASSUMING OLDMENU QUERY TAKES BELOW FORM
     //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
@@ -243,10 +238,7 @@ export class MainPage implements OnInit {z
     this.restService.getOrders(0,this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
-            this.updateCode2(codes).then(()=>{
-              this.loading--;
-              this.tryLoading(event);
-            });
+            this.updateCode2(codes,event);
         },
         (err) => {
             console.log(err);
@@ -254,7 +246,7 @@ export class MainPage implements OnInit {z
     )
   }
 
-  async updateCode2(codes:any){
+  updateCode2(codes:any,event:any=null){
       this.restService.getMenu("0").subscribe(
           (val) => {
               var oldmenu = val.convToObj();
@@ -268,6 +260,8 @@ export class MainPage implements OnInit {z
                 }
                 i+=2;
               });
+              --this.loading;
+              this.tryLoading(event);
           },
           (err) => {
               console.log(err);
@@ -275,7 +269,8 @@ export class MainPage implements OnInit {z
       )
   }
 
-  async updateMenu(){
+  async updateMenu(event:any=null){
+    ++this.loading;
     //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
     this.restService.getMenu("1").subscribe(
@@ -290,7 +285,8 @@ export class MainPage implements OnInit {z
               }
               i+=2;
             });
-            this.loading--;
+            --this.loading;
+            this.tryLoading(event);
         },
         (err) => {
             console.log(err);
