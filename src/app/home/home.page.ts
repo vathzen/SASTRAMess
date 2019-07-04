@@ -80,7 +80,7 @@ export class HomePage implements OnInit {
                   this.navCtrl.navigateRoot(['main']);
               }
               else{
-                this.presentEnterCode();
+                this.presentEnterCode(this.regnum);
               }
             }
         },err => {
@@ -100,11 +100,11 @@ export class HomePage implements OnInit {
     const regnum = await modal.onDidDismiss();
     if(regnum.data){
       this.storage.set('first_time', 'false');
-      this.presentEnterCode();
+      this.presentEnterCode(regnum.data);
     }
   }
 
-  async presentEnterCode() {
+  async presentEnterCode(regnum:string) {
     const alert = await this.alertController.create({
       header: 'Enter 4-digit code',
       subHeader: 'To verify it is you, show your ID card to your mess authorities and enter the code they give you',
@@ -124,10 +124,10 @@ export class HomePage implements OnInit {
           text: 'Verify',
           handler: (data) => {
             if(data.code){
-              this.verifyCode(data.code);
+              this.verifyCode(regnum,data.code);
             }
             else{
-              this.presentEnterCode();
+              this.presentEnterCode(regnum);
             }
           }
         }
@@ -137,20 +137,20 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async verifyCode(code:string){
+  async verifyCode(regnum:string,code:string){
     const loading = await this.loadCtrl.create({
       message: 'Verifying'
     });
     await loading.present();
 
-    this.restService.verCode(Number(this.regnum),code).subscribe(
+    this.restService.verCode(Number(regnum),code).subscribe(
         (response) => {
             loading.dismiss();
             this.authStatus = response;
             if(this.authStatus.Status == "true"){
                 this.popAlert('You\'re all set!','Login to start ordering.','',['OK']);
             }else{
-                this.presentEnterCode();
+                this.presentEnterCode(regnum);
                 this.popAlert('Wrong code','Check your code and try again','',['OK']);
             }
         },
