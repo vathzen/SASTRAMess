@@ -44,25 +44,30 @@ export class AppComponent {
     }
   ];
 
+  showSplash:boolean=true;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: Storage,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#c78100');
       this.splashScreen.hide();
       this.storage.get('navIfNetwork').then(page=>{
         if(page!=''){
           this.navCtrl.navigateRoot(page);
         }
       })
+      setTimeout(() => {
+        this.showSplash=false;
+      }, 3000);
     });
   }
 
