@@ -145,7 +145,7 @@ export class HomePage implements OnInit {
     });
     await loading.present();
 
-    this.restService.verCode(this.regnum,code).subscribe(
+    this.restService.verCode(Number(this.regnum),code).subscribe(
         (response) => {
             this.authStatus = response;
             if(this.authStatus.Status == "true"){

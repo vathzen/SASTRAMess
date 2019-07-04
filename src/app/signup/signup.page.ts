@@ -51,7 +51,7 @@ export class SignupPage implements OnInit {
                  if(val.Text == "true"){//if regnum already exists in our db
                    this.regnumValid=-1;
                  }
-                 else{  //if regnum does not exist in our db 
+                 else{  //if regnum does not exist in our db
                    this.regnumValid=1;
                  }
                }
@@ -102,7 +102,7 @@ export class SignupPage implements OnInit {
     }
 
     else{//logic for signup
-      this.restService.newUser(this.regnum,this.pswrd).subscribe(
+      this.restService.newUser(Number(this.regnum),this.pswrd,this.name).subscribe(
         response => {
             this.authStatus = response;
             if(this.authStatus.Status == "OK"){ //if insertion success
