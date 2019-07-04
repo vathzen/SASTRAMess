@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { RestService } from '../services/rest.service';
 
 @Component({
   selector: 'app-forgot',
@@ -11,7 +12,7 @@ export class ForgotPage implements OnInit {
   @Input() regnum: any[];
   @Input() pswrd: any[];
 
-  constructor(private modalController: ModalController, public toastController: ToastController) { }
+  constructor(private modalController: ModalController, public toastController: ToastController,public restService: RestService) { }
 
   inputType:string='password';
   eyeIcon:string='eye';
@@ -45,13 +46,20 @@ export class ForgotPage implements OnInit {
 
   updatePassword(){
     //update password using this.regnum and this.newpw
-    if(true){
-      this.showToast('Password changed successfully!');
-      this.modalController.dismiss(this.newpw);
-    }
-    else{
-      this.showToast('Something went wrong');
-    }
+    this.restService.changePassword(this.regnum,this.newpw).subscribe(
+        (val) => {
+            if(val.Status == "true"){
+              this.showToast('Password changed successfully!');
+              this.modalController.dismiss(this.newpw);
+            }
+            else{
+              this.showToast('Something went wrong');
+            }
+        },
+        (err) => {
+            console.log(err);
+        }
+    )
   }
 
   async showToast(message:string){
