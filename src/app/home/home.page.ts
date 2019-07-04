@@ -18,6 +18,8 @@ export class HomePage implements OnInit {
   pswrd:string=null;
   forgotClicked:boolean=false;
   signupClicked:boolean=false;
+  inputType:string='password';
+  eyeIcon:string='eye';
   authStatus = new Response();
 
   constructor(
@@ -224,6 +226,17 @@ export class HomePage implements OnInit {
         duration: 20,
       });
       this.signupClicked=false;
+    }
+  }
+
+  changeInputType(){
+    if(this.inputType=='password'){
+      this.inputType='text';
+      this.eyeIcon='eye-off';
+    }
+    else{
+      this.inputType='password';
+      this.eyeIcon='eye';
     }
   }
 
