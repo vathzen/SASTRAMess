@@ -108,7 +108,7 @@ export class HomePage implements OnInit {
 
   async presentEnterCode(regnum:string) {
     const alert = await this.alertController.create({
-      header: 'Enter 4-digit code',
+      header: 'Enter code',
       subHeader: 'To verify it is you, show your ID card to your mess authorities and enter the code they give you',
       message: 'Don\'t worry, it\'s just a one-time process!',
       inputs: [

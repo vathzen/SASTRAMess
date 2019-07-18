@@ -100,12 +100,12 @@ ion-card-content{
     --border-color:#507e32;
 }
 .tag2{
-    --background: #5b9bd5;
-    --border-color:#41719c;
-}
-.tag3{
     --background: #ed7d31;
     --border-color:#ae5a21;
+}
+.tag3{
+    --background: #2f67ce;
+    --border-color:#235699;
 }
 .tagicon{
     position: absolute;
@@ -180,10 +180,10 @@ ion-card-content{
     --color:#507e32;
 }
 .tag2label{
-    --color:#41719c;
+    --color:#ae5a21;
 }
 .tag3label{
-    --color:#ae5a21;
+    --color:#41719c;
 }
 ion-badge{
     position: absolute;

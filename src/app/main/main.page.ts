@@ -18,18 +18,18 @@ export class MainPage implements OnInit {z
   public menu= [
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
   ];
   public oldmenu=[
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'primary'},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'primary'},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'danger'},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'danger'},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
+    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'primary'},
   ];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
