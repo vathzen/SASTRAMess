@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { Observable,throwError } from 'rxjs';
 import { catchError,map } from 'rxjs/operators';
-import { User,Response,Menu,Code,Codes } from './classes';
+import { User,Response,Menu,Code,Codes,Order } from './classes';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,6 @@ export class RestService {
   user = new User();
   coder = new Code();
   quants = new Codes();
-  private menus = [];
 
   constructor(public httpClient : HttpClient) { }
 
@@ -129,6 +128,16 @@ export class RestService {
       return this.httpClient.post(this.baseUrl + 'pass',this.user).pipe(
           map(val => {
               return new Response(val);
+          }),
+          catchError(this.handleError)
+      );
+  }
+
+  public getHistory(month,regno): Observable<any>{
+      return this.httpClient.get(this.baseUrl+'history?reg='+regno+'&month='+month).pipe(
+          map(vals => {
+              console.log(vals);
+              return vals;
           }),
           catchError(this.handleError)
       );

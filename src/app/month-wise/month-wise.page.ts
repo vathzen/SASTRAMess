@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RestService } from '../services/rest.service';
 
 @Component({
   selector: 'app-month-wise',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MonthWisePage implements OnInit {
 
-  constructor() { }
+  constructor(private restService: RestService) { }
   public entries=[];
   costTotal:number=null;
   daysTotal:number=null;
@@ -28,8 +29,16 @@ export class MonthWisePage implements OnInit {
   }
 
   getPage(){
-    console.log(this.month.split('T')[0]);//use this date to get data
-
+    console.log(this.month.split('T')[0].split('-')[1]);//use this date to get data
+    var month =  this.month.split('T')[0].split('-')[1];
+    this.restService.getHistory(month,120014052).subscribe(
+        (val) =>{
+            console.log(val)
+        },
+        (err) =>{
+            console.log(err)
+        }
+    );
     let data = [{ //assuming we get this
       "date" : "01-04-2019",
       "bf1" : "Idly-2-43",
@@ -137,12 +146,12 @@ export class MonthWisePage implements OnInit {
     this.costSortAsc=false;
     this.itemSortAsc=!this.itemSortAsc;
     if(this.itemSortAsc){
-    this.entries.sort(function(a,b){ 
+    this.entries.sort(function(a,b){
       return a.itemname.localeCompare(b.itemname);
     });
   }
   else{
-    this.entries.sort(function(a,b){ 
+    this.entries.sort(function(a,b){
       return b.itemname.localeCompare(a.itemname);
     });
   }
@@ -157,7 +166,7 @@ export class MonthWisePage implements OnInit {
     this.costSortAsc=!this.costSortAsc;
     if(this.costSortAsc){
       if(this.itemSortNeeded){
-        this.entries.sort(function(a,b){ 
+        this.entries.sort(function(a,b){
           return a.itemname.localeCompare(b.itemname);
         });
     }
@@ -167,7 +176,7 @@ export class MonthWisePage implements OnInit {
   }
   else{
     if(this.itemSortNeeded){
-    this.entries.sort(function(a,b){ 
+    this.entries.sort(function(a,b){
       return b.itemname.localeCompare(a.itemname);
     });
   }
