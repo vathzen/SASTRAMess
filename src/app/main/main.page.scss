@@ -107,6 +107,10 @@ ion-card-content{
     --background: #2f67ce;
     --border-color:#235699;
 }
+.tag4{
+    --background: #383838;
+    --border-color:#242424;
+}
 .tagicon{
     position: absolute;
     top: 50%;
@@ -184,6 +188,9 @@ ion-card-content{
 }
 .tag3label{
     --color:#41719c;
+}
+.tag4label{
+    --color:#000000;
 }
 ion-badge{
     position: absolute;

@@ -45,6 +45,8 @@ export class MonthWisePage implements OnInit {
       "bf2" : "null-0-0",
       "lun1" : "Poori-3-77",
       "lun2" : "null-0-0",
+      "snx1" : "Juice-2-10",
+      "snx2" : "Samosa-3-15",
       "din1" : "null-0-0",
       "din2" : "Lasagna-4-13",
     },
@@ -54,6 +56,8 @@ export class MonthWisePage implements OnInit {
       "bf2" : "null-0-0",
       "lun1" : "Poori-3-77",
       "lun2" : "Lasagna-4-13",
+      "snx1" : "Juice-2-10",
+      "snx2" : "Samosa-3-15",
       "din1" : "null-0-0",
       "din2" : "Lasagna-4-13",
     },
@@ -63,6 +67,8 @@ export class MonthWisePage implements OnInit {
       "bf2" : "null-0-0",
       "lun1" : "Poori-3-77",
       "lun2" : "Lasagna-4-13",
+      "snx1" : "Juice-2-10",
+      "snx2" : "Samosa-3-15",
       "din1" : "null-0-0",
       "din2" : "Lasagna-4-13",
     },{
@@ -71,6 +77,8 @@ export class MonthWisePage implements OnInit {
       "bf2" : "null-0-0",
       "lun1" : "Poori-3-77",
       "lun2" : "Lasagna-4-13",
+      "snx1" : "Juice-2-10",
+      "snx2" : "Samosa-3-15",
       "din1" : "null-0-0",
       "din2" : "null-0-0",
     },]
@@ -90,19 +98,27 @@ export class MonthWisePage implements OnInit {
       }
       splitted = element.lun1.split('-');
       if(splitted[0]!='null'){
-        this.entries.push({date:date, icon:'sunny', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+        this.entries.push({date:date, icon:'sunny', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
       }
       splitted = element.lun2.split('-');
       if(splitted[0]!='null'){
-        this.entries.push({date:date, icon:'sunny', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+        this.entries.push({date:date, icon:'sunny', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.snx1.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'pizza', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+      }
+      splitted = element.snx2.split('-');
+      if(splitted[0]!='null'){
+        this.entries.push({date:date, icon:'pizza', color:'primary', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
       }
       splitted = element.din1.split('-');
       if(splitted[0]!='null'){
-        this.entries.push({date:date, icon:'moon', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+        this.entries.push({date:date, icon:'moon', color:'dark', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
       }
       splitted = element.din2.split('-');
       if(splitted[0]!='null'){
-        this.entries.push({date:date, icon:'moon', color:'danger', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
+        this.entries.push({date:date, icon:'moon', color:'dark', itemname:splitted[0], quantity:splitted[2]+'x'+splitted[1], cost:+splitted[1]*+splitted[2]});
       }
     });
 

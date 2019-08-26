@@ -20,16 +20,20 @@ export class MainPage implements OnInit {z
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
     {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
     {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'pizza', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag3', tagico: '', icon:'pizza', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag4', tagico: '', icon:'moon', val:null, isChecked:false, color:'dark', oldquantity:0, quantity:0 ,price:null},
+    {tag:'tag4', tagico: '', icon:'moon', val:null, isChecked:false, color:'dark', oldquantity:0, quantity:0 ,price:null}
   ];
   public oldmenu=[
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
     {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
     {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'primary'},
-    {tag:'tag3', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag3', tagico: '', icon:'pizza', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag3', tagico: '', icon:'pizza', val:null, code:null, quantity:null, color:'primary'},
+    {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'},
+    {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'}
   ];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -231,10 +235,8 @@ export class MainPage implements OnInit {z
   updateCode(event:any=null){
     ++this.loading;
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
-    //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null'];
     //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    //var codes = ['AG3K903','null','null','null','AGJJ813','null']; //last 2 digits quantity //today menu code
+    //var codes = ['AG3K903','null','null','null','AGJJ813','null','AGJJ813','null']; //last 2 digits quantity //today menu code
     this.restService.getOrders(0,this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
@@ -247,6 +249,8 @@ export class MainPage implements OnInit {z
   }
 
   updateCode2(codes:any,event:any=null){
+    //ASSUMING OLDMENU QUERY TAKES BELOW FORM
+    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null','Kadai Paneer',50,'null','null'];
       this.restService.getMenu("0").subscribe(
           (val) => {
               var oldmenu = val.convToObj();
@@ -271,7 +275,7 @@ export class MainPage implements OnInit {z
 
   async updateMenu(event:any=null){
     ++this.loading;
-    //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null']
+    //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Samosa',50,'null','null','Kadai Paneer',50,'null','null']
     this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
     this.restService.getMenu("1").subscribe(
         (val) => {
@@ -296,7 +300,7 @@ export class MainPage implements OnInit {z
   }
 
   updateChecks(){
-    //var codes = ['null','null','AB3G309','null','null','G3GJJ08'];//tomo menu oda code
+    //var codes = ['null','null','AB3G309','null','null','G3GJJ08','null','null'];//tomo menu oda code
     this.restService.getOrders("1",this.user.regnum).subscribe(
         (val) => {
             var codes = val.convToObj();
@@ -532,10 +536,6 @@ export class MainPage implements OnInit {z
       }
     });
   }
-  }
-
-  animateCheck(){
-
   }
 
   checkTimeUp(ignorePullButton:boolean=false){
