@@ -20,6 +20,7 @@ export class HomePage implements OnInit {
   signupClicked:boolean=false;
   inputType:string='password';
   eyeIcon:string='eye';
+  loginButtonStatus:boolean=false;
   authStatus = new Response();
 
   constructor(
@@ -60,6 +61,7 @@ export class HomePage implements OnInit {
       this.popAlert('Missed Something?','','Fill all fields to continue',['OK']);
     }
     else{
+      this.loginButtonStatus=true;
       const loading = await this.loadCtrl.create({
           message: 'Verifying...'
       });
@@ -67,6 +69,7 @@ export class HomePage implements OnInit {
       this.restService.userAuth(this.regnum,this.pswrd).subscribe( //pswrd number until you make change in db, use this.verified too
         (response) => {
             loading.dismiss();
+            this.loginButtonStatus=false;
             this.authStatus = response;
             if(this.authStatus.Status=="false"){
               this.popAlert('Typo?','Incorrect registration number or password','Please try again',['OK']);
