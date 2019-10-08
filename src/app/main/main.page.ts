@@ -12,10 +12,10 @@ import anime from 'node_modules/animejs/lib/anime.js';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements OnInit {z
+export class MainPage implements OnInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
-  public menu= [
+  /*public menu= [
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
     {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
     {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
@@ -34,13 +34,15 @@ export class MainPage implements OnInit {z
     {tag:'tag3', tagico: '', icon:'pizza', val:null, code:null, quantity:null, color:'primary'},
     {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'},
     {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'}
-  ];
+  ];*/
+  public menu=[];
+  public oldmenu =[];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  public items = null;
   animating:boolean=true;
   loading:number=0;
   updateButtonPulled:boolean=false;
-  checks = [];
   disablekey:boolean=false;
   checkChanged:boolean=false;
   todayDateObj:Date=null;
@@ -97,11 +99,18 @@ export class MainPage implements OnInit {z
   updateHeader(){
       this.storage.get('reg_num').then(val =>{
           this.user.regnum=val;
-          this.updatePage();
+          this.getItemsData();
       });
       this.storage.get('name').then(val =>{this.user.username=val});
       this.storage.get('hostel').then(val =>{this.user.messname=val});
       this.storage.get('contractor').then(val =>{this.user.contractor=val});
+  }
+
+  getItemsData(){
+    this.items = {"1":{name:'Veg Salad', cost:20},
+                  "2": {name:'Dosa', cost:40},"3":{ name:'Mushroom 65', cost:40}, "4": { name:'Babycorn 65', cost:47},
+    };
+    this.updatePage(); //call on rcv items data
   }
 
   ionViewWillLeave(){
@@ -217,124 +226,94 @@ export class MainPage implements OnInit {z
   }
 
   updatePage(event:any=null){
-    this.updateCode(event);
-    this.updateMenu(event);
+    this.oldmenu=[];
+    this.menu=[];
+
+    var data =    //TODAY TMRW MENU3,ORDERS FORMAT
+    {
+      "tbf":["01-ADRFX06"],
+      "tlun":["02-null"],
+      "tsnx":[],
+      "tdin":["03-FRSFX04"],
+      "nbf":["01-ADRFX06"],
+      "nlun":["04-null"],
+      "nsnx":["01-ADRFX06"],
+      "ndin":["03-FRSFX04"]
+    };
+    var i = 0;
+    data.tbf.forEach(element => {
+      this.formMenu(element,i++,"bf","old");
+    });
+    data.tlun.forEach(element => {
+      this.formMenu(element,i++,"lun","old");
+    });
+    data.tsnx.forEach(element => {
+      this.formMenu(element,i++,"snx","old");
+    });
+    data.tdin.forEach(element => {
+      this.formMenu(element,i++,"din","old");
+    });
+    data.nbf.forEach(element => {
+      this.formMenu(element,i++,"bf");
+    });
+    data.nlun.forEach(element => {
+      this.formMenu(element,i++,"lun");
+    });
+    data.nsnx.forEach(element => {
+      this.formMenu(element,i++,"snx");
+    });
+    data.ndin.forEach(element => {
+      this.formMenu(element,i++,"din");
+    });
     this.checkTimeUp(true);
+    this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
+    this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
+    if(event!=null){
+      event.target.complete();
+    }
+    this.slideIn();
   }
 
-  tryLoading(event:any=null){
-    console.log(this.loading);
-    if(this.loading==0){
-      if(event!=null){
-        event.target.complete();
-      }
-      this.slideIn();
+  formMenu(element: string, i: number, type: string, category: string = null){
+    var split = element.split('-');
+    var id:number = +split[0];
+    var name:string = this.items[id].name;
+    var tag:string = null;
+    var icon:string = null;
+    var color:string = null;
+    if(type=='bf'){
+      tag = 'tag'; icon = 'partly-sunny'; color = 'success';
+    }
+    else if(type=='lun'){
+      tag = 'tag2'; icon = 'sunny'; color = 'danger';
+    }
+    else if(type=='lun'){
+      tag = 'tag3'; icon = 'pizza'; color = 'primary';
+    }
+    else {
+      tag = 'tag4'; icon = 'moon'; color = 'dark';
+    }
+
+    if(category=="old"){
+      this.oldmenu.push({i: i, id: id, tag:tag, tagico: this.iconDetect(name), icon:icon, val:name, code:split[1], quantity:Number(split[1][5]+split[1][6]), color:color});
+    }
+    else{
+      var cost:number = this.items[id].cost;
+      var quantity:number = (split[1]=='null')?null:Number(split[1][5]+split[1][6]);
+      this.menu.push({i: i, id: id, tag:tag, tagico: this.iconDetect(name), icon:icon, val:name, isChecked:quantity, color:color, oldquantity:quantity, quantity:quantity , price:cost});
     }
   }
 
-  updateCode(event:any=null){
-    ++this.loading;
-    this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
-    //ASSUMING USER BASED QUERY TAKES BELOW FORM
-    //var codes = ['AG3K903','null','null','null','AGJJ813','null','AGJJ813','null']; //last 2 digits quantity //today menu code
-    this.restService.getOrders(0,this.user.regnum).subscribe(
-        (val) => {
-            var codes = val.convToObj();
-            this.updateCode2(codes,event);
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
-  }
-
-  updateCode2(codes:any,event:any=null){
-    //ASSUMING OLDMENU QUERY TAKES BELOW FORM
-    //var oldmenu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Kadai Paneer',50,'null','null','Kadai Paneer',50,'null','null'];
-      this.restService.getMenu("0").subscribe(
-          (val) => {
-              var oldmenu = val.convToObj();
-              var i=0;
-              this.oldmenu.forEach(item => {
-                if(oldmenu[i]!='null'){
-                  item.val=oldmenu[i];
-                  item.code=codes[i/2];
-                  item.tagico=this.iconDetect(item.val);//run icon detection
-                  item.quantity=item.code[5]+item.code[6];
-                }
-                i+=2;
-              });
-              --this.loading;
-              this.tryLoading(event);
-          },
-          (err) => {
-              console.log(err);
-          }
-      )
-  }
-
-  async updateMenu(event:any=null){
-    ++this.loading;
-    //var menu = ['Cornflakes with milk',30,'null','null','Veg. Sandwich',40,'null','null','Samosa',50,'null','null','Kadai Paneer',50,'null','null']
-    this.tmrwDate = this.days[this.tmrwDateObj.getDay()] + '       ' + this.tmrwDateObj.getDate().toString() + ' ' + this.months[this.tmrwDateObj.getMonth()] + ' ' + this.tmrwDateObj.getFullYear().toString();
-    this.restService.getMenu("1").subscribe(
-        (val) => {
-            var menu = val.convToObj();
-            var i=0;
-            this.menu.forEach(item => {
-              if(menu[i]!='null'){
-                item.val=menu[i];
-                item.price=menu[i+1];
-                item.tagico=this.iconDetect(item.val);//run icon detection
-              }
-              i+=2;
-            });
-            --this.loading;
-            this.tryLoading(event);
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
-    this.updateChecks();
-  }
-
-  updateChecks(){
-    //var codes = ['null','null','AB3G309','null','null','G3GJJ08','null','null'];//tomo menu oda code
-    this.restService.getOrders("1",this.user.regnum).subscribe(
-        (val) => {
-            var codes = val.convToObj();
-            console.log(codes);
-            var i = 0;
-            this.menu.forEach(item => {
-              if(codes[i]!='null'){
-                item.isChecked=true;
-                item.quantity=Number(codes[i][5]+codes[i][6]);
-                item.oldquantity=item.quantity;
-              }
-              else{
-                item.isChecked=false;
-              }
-              i++;
-            });
-            this.checkChanged=false;
-        },
-        (err) => {
-            console.log(err);
-        }
-    )
-  }
-
-  async showOnesPicker(val:string,quantity:number){
+  async showOnesPicker(i:number,quantity:number){
     if(quantity>9){
-      this.showTensPicker(val,quantity);
+      this.showTensPicker(i,quantity);
     }
     else{
     const picker = await this.pickerController.create({
       buttons: [{
         text: 'Show x10',
         handler: () => {
-          this.showTensPicker(val,10);
+          this.showTensPicker(i,10);
         }
       },
       {
@@ -344,7 +323,7 @@ export class MainPage implements OnInit {z
         text: 'Done',
         handler: (data) => {
           this.menu.forEach(item => {
-            if(item.val==val){
+            if(item.i==i){
                 item.quantity=data.quantity_ones.value;
             }
           });
@@ -373,12 +352,12 @@ export class MainPage implements OnInit {z
   }
   }
 
-  async showTensPicker(val:string,quantity:number){
+  async showTensPicker(i:number,quantity:number){
     const picker = await this.pickerController.create({
       buttons: [{
         text: 'Show x1',
         handler: () => {
-          this.showOnesPicker(val,1);
+          this.showOnesPicker(i,1);
         }
       },
       {
@@ -388,7 +367,7 @@ export class MainPage implements OnInit {z
         text: 'Done',
         handler: (data) => {
           this.menu.forEach(item => {
-            if(item.val==val){
+            if(item.i==i){
                 item.quantity=(data.quantity_tens.value*10)+data.quantity_ones.value;
             }
           });
@@ -442,13 +421,30 @@ export class MainPage implements OnInit {z
         }
       });
       if(checkChanged){
-        this.checks.splice(0,this.checks.length);
+        var checks =
+        {
+          "nbf":[],
+          "nlun":[],
+          "nsnx":[],
+          "ndin":[]
+        };
         this.menu.forEach(item => {
           if(item.val!='null'){
-            this.checks.push(item.quantity);
+            if(item.tag=='tag'){
+              checks.nbf.push(String(item.id)+'-'+String(item.quantity))
+            }
+            else if(item.tag=='tag2'){
+              checks.nlun.push(String(item.id)+'-'+String(item.quantity))
+            }
+            else if(item.tag=='tag3'){
+              checks.nsnx.push(String(item.id)+'-'+String(item.quantity))
+            }
+            else{
+              checks.ndin.push(String(item.id)+'-'+String(item.quantity))
+            }
           }
         });
-        this.openModal();
+        this.openModal(checks);
       }
     }
     else{
@@ -456,17 +452,17 @@ export class MainPage implements OnInit {z
     }
   }
 
-  async openModal(){
+  async openModal(checks){
     const modal = await this.modalController.create({
       component: ModalPage,
-      componentProps: {checks: this.checks},
+      componentProps: {checks: checks},
       backdropDismiss: false,
       cssClass: 'custom-modal-css'
     });
     modal.present();
     const updateSuccess = await modal.onDidDismiss();
     if(updateSuccess.data){
-      this.updateChecks();
+      this.updatePage();
     }
   }
 
@@ -501,11 +497,11 @@ export class MainPage implements OnInit {z
     }
   }
 
-  toggleChecked(val: string){
+  toggleChecked(i: number){
     if(!this.disablekey){
     this.menu.forEach(item => {
-      if(item.val==val){
-        var checkcover = document.getElementById('check'+item.val);
+      if(item.i==i){
+        var checkcover = document.getElementById('check'+item.i);
         if(item.isChecked){
           item.isChecked=!item.isChecked;
           anime({
@@ -572,10 +568,10 @@ export class MainPage implements OnInit {z
     await alert.present();
 }
 
-  async showCode(val: string){
+  async showCode(i: number){
     var msg = null;
     this.oldmenu.forEach(item => {
-      if(item.val==val){
+      if(item.i==i){
         msg=item.val+'\n'+item.code+'                Quantity: '+item.quantity;
       }
     });
