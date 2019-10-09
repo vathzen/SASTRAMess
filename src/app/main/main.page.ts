@@ -15,33 +15,12 @@ import anime from 'node_modules/animejs/lib/anime.js';
 export class MainPage implements OnInit {
   private user = {regnum: '', pswrd: '', username:'', contractor:'', messname:''};
   //EVERYTHINGS IS WRT THIS USER, USE CONTEXT OF this.user.regnum for db queries
-  /*public menu= [
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, isChecked:false, color:'success', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, isChecked:false, color:'danger', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'pizza', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag3', tagico: '', icon:'pizza', val:null, isChecked:false, color:'primary', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag4', tagico: '', icon:'moon', val:null, isChecked:false, color:'dark', oldquantity:0, quantity:0 ,price:null},
-    {tag:'tag4', tagico: '', icon:'moon', val:null, isChecked:false, color:'dark', oldquantity:0, quantity:0 ,price:null}
-  ];
-  public oldmenu=[
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
-    {tag:'tag', tagico: '', icon:'partly-sunny', val:null, code:null, quantity:null, color:'success'},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
-    {tag:'tag2', tagico: '', icon:'sunny', val:null, code:null, quantity:null, color:'danger'},
-    {tag:'tag3', tagico: '', icon:'pizza', val:null, code:null, quantity:null, color:'primary'},
-    {tag:'tag3', tagico: '', icon:'pizza', val:null, code:null, quantity:null, color:'primary'},
-    {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'},
-    {tag:'tag4', tagico: '', icon:'moon', val:null, code:null, quantity:null, color:'dark'}
-  ];*/
   public menu=[];
   public oldmenu =[];
   public days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   public months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   public items = null;
   animating:boolean=true;
-  loading:number=0;
   updateButtonPulled:boolean=false;
   disablekey:boolean=false;
   checkChanged:boolean=false;
@@ -218,7 +197,6 @@ export class MainPage implements OnInit {
   }
 
   doRefresh(event:any) {
-    console.log(this.loading)
     this.slideOut();
     setTimeout(() => {
       this.updatePage(event);
@@ -235,35 +213,17 @@ export class MainPage implements OnInit {
       "tlun":["02-null"],
       "tsnx":[],
       "tdin":["03-FRSFX04"],
-      "nbf":["01-ADRFX06"],
+      "nbf":["01-null"],
       "nlun":["04-null"],
       "nsnx":["01-ADRFX06"],
       "ndin":["03-FRSFX04"]
     };
+
     var i = 0;
-    data.tbf.forEach(element => {
-      this.formMenu(element,i++,"bf","old");
-    });
-    data.tlun.forEach(element => {
-      this.formMenu(element,i++,"lun","old");
-    });
-    data.tsnx.forEach(element => {
-      this.formMenu(element,i++,"snx","old");
-    });
-    data.tdin.forEach(element => {
-      this.formMenu(element,i++,"din","old");
-    });
-    data.nbf.forEach(element => {
-      this.formMenu(element,i++,"bf");
-    });
-    data.nlun.forEach(element => {
-      this.formMenu(element,i++,"lun");
-    });
-    data.nsnx.forEach(element => {
-      this.formMenu(element,i++,"snx");
-    });
-    data.ndin.forEach(element => {
-      this.formMenu(element,i++,"din");
+    Object.keys(data).forEach(key => {
+      data[key].forEach((element: string) => {
+        this.formMenu(element,i++,key);
+      });
     });
     this.checkTimeUp(true);
     this.todayDate = this.days[this.todayDateObj.getDay()] + '       ' + this.todayDateObj.getDate().toString() + ' ' + this.months[this.todayDateObj.getMonth()] + ' ' + this.todayDateObj.getFullYear().toString();
@@ -274,13 +234,14 @@ export class MainPage implements OnInit {
     this.slideIn();
   }
 
-  formMenu(element: string, i: number, type: string, category: string = null){
+  formMenu(element: string, i: number, key:string){
     var split = element.split('-');
     var id:number = +split[0];
     var name:string = this.items[id].name;
     var tag:string = null;
     var icon:string = null;
     var color:string = null;
+    var type:string = key.slice(1);
     if(type=='bf'){
       tag = 'tag'; icon = 'partly-sunny'; color = 'success';
     }
@@ -293,13 +254,12 @@ export class MainPage implements OnInit {
     else {
       tag = 'tag4'; icon = 'moon'; color = 'dark';
     }
-
-    if(category=="old"){
+    if(key[0]=='t'){
       this.oldmenu.push({i: i, id: id, tag:tag, tagico: this.iconDetect(name), icon:icon, val:name, code:split[1], quantity:Number(split[1][5]+split[1][6]), color:color});
     }
     else{
       var cost:number = this.items[id].cost;
-      var quantity:number = (split[1]=='null')?null:Number(split[1][5]+split[1][6]);
+      var quantity:number = (split[1]=='null')?0:Number(split[1][5]+split[1][6]);
       this.menu.push({i: i, id: id, tag:tag, tagico: this.iconDetect(name), icon:icon, val:name, isChecked:quantity, color:color, oldquantity:quantity, quantity:quantity , price:cost});
     }
   }
@@ -452,7 +412,7 @@ export class MainPage implements OnInit {
     }
   }
 
-  async openModal(checks){
+  async openModal(checks: { "nbf": any[]; "nlun": any[]; "nsnx": any[]; "ndin": any[]; }){
     const modal = await this.modalController.create({
       component: ModalPage,
       componentProps: {checks: checks},
