@@ -25,7 +25,7 @@
     <ion-card class="card1margin">
       <ion-card-content>
     <ion-item class="carditem" lines="none">
-        <ion-label text-wrap><p class="listhead">What's cooking today?<br class="cardbr"></p>
+        <ion-label class="ion-text-wrap"><p class="listhead">What's cooking today?<br class="cardbr"></p>
           <p class="date">{{todayDate}}</p>
         </ion-label>
     </ion-item>
@@ -44,9 +44,9 @@
         <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
         <div class="itemname">
           <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
-          <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
+          <ion-label class="ion-text-wrap" *ngIf="!animating">{{entry.val}}</ion-label>
         </div>
-        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{entry.code=='null'}}" (click)="showCode(entry.val)">Code</ion-button>
+        <ion-button class="codebutton" color="{{entry.color}}" disabled="{{entry.code=='null'}}" (click)="showCode(entry.i)">Code</ion-button>
       </ion-item>
     </ion-item>
     </ng-container>
@@ -56,7 +56,7 @@
     <ion-card class="card2margin">
       <ion-card-content>
       <ion-item class="carditem" lines="none">
-          <ion-label text-wrap><p class="listhead">What's on the menu tomorrow?<br class="cardbr"></p>
+          <ion-label class="ion-text-wrap"><p class="listhead">What's on the menu tomorrow?<br class="cardbr"></p>
             <p class="date">{{tmrwDate}}</p>
             <p *ngIf="!updateButtonPulled" class="closetime">Orders close at 11:00pm</p>
             <p *ngIf="updateButtonPulled" class="closetime">Orders closed<br>App updates at 12:00am</p>
@@ -75,12 +75,12 @@
           <div class="icosize {{entry.tagico}}ico" *ngIf="!animating"></div>
           <div class="itemname">
             <ion-label *ngIf="animating"><ion-skeleton-text animated style="width: 90%"></ion-skeleton-text></ion-label>
-            <ion-label text-wrap *ngIf="!animating">{{entry.val}}</ion-label>
+            <ion-label class="ion-text-wrap" *ngIf="!animating">{{entry.val}}</ion-label>
           </div>         
           <div><ion-label class="price {{entry.tag}}label">Rs.{{entry.price}}</ion-label></div>
           <ion-badge *ngIf="!(entry.isChecked&&!disablekey)" color="medium">0</ion-badge>
-          <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showOnesPicker(entry.val,entry.quantity)">{{entry.quantity}}</ion-badge>
-          <div id="check{{entry.val}}" class="checkcover" (click)="toggleChecked(entry.val)">
+          <ion-badge *ngIf="entry.isChecked&&!disablekey" color="{{entry.color}}" (click)="showOnesPicker(entry.i,entry.quantity)">{{entry.quantity}}</ion-badge>
+          <div id="check{{entry.i}}" class="checkcover" (click)="toggleChecked(entry.i)">
             <ion-checkbox *ngIf="!entry.isChecked||disablekey" color="{{entry.color}}" [checked]="entry.isChecked" [disabled]=disablekey></ion-checkbox>
             <ion-icon class="cancelicon" color="{{entry.color}}" name="close-circle"></ion-icon>
           </div>

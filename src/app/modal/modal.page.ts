@@ -29,11 +29,11 @@ export class ModalPage implements OnInit {
 
   sendData(){
     var authStatus = new Response();
-    var checksObj = new Checks(this.checks);
+    var checksObj = new Checks(this.checks); //remove this as checks is in different format, remove checks class as well
     this.storage.get('reg_num').then((val) => {
         console.log(val);
         checksObj.username = val*1;
-        console.log(checksObj);
+        console.log(this.checks); //send this instead
         this.restService.putOrder(checksObj).subscribe(
             (val) => {
                 authStatus = val;
