@@ -209,20 +209,22 @@ export class MainPage implements OnInit {
 
     var data =    //TODAY TMRW MENU3,ORDERS FORMAT
     {
-      "tbf":["01-ADRFX06"],
-      "tlun":["02-null"],
-      "tsnx":[],
-      "tdin":["03-FRSFX04"],
-      "nbf":["01-null"],
-      "nlun":["04-null"],
-      "nsnx":["01-ADRFX06"],
-      "ndin":["03-FRSFX04"]
+      "tbf":"01-ADRFX06",
+      "tlun":"02-null",
+      "tsnx":"",
+      "tdin":"03-FRSFX04",
+      "nbf":"01-null",
+      "nlun":"04-null",
+      "nsnx":"01-ADRFX06",
+      "ndin":"03-FRSFX04"
     };
 
     var i = 0;
     Object.keys(data).forEach(key => {
-      data[key].forEach((element: string) => {
-        this.formMenu(element,i++,key);
+      data[key].split(',').forEach((element: string) => {
+        if(element){
+          this.formMenu(element,i++,key);
+        }
       });
     });
     this.checkTimeUp(true);
@@ -383,24 +385,24 @@ export class MainPage implements OnInit {
       if(checkChanged){
         var checks =
         {
-          "nbf":[],
-          "nlun":[],
-          "nsnx":[],
-          "ndin":[]
+          "nbf":"",
+          "nlun":"",
+          "nsnx":"",
+          "ndin":""
         };
         this.menu.forEach(item => {
           if(item.val!='null'){
             if(item.tag=='tag'){
-              checks.nbf.push(String(item.id)+'-'+String(item.quantity))
+              checks.nbf = String(item.id)+'-'+String(item.quantity)+','
             }
             else if(item.tag=='tag2'){
-              checks.nlun.push(String(item.id)+'-'+String(item.quantity))
+              checks.nlun = String(item.id)+'-'+String(item.quantity)+','
             }
             else if(item.tag=='tag3'){
-              checks.nsnx.push(String(item.id)+'-'+String(item.quantity))
+              checks.nsnx = String(item.id)+'-'+String(item.quantity)+','
             }
             else{
-              checks.ndin.push(String(item.id)+'-'+String(item.quantity))
+              checks.ndin = String(item.id)+'-'+String(item.quantity)+','
             }
           }
         });
@@ -412,7 +414,7 @@ export class MainPage implements OnInit {
     }
   }
 
-  async openModal(checks: { "nbf": any[]; "nlun": any[]; "nsnx": any[]; "ndin": any[]; }){
+  async openModal(checks: { "nbf": string; "nlun": string; "nsnx": string; "ndin": string; }){
     const modal = await this.modalController.create({
       component: ModalPage,
       componentProps: {checks: checks},

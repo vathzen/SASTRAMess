@@ -31,12 +31,6 @@ export class AppComponent {
       direction: 'forward'
     },
     {
-      title: 'Holiday',
-      url: '/holiday',
-      icon: 'hand',
-      direction: 'forward'
-    },
-    {
       title: 'Settings',
       url: '/settings',
       icon: 'settings',
