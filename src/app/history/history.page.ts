@@ -12,7 +12,7 @@ export class HistoryPage implements OnInit {
   constructor(private networkService: NetworkService, private storage: Storage) { }
 
   ngOnInit() {
-    this.storage.set('navIfNetwork','history');
+    //this.storage.set('navIfNetwork','history');
     this.networkService.checkDisconnection();
   }
 

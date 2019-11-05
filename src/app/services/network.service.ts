@@ -18,10 +18,10 @@ export class NetworkService {
     });
   }
 
-  checkConnection(page:string){
+  checkConnection(){
     this.connectSubscription =  this.network.onConnect().subscribe(()=>{
       setTimeout(async () => {
-        this.navCtrl.navigateRoot([page]);
+        this.navCtrl.navigateRoot(['main']);
       }, 2000);
     });
   }

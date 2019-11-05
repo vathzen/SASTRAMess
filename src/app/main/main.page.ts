@@ -41,7 +41,7 @@ export class MainPage implements OnInit {
     ) { }
 
   ngOnInit(){
-    this.storage.set('navIfNetwork','main');
+    //this.storage.set('navIfNetwork','main');
     this.networkService.checkDisconnection();
   }
 

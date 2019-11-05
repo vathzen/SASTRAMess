@@ -15,7 +15,7 @@ export class MenuPage implements OnInit {
   constructor(private networkService: NetworkService, private storage: Storage, private photoViewer: PhotoViewer) { }
 
   ngOnInit() {
-    this.storage.set('navIfNetwork','menu');
+    //this.storage.set('navIfNetwork','menu');
     this.networkService.checkDisconnection();
     //rcv img and date
     //or just host img and paste img url

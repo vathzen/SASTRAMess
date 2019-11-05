@@ -16,7 +16,7 @@ export class SettingsPage implements OnInit {
 
 
   ngOnInit() {
-    this.storage.set('navIfNetwork','settings');
+    //this.storage.set('navIfNetwork','settings');
     this.networkService.checkDisconnection();
     this.storage.get('navToSettingsForName').then(forName =>{
       if(forName){
