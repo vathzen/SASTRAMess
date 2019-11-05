@@ -99,3 +99,17 @@ export class Codes{
         return asd;
     }
 }
+
+export class FormMenuItems{
+    items={};
+    formItemsObject(data:string){
+    var i=1;
+    data.split(',').forEach(set => {
+      var setSplit = set.split(':');
+      if(setSplit[2]=='false'){
+        this.items[i++]={name:setSplit[0], cost:+setSplit[1]};
+      }
+    });
+    return this.items;
+    }    
+}
