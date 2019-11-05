@@ -12,9 +12,10 @@ export class NoInternetPage implements OnInit {
   constructor(private storage: Storage, private networkService: NetworkService) { }
 
   ngOnInit() {
-    this.storage.get('navIfNetwork').then(page =>{
+    /*this.storage.get('navIfNetwork').then(page =>{
       this.networkService.checkConnection(page);  
-  })
+  })*/
+  this.networkService.checkConnection();
   }
 
   ngOnDestroy(){
