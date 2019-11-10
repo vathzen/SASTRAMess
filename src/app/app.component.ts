@@ -60,11 +60,20 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.backgroundColorByHexString('#c78100');
       this.splashScreen.hide();
-      this.storage.get('navIfNetwork').then(page=>{
+      /*this.storage.get('navIfNetwork').then(page=>{
         if(page!=''){
           this.navCtrl.navigateRoot(page);
         }
+      })*/
+      this.storage.get('reg_num').then(regnum=>{
+        if(regnum!=''){
+          this.navCtrl.navigateRoot('main');
+        }
+        else{
+          this.navCtrl.navigateRoot('home');
+        }
       })
+      this.navCtrl.navigateRoot('page');
       setTimeout(() => {
         this.showSplash=false;
       }, 3000);
@@ -73,7 +82,7 @@ export class AppComponent {
 
   checkLogout(title:string){
     if(title=='Log Out'){
-      this.storage.set('navIfNetwork','');
+      this.storage.set('reg_num','');
     }
   }
 }

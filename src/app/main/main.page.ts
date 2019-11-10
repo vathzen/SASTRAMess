@@ -1,10 +1,11 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, ModalController, NavController, PickerController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
 import { RestService } from '../services/rest.service';
 import { NetworkService } from '../services/network.service';
 import anime from 'node_modules/animejs/lib/anime.js';
+import { FormMenuItems } from '../services/classes';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class MainPage implements OnInit {
     ) { }
 
   ngOnInit(){
-    this.storage.set('navIfNetwork','main');
+    //this.storage.set('navIfNetwork','main');
     this.networkService.checkDisconnection();
   }
 
@@ -86,9 +87,8 @@ export class MainPage implements OnInit {
   }
 
   getItemsData(){
-    this.items = {"1":{name:'Veg Salad', cost:20},
-                  "2": {name:'Dosa', cost:40},"3":{ name:'Mushroom 65', cost:40}, "4": { name:'Babycorn 65', cost:47},
-    };
+    var data = 'Veg Salad:20:false,Dosa:40:false,Mushroom 65:40:false,Babycorn 65:47:false,Paneer 65:47:true,Noodles:40:false,Fruit Juice:30:false';
+    this.items = new FormMenuItems().formItemsObject(data);
     this.updatePage(); //call on rcv items data
   }
 
