@@ -209,14 +209,14 @@ export class MainPage implements OnInit {
 
     var data =    //TODAY TMRW MENU3,ORDERS FORMAT
     {
-      "tbf":"01-ADRFX06",
+      "tbf":"01-null",
       "tlun":"02-null",
       "tsnx":"",
-      "tdin":"03-FRSFX04",
-      "nbf":"01-null",
-      "nlun":"04-null",
+      "tdin":"03-null",
+      "nbf":"01-ADRFX06",
+      "nlun":"04-ADRFX06",
       "nsnx":"01-ADRFX06",
-      "ndin":"03-FRSFX04"
+      "ndin":"03-FRSFX04,01-ADRFX06"
     };
 
     var i = 0;
@@ -250,7 +250,7 @@ export class MainPage implements OnInit {
     else if(type=='lun'){
       tag = 'tag2'; icon = 'sunny'; color = 'danger';
     }
-    else if(type=='lun'){
+    else if(type=='snx'){
       tag = 'tag3'; icon = 'pizza'; color = 'primary';
     }
     else {
@@ -390,21 +390,20 @@ export class MainPage implements OnInit {
           "nsnx":"",
           "ndin":""
         };
+        console.log(this.menu)
         this.menu.forEach(item => {
-          if(item.val!='null'){
             if(item.tag=='tag'){
-              checks.nbf = String(item.id)+'-'+String(item.quantity)+','
+              checks.nbf += String(item.id)+'-'+String(item.quantity)+','
             }
             else if(item.tag=='tag2'){
-              checks.nlun = String(item.id)+'-'+String(item.quantity)+','
+              checks.nlun += String(item.id)+'-'+String(item.quantity)+','
             }
             else if(item.tag=='tag3'){
-              checks.nsnx = String(item.id)+'-'+String(item.quantity)+','
+              checks.nsnx += String(item.id)+'-'+String(item.quantity)+','
             }
             else{
-              checks.ndin = String(item.id)+'-'+String(item.quantity)+','
+              checks.ndin += String(item.id)+'-'+String(item.quantity)+','
             }
-          }
         });
         this.openModal(checks);
       }
