@@ -1,12 +1,14 @@
-# SASTRAMess
+# Yum - SASTRAMess
 Mess Food Booking App for SASTRA University.
 
 
-## Running
-In the projefct directory, run
+## Installation
+Download and install the app from play store.
 
-### `ionic serve`
+http://play.google.com/store/apps/details?id=com.sastra.yum
 
+## Website
+http://yumsastra.herokuapp.com
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
